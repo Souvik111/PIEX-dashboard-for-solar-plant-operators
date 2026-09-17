@@ -1,0 +1,1137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>PIEX — Solar Plant Operations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{background:#e6ebef;font-family:Inter,system-ui,-apple-system,'Segoe UI',sans-serif;
+     -webkit-font-smoothing:antialiased;overflow-x:hidden}
+#fit{transform-origin:top center;margin:0 auto}
+.screen{position:relative;display:none}
+.screen.active{display:block}
+.b,.t,.v{position:absolute;pointer-events:none}
+.t{white-space:pre-wrap}
+.v{display:block;pointer-events:none}
+/* interactive affordances layered over the generated design */
+.hot{position:absolute;cursor:pointer;z-index:60;border-radius:10px}
+.hot:hover{background:rgba(37,99,235,.06)}
+.hot:active{background:rgba(37,99,235,.12)}
+.navhot:hover{background:rgba(37,99,235,.08)}
+.fade{transition:opacity .18s ease}
+.plot-area{position:absolute;z-index:55;cursor:crosshair;touch-action:none}
+.dot-handle{position:absolute;width:28px;height:28px;border-radius:50%;z-index:58;cursor:grab;touch-action:none}
+.dot-handle:hover{background:rgba(37,99,235,.10)}
+.dot-handle.grabbing{cursor:grabbing;background:rgba(37,99,235,.16)}
+.btn-primary{transition:background-color .15s ease, box-shadow .15s ease, transform .15s ease}
+.btn-primary.is-hover{background-color:#526478 !important;box-shadow:0 6px 16px rgba(15,23,43,.18);transform:translateY(-1px)}
+.btn-primary.is-press{background-color:#45566a !important;box-shadow:0 2px 6px rgba(15,23,43,.18);transform:translateY(0)}
+.btn-hot:hover{background:transparent}
+.hidden{opacity:0;pointer-events:none}
+</style>
+</head>
+<body>
+<div id="fit">
+<div class="screen" id="s-dashboard" style="width:1440px;height:1995px;background:rgb(249 251 252)">
+<div class="b anchor" style="left:295.0px;top:120.0px;width:1115.0px;height:1843.0px" data-id="6:1537" data-name="Frame 182"></div>
+<div class="b anchor" style="left:295.0px;top:120.0px;width:1115.0px;height:1586.0px" data-id="6:1538" data-name="Frame 181"></div>
+<div class="b anchor" style="left:295.0px;top:120.0px;width:1115.0px;height:908.0px" data-id="6:1539" data-name="Frame 180"></div>
+<div class="b anchor" style="left:295.0px;top:120.0px;width:1115.0px;height:230.0px" data-id="6:1540" data-name="Frame 175"></div>
+<div class="b anchor" style="left:295.0px;top:120.0px;width:266.0px;height:230.0px" data-id="6:1541" data-name="KPI Card/Current Power"></div>
+<div class="b" style="left:295.0px;top:120.0px;width:266.0px;height:230.0px;background-color:rgb(255 255 255);border-radius:19px;border:1.00px solid rgba(0,0,0,0.08);box-sizing:border-box" data-id="I6:1541;127:59" data-name="Rectangle 6"></div>
+<img class="v" src="assets/group-25__I6_1541_127_60.svg" style="left:333.0px;top:196.0px;width:227.0px;height:154.0px" alt="" data-id="I6:1541;127:60">
+<img class="v" src="assets/vector-3__I6_1541_127_93.svg" style="left:333.0px;top:196.0px;width:227.0px;height:154.0px" alt="" data-id="I6:1541;127:93">
+<img class="v" src="assets/group-2__I6_1541_127_94.svg" style="left:310.0px;top:135.0px;width:46.0px;height:46.0px" alt="" data-id="I6:1541;127:94">
+<div class="b" style="left:462.0px;top:145.0px;width:84.0px;height:27.0px;background-color:rgba(220,226,230,0.3);border-radius:50px" data-id="I6:1541;127:98" data-name="Frame 16"></div>
+<img class="v" src="assets/group-3__I6_1541_127_99.svg" style="left:472.0px;top:155.5px;width:6.0px;height:6.0px" alt="" data-id="I6:1541;127:99">
+<div class="t" style="left:486.0px;top:150.0px;width:51.0px;color:rgb(80 108 131);font-size:14.0px;font-weight:500;line-height:16.5px;white-space:nowrap" data-id="I6:1541;127:102">+12.4%</div>
+<div class="b anchor" style="left:310.0px;top:201.0px;width:108.0px;height:108.0px" data-id="I6:1541;127:103" data-name="Frame 23"></div>
+<div class="b anchor" style="left:310.0px;top:201.0px;width:108.0px;height:58.0px" data-id="I6:1541;127:104" data-name="Frame 14"></div>
+<div class="t" style="left:310.0px;top:201.0px;width:98.0px;color:rgb(67 67 67);font-size:14.0px;font-weight:500;line-height:18.0px;white-space:nowrap" data-id="I6:1541;127:105">Current Power</div>
+<div class="b anchor" style="left:310.0px;top:233.0px;width:108.0px;height:26.0px" data-id="I6:1541;127:106" data-name="Frame 13"></div>
+<div class="t" style="left:310.0px;top:233.0px;width:61.0px;color:rgb(15 23 43);font-size:30.0px;font-weight:600;line-height:26.0px;letter-spacing:-0.65px;white-space:nowrap" data-id="I6:1541;127:107">7.54</div>
+<div class="t" style="left:379.0px;top:241.0px;width:24.0px;color:rgb(98 116 142);font-size:12.0px;font-weight:500;line-height:18.0px;white-space:nowrap" data-id="I6:1541;127:108">MW</div>
+<div class="t" style="left:310.0px;top:276.0px;width:109.0px;color:rgb(144 161 185);font-size:14.0px;font-weight:400;line-height:16.5px" data-id="I6:1541;127:109">↑ +12.4% vs yesterday</div>
+<div class="b anchor" style="left:577.0px;top:120.0px;width:266.0px;height:230.0px" data-id="6:1542" data-name="KPI Card/Daily Production"></div>
+<div class="b" style="left:577.0px;top:120.0px;width:266.0px;height:230.0px;background-color:rgb(255 255 255);border-radius:19px;border:1.00px solid rgba(0,0,0,0.08);box-sizing:border-box" data-id="I6:1542;127:111" data-name="Rectangle 7"></div>
+<img class="v" src="assets/group-3__I6_1542_127_112.svg" style="left:592.0px;top:135.0px;width:46.0px;height:46.0px" alt="" data-id="I6:1542;127:112">
+<img class="v" src="assets/vector-11__I6_1542_127_117.svg" style="left:615.0px;top:196.0px;width:227.0px;height:154.0px" alt="" data-id="I6:1542;127:117">
+<img class="v" src="assets/vector-5__I6_1542_127_118.svg" style="left:615.0px;top:196.0px;width:227.0px;height:154.0px" alt="" data-id="I6:1542;127:118">
+<div class="b" style="left:754.0px;top:145.0px;width:74.0px;height:27.0px;background-color:rgba(0,188,125,0.2);border-radius:50px" data-id="I6:1542;127:119" data-name="Frame 18"></div>
+<img class="v" src="assets/group-4__I6_1542_127_120.svg" style="left:764.0px;top:155.5px;width:6.0px;height:6.0px" alt="" data-id="I6:1542;127:120">
+<div class="t" style="left:778.0px;top:150.0px;width:41.0px;color:rgb(0 153 102);font-size:14.0px;font-weight:500;line-height:16.5px;white-space:nowrap" data-id="I6:1542;127:123">+4.1%</div>
+<div class="b anchor" style="left:592.0px;top:201.0px;width:108.0px;height:108.0px" data-id="I6:1542;127:124" data-name="Frame 24"></div>
+<div class="b anchor" style="left:592.0px;top:201.0px;width:108.0px;height:58.0px" data-id="I6:1542;127:125" data-name="Frame 17"></div>
+<div class="t" style="left:592.0px;top:201.0px;width:148.0px;color:rgb(67 67 67);font-size:14.0px;font-weight:500;line-height:18.0px;white-space:nowrap" data-id="I6:1542;127:126">Total Daily Production</div>
+<div class="b anchor" style="left:592.0px;top:233.0px;width:108.0px;height:26.0px" data-id="I6:1542;127:127" data-name="Frame 13"></div>
+<div class="t" style="left:592.0px;top:233.0px;width:79.0px;color:rgb(15 23 43);font-size:30.0px;font-weight:600;line-height:26.0px;letter-spacing:-0.65px;white-space:nowrap" data-id="I6:1542;127:128">61.60</div>
+<div class="t" style="left:679.0px;top:241.0px;width:31.0px;color:rgb(98 116 142);font-size:12.0px;font-weight:500;line-height:18.0px;white-space:nowrap" data-id="I6:1542;127:129">MWh</div>
+<div class="t" style="left:592.0px;top:276.0px;width:109.0px;color:rgb(144 161 185);font-size:14.0px;font-weight:400;line-height:16.5px" data-id="I6:1542;127:130">↑ +4.1% vs yesterday</div>
+<img class="v" src="assets/group-26__I6_1542_127_131.svg" style="left:615.0px;top:196.0px;width:227.0px;height:154.0px" alt="" data-id="I6:1542;127:131">
+<div class="b anchor" style="left:859.0px;top:120.0px;width:266.0px;height:230.0px" data-id="6:1543" data-name="KPI Card/Revenue"></div>
+<div class="b" style="left:859.0px;top:120.0px;width:266.0px;height:230.0px;background-color:rgb(255 255 255);border-radius:19px;border:1.00px solid rgba(0,0,0,0.08);box-sizing:border-box" data-id="I6:1543;127:165" data-name="Rectangle 8"></div>
+<img class="v" src="assets/group-4__I6_1543_127_166.svg" style="left:874.0px;top:135.0px;width:46.0px;height:46.0px" alt="" data-id="I6:1543;127:166">
+<img class="v" src="assets/vector-10__I6_1543_127_170.svg" style="left:897.0px;top:196.0px;width:227.0px;height:154.0px" alt="" data-id="I6:1543;127:170">
+<img class="v" src="assets/vector-7__I6_1543_127_171.svg" style="left:897.0px;top:196.0px;width:227.0px;height:154.0px" alt="" data-id="I6:1543;127:171">
+<div class="b" style="left:1034.0px;top:145.0px;width:76.0px;height:27.0px;background-color:rgb(238 229 253);border-radius:50px" data-id="I6:1543;127:172" data-name="Frame 20"></div>
+<img class="v" src="assets/group-4__I6_1543_127_173.svg" style="left:1044.0px;top:155.5px;width:6.0px;height:6.0px" alt="" data-id="I6:1543;127:173">
+<div class="t" style="left:1058.0px;top:150.0px;width:43.0px;color:rgb(124 58 237);font-size:14.0px;font-weight:500;line-height:16.5px;white-space:nowrap" data-id="I6:1543;127:176">+8.7%</div>
+<div class="b anchor" style="left:874.0px;top:201.0px;width:108.0px;height:108.0px" data-id="I6:1543;127:177" data-name="Frame 25"></div>
+<div class="b anchor" style="left:874.0px;top:201.0px;width:108.0px;height:58.0px" data-id="I6:1543;127:178" data-name="Frame 19"></div>
+<div class="t" style="left:874.0px;top:201.0px;width:114.0px;color:rgb(67 67 67);font-size:14.0px;font-weight:500;line-height:18.0px;white-space:nowrap" data-id="I6:1543;127:179">Today&#x27;s Revenue</div>
+<div class="b anchor" style="left:874.0px;top:233.0px;width:108.0px;height:26.0px" data-id="I6:1543;127:180" data-name="Frame 13"></div>
+<div class="t" style="left:874.0px;top:233.0px;width:118.0px;color:rgb(15 23 43);font-size:30.0px;font-weight:600;line-height:26.0px;letter-spacing:-0.65px;white-space:nowrap" data-id="I6:1543;127:181">₺75,802</div>
+<div class="t" style="left:1000.0px;top:241.0px;width:25.0px;color:rgb(98 116 142);font-size:12.0px;font-weight:500;line-height:18.0px;white-space:nowrap" data-id="I6:1543;127:182">TRY</div>
+<div class="t" style="left:874.0px;top:276.0px;width:109.0px;color:rgb(144 161 185);font-size:14.0px;font-weight:400;line-height:16.5px" data-id="I6:1543;127:183">↑ +8.7% vs yesterday</div>
+<img class="v" src="assets/group-27__I6_1543_127_184.svg" style="left:897.0px;top:196.0px;width:227.0px;height:154.0px" alt="" data-id="I6:1543;127:184">
+<div class="b anchor" style="left:1141.0px;top:120.0px;width:266.0px;height:230.0px" data-id="6:1544" data-name="KPI Card/CO₂ Savings"></div>
+<div class="b" style="left:1141.0px;top:120.0px;width:266.0px;height:230.0px;background-color:rgb(255 255 255);border-radius:19px;border:1.00px solid rgba(0,0,0,0.08);box-sizing:border-box" data-id="I6:1544;127:218" data-name="Rectangle 9"></div>
+<img class="v" src="assets/group-5__I6_1544_127_219.svg" style="left:1156.0px;top:135.0px;width:46.0px;height:46.0px" alt="" data-id="I6:1544;127:219">
+<img class="v" src="assets/vector-13__I6_1544_127_223.svg" style="left:1179.0px;top:196.0px;width:227.0px;height:154.0px" alt="" data-id="I6:1544;127:223">
+<img class="v" src="assets/vector-14__I6_1544_127_224.svg" style="left:1179.0px;top:196.0px;width:227.0px;height:154.0px" alt="" data-id="I6:1544;127:224">
+<div class="b" style="left:1321.0px;top:145.0px;width:71.0px;height:27.0px;background-color:rgba(0,188,125,0.2);border-radius:50px" data-id="I6:1544;127:225" data-name="Frame 22"></div>
+<img class="v" src="assets/group-4__I6_1544_127_226.svg" style="left:1331.0px;top:155.5px;width:6.0px;height:6.0px" alt="" data-id="I6:1544;127:226">
+<div class="t" style="left:1345.0px;top:150.0px;width:38.0px;color:rgb(0 153 102);font-size:14.0px;font-weight:500;line-height:16.5px;white-space:nowrap" data-id="I6:1544;127:229">+16%</div>
+<div class="b anchor" style="left:1156.0px;top:201.0px;width:108.0px;height:108.0px" data-id="I6:1544;127:230" data-name="Frame 26"></div>
+<div class="b anchor" style="left:1156.0px;top:201.0px;width:108.0px;height:58.0px" data-id="I6:1544;127:231" data-name="Frame 21"></div>
+<div class="t" style="left:1156.0px;top:201.0px;width:85.0px;color:rgb(67 67 67);font-size:14.0px;font-weight:500;line-height:18.0px;white-space:nowrap" data-id="I6:1544;127:232">CO₂ Savings</div>
+<div class="b anchor" style="left:1156.0px;top:233.0px;width:108.0px;height:26.0px" data-id="I6:1544;127:233" data-name="Frame 13"></div>
+<div class="t" style="left:1156.0px;top:233.0px;width:99.0px;color:rgb(15 23 43);font-size:30.0px;font-weight:600;line-height:26.0px;letter-spacing:-0.65px;white-space:nowrap" data-id="I6:1544;127:234">10,986</div>
+<div class="t" style="left:1263.0px;top:241.0px;width:15.0px;color:rgb(98 116 142);font-size:12.0px;font-weight:500;line-height:18.0px;white-space:nowrap" data-id="I6:1544;127:235">kg</div>
+<div class="t" style="left:1156.0px;top:276.0px;width:109.0px;color:rgb(144 161 185);font-size:14.0px;font-weight:400;line-height:16.5px" data-id="I6:1544;127:236">↑ +16% vs yesterday</div>
+<img class="v" src="assets/group-28__I6_1544_127_237.svg" style="left:1179.0px;top:196.0px;width:227.0px;height:154.0px" alt="" data-id="I6:1544;127:237">
+<div class="b anchor" style="left:295.0px;top:370.0px;width:1115.0px;height:658.0px" data-id="6:1545" data-name="Frame 176"></div>
+<div class="b anchor" style="left:295.0px;top:370.0px;width:714.0px;height:658.0px" data-id="6:1546" data-name="Production Analysis Chart"></div>
+<div class="b" style="left:295.0px;top:370.0px;width:714.0px;height:658.0px;background-color:rgb(255 255 255);border-radius:19px;border:1.00px solid rgba(0,0,0,0.08);box-sizing:border-box" data-id="I6:1546;127:288" data-name="Rectangle 10"></div>
+<div class="b anchor" style="left:319.0px;top:394.0px;width:214.0px;height:49.0px" data-id="I6:1546;127:289" data-name="Frame 39"></div>
+<div class="t" style="left:319.0px;top:394.0px;width:188.0px;color:rgb(15 23 43);font-size:20.0px;font-weight:600;line-height:22.5px;letter-spacing:-0.38px;white-space:nowrap" data-id="I6:1546;127:290">Production Analysis</div>
+<div class="t" style="left:319.0px;top:425.0px;width:215.0px;color:rgb(98 116 142);font-size:14.0px;font-weight:400;line-height:18.0px;white-space:nowrap" data-id="I6:1546;127:291">14 June 2026 · Hourly resolution</div>
+<div class="b anchor" style="left:319.0px;top:479.9px;width:667.0px;height:320.1px" data-id="I6:1546;127:292" data-name="Frame 41"></div>
+<div class="b anchor" style="left:374.0px;top:783.0px;width:612.0px;height:17.0px" data-id="I6:1546;127:293" data-name="Group"></div>
+<div class="t" style="left:374.0px;top:783.0px;width:40.0px;color:rgb(148 163 184);font-size:14.0px;font-weight:400;line-height:16.9px;text-align:center;white-space:nowrap" data-id="I6:1546;127:294">05:00</div>
+<div class="t" style="left:471.0px;top:783.0px;width:40.0px;color:rgb(148 163 184);font-size:14.0px;font-weight:400;line-height:16.9px;text-align:center;white-space:nowrap" data-id="I6:1546;127:295">08:00</div>
+<div class="t" style="left:568.0px;top:783.0px;width:36.0px;color:rgb(148 163 184);font-size:14.0px;font-weight:400;line-height:16.9px;text-align:center;white-space:nowrap" data-id="I6:1546;127:296">11:00</div>
+<div class="t" style="left:661.0px;top:783.0px;width:38.0px;color:rgb(148 163 184);font-size:14.0px;font-weight:400;line-height:16.9px;text-align:center;white-space:nowrap" data-id="I6:1546;127:297">14:00</div>
+<div class="t" style="left:756.0px;top:783.0px;width:37.0px;color:rgb(148 163 184);font-size:14.0px;font-weight:400;line-height:16.9px;text-align:center;white-space:nowrap" data-id="I6:1546;127:298">17:00</div>
+<div class="t" style="left:850.0px;top:783.0px;width:40.0px;color:rgb(148 163 184);font-size:14.0px;font-weight:400;line-height:16.9px;text-align:center;white-space:nowrap" data-id="I6:1546;127:299">20:00</div>
+<div class="t" style="left:947.0px;top:783.0px;width:40.0px;color:rgb(148 163 184);font-size:14.0px;font-weight:400;line-height:16.9px;text-align:center;white-space:nowrap" data-id="I6:1546;127:300">22:00</div>
+<div class="b anchor" style="left:319.0px;top:479.9px;width:666.0px;height:293.1px" data-id="I6:1546;127:301" data-name="Group 10"></div>
+<img class="v" src="assets/group-8__I6_1546_127_302.svg" style="left:374.0px;top:487.0px;width:611.0px;height:276.1px" alt="" data-id="I6:1546;127:302">
+<div class="b anchor" style="left:319.0px;top:479.9px;width:45.0px;height:293.1px" data-id="I6:1546;127:309" data-name="Group 9"></div>
+<div class="t" style="left:325.0px;top:700.9px;width:40.0px;color:rgb(148 163 184);font-size:14.0px;font-weight:400;line-height:16.9px;text-align:right;white-space:nowrap" data-id="I6:1546;127:310">2 MW</div>
+<div class="t" style="left:325.0px;top:756.0px;width:40.0px;color:rgb(148 163 184);font-size:14.0px;font-weight:400;line-height:16.9px;text-align:right;white-space:nowrap" data-id="I6:1546;127:311">0 MW</div>
+<div class="t" style="left:325.0px;top:645.9px;width:40.0px;color:rgb(148 163 184);font-size:14.0px;font-weight:400;line-height:16.9px;text-align:right;white-space:nowrap" data-id="I6:1546;127:312">4 MW</div>
+<div class="t" style="left:325.0px;top:590.9px;width:40.0px;color:rgb(148 163 184);font-size:14.0px;font-weight:400;line-height:16.9px;text-align:right;white-space:nowrap" data-id="I6:1546;127:313">6 MW</div>
+<div class="t" style="left:319.0px;top:479.9px;width:46.0px;color:rgb(148 163 184);font-size:14.0px;font-weight:400;line-height:16.9px;text-align:right;white-space:nowrap" data-id="I6:1546;127:314">10 MW</div>
+<div class="t" style="left:325.0px;top:535.0px;width:40.0px;color:rgb(148 163 184);font-size:14.0px;font-weight:400;line-height:16.9px;text-align:right;white-space:nowrap" data-id="I6:1546;127:315">8 MW</div>
+<img class="v" src="assets/vector-23__I6_1546_127_316.svg" style="left:390.0px;top:539.0px;width:578.5px;height:223.6px" alt="" data-id="I6:1546;127:316">
+<img class="v" src="assets/group-7__I6_1546_127_317.svg" style="left:389.0px;top:518.4px;width:583.9px;height:244.5px" alt="" data-id="I6:1546;127:317">
+<div class="b" style="left:536.0px;top:487.0px;width:1.0px;height:276.0px;background:rgb(201 201 201)" data-id="I6:1546;127:328"></div>
+<img class="v" src="assets/group__I6_1546_127_329.svg" style="left:528.0px;top:601.0px;width:16.0px;height:16.0px" alt="" data-id="I6:1546;127:329">
+<img class="v" src="assets/group__I6_1546_127_331.svg" style="left:644.0px;top:558.0px;width:16.0px;height:16.0px" alt="" data-id="I6:1546;127:331">
+<img class="v" src="assets/group__I6_1546_127_333.svg" style="left:789.0px;top:601.0px;width:16.0px;height:16.0px" alt="" data-id="I6:1546;127:333">
+<div class="b anchor" style="left:558.0px;top:594.0px;width:179.0px;height:125.0px" data-id="I6:1546;127:788" data-name="Chart Tooltip"></div>
+<div class="b" style="left:558.0px;top:594.0px;width:179.0px;height:125.0px;background-color:rgb(255 255 255);border-radius:14px;border:1.00px solid rgba(0,0,0,0.1);box-sizing:border-box;box-shadow:0px 4px 14px rgba(0,0,0,0.06)" data-id="I6:1546;127:788;125:13773" data-name="Rectangle 11"></div>
+<div class="t" style="left:570.0px;top:606.0px;width:28.0px;color:rgb(98 116 142);font-size:12.0px;font-weight:500;line-height:18.0px;white-space:nowrap" data-id="I6:1546;127:788;125:13774">9:30</div>
+<div class="t" style="left:584.0px;top:629.0px;width:64.0px;color:rgb(98 116 142);font-size:12.0px;font-weight:500;line-height:18.0px;white-space:nowrap" data-id="I6:1546;127:788;125:13775">Production</div>
+<div class="t" style="left:584.0px;top:657.0px;width:56.0px;color:rgb(98 116 142);font-size:12.0px;font-weight:500;line-height:18.0px;white-space:nowrap" data-id="I6:1546;127:788;125:13776">Expected</div>
+<div class="t" style="left:570.0px;top:689.0px;width:55.0px;color:rgb(98 116 142);font-size:12.0px;font-weight:500;line-height:18.0px;white-space:nowrap" data-id="I6:1546;127:788;125:13777">Deviation</div>
+<div class="t" style="left:674.0px;top:629.0px;width:52.0px;color:rgb(98 116 142);font-size:12.0px;font-weight:600;line-height:18.0px;white-space:nowrap" data-id="I6:1546;127:788;125:13778">1.42 MW</div>
+<div class="t" style="left:674.0px;top:657.0px;width:52.0px;color:rgb(98 116 142);font-size:12.0px;font-weight:600;line-height:18.0px;white-space:nowrap" data-id="I6:1546;127:788;125:13779">1.42 MW</div>
+<div class="t" style="left:682.0px;top:689.0px;width:44.0px;color:rgb(235 0 11);font-size:12.0px;font-weight:600;line-height:18.0px;white-space:nowrap" data-id="I6:1546;127:788;125:13780">-48.0%</div>
+<div class="b" style="left:570.0px;top:681.0px;width:155.0px;height:1.0px;background:rgba(0,0,0,0.1)" data-id="I6:1546;127:788;125:13781"></div>
+<div class="b" style="left:570.0px;top:634.0px;width:8.0px;height:8.0px;background-color:rgb(37 99 235);border-radius:50%" data-id="I6:1546;127:788;125:13782" data-name="Ellipse 3"></div>
+<div class="b" style="left:570.0px;top:662.0px;width:8.0px;height:8.0px;background-color:rgb(204 204 204);border-radius:50%" data-id="I6:1546;127:788;125:13783" data-name="Ellipse 4"></div>
+<div class="b anchor" style="left:655.0px;top:410.0px;width:330.0px;height:18.0px" data-id="I6:1546;127:347" data-name="Frame 43"></div>
+<div class="b anchor" style="left:655.0px;top:410.0px;width:148.0px;height:18.0px" data-id="I6:1546;127:348" data-name="Frame 42"></div>
+<div class="b" style="left:655.0px;top:415.0px;width:8.0px;height:8.0px;background-color:rgb(37 99 235);border-radius:50%" data-id="I6:1546;127:349" data-name="Ellipse 3"></div>
+<div class="t" style="left:669.0px;top:410.0px;width:135.0px;color:rgb(98 116 142);font-size:12.0px;font-weight:500;line-height:18.0px;white-space:nowrap" data-id="I6:1546;127:350">Actual Production(MW)</div>
+<div class="t" style="left:819.0px;top:410.0px;width:167.0px;color:rgb(98 116 142);font-size:12.0px;font-weight:500;line-height:18.0px;white-space:nowrap" data-id="I6:1546;127:351">-- Expected Production(MW)</div>
+<div class="b" style="left:319.0px;top:828.0px;width:211.3px;height:77.0px;background-color:rgb(255 253 243);border-radius:8px;border:1.00px solid rgb(254 243 198);box-sizing:border-box" data-id="I6:1546;127:352" data-name="Rectangle 12"></div>
+<div class="b" style="left:546.7px;top:828.0px;width:211.3px;height:77.0px;background-color:rgb(255 253 243);border-radius:8px;border:1.00px solid rgb(254 243 198);box-sizing:border-box" data-id="I6:1546;127:353" data-name="Rectangle 12"></div>
+<div class="b" style="left:774.3px;top:828.0px;width:211.3px;height:77.0px;background-color:rgb(255 253 243);border-radius:8px;border:1.00px solid rgb(254 243 198);box-sizing:border-box" data-id="I6:1546;127:354" data-name="Rectangle 12"></div>
+<div class="b anchor" style="left:394.0px;top:840.0px;width:100.0px;height:53.0px" data-id="I6:1546;127:355" data-name="Frame 44"></div>
+<div class="t" style="left:394.0px;top:840.0px;width:101.0px;color:rgb(187 77 0);font-size:12.0px;font-weight:600;line-height:16.5px;white-space:nowrap" data-id="I6:1546;127:356">09:30</div>
+<div class="t" style="left:394.0px;top:857.0px;width:101.0px;color:rgb(49 65 88);font-size:12.0px;font-weight:400;line-height:18.0px" data-id="I6:1546;127:357">Inverter 4 underperforming</div>
+<div class="b anchor" style="left:622.0px;top:840.0px;width:84.0px;height:53.0px" data-id="I6:1546;127:358" data-name="Frame 45"></div>
+<div class="t" style="left:622.0px;top:840.0px;width:85.0px;color:rgb(187 77 0);font-size:12.0px;font-weight:600;line-height:16.5px;white-space:nowrap" data-id="I6:1546;127:359">12:15</div>
+<div class="t" style="left:622.0px;top:857.0px;width:85.0px;color:rgb(49 65 88);font-size:12.0px;font-weight:400;line-height:18.0px" data-id="I6:1546;127:360">Section B2 voltage drop</div>
+<div class="b anchor" style="left:850.0px;top:840.0px;width:94.0px;height:53.0px" data-id="I6:1546;127:361" data-name="Frame 46"></div>
+<div class="t" style="left:850.0px;top:840.0px;width:95.0px;color:rgb(187 77 0);font-size:12.0px;font-weight:600;line-height:16.5px;white-space:nowrap" data-id="I6:1546;127:362">16:40</div>
+<div class="t" style="left:850.0px;top:857.0px;width:95.0px;color:rgb(49 65 88);font-size:12.0px;font-weight:400;line-height:18.0px" data-id="I6:1546;127:363">Communication issue</div>
+<img class="v" src="assets/group-11__I6_1546_127_364.svg" style="left:334.0px;top:843.0px;width:46.0px;height:46.0px" alt="" data-id="I6:1546;127:364">
+<img class="v" src="assets/group-12__I6_1546_127_370.svg" style="left:562.0px;top:843.0px;width:46.0px;height:46.0px" alt="" data-id="I6:1546;127:370">
+<img class="v" src="assets/group-13__I6_1546_127_376.svg" style="left:790.0px;top:843.0px;width:46.0px;height:46.0px" alt="" data-id="I6:1546;127:376">
+<div class="b" style="left:319.0px;top:921.0px;width:666.0px;height:83.0px;background-color:rgb(248 248 250);border-radius:8px;border:1.00px solid rgba(0,0,0,0.08);box-sizing:border-box" data-id="I6:1546;127:382" data-name="Frame 55"></div>
+<div class="b anchor" style="left:359.8px;top:942.0px;width:69.0px;height:41.0px" data-id="I6:1546;127:383" data-name="Frame 48"></div>
+<div class="t" style="left:359.8px;top:942.0px;width:69.0px;color:rgb(98 116 142);font-size:12.0px;font-weight:500;line-height:16.5px;white-space:nowrap" data-id="I6:1546;127:384">Peak Power</div>
+<div class="b anchor" style="left:359.8px;top:963.0px;width:69.0px;height:20.0px" data-id="I6:1546;127:385" data-name="Frame 47"></div>
+<div class="t" style="left:359.8px;top:963.0px;width:43.0px;color:rgb(15 23 43);font-size:20.0px;font-weight:600;line-height:20.0px;letter-spacing:-0.50px;white-space:nowrap" data-id="I6:1546;127:386">8.92</div>
+<div class="t" style="left:405.8px;top:964.0px;width:24.0px;color:rgb(98 116 142);font-size:12.0px;font-weight:400;line-height:18.0px;white-space:nowrap" data-id="I6:1546;127:387">MW</div>
+<div class="b" style="left:468.8px;top:950.5px;width:1.0px;height:24.0px;background:rgba(0,0,0,0.08)" data-id="I6:1546;127:388"></div>
+<div class="b anchor" style="left:508.8px;top:942.0px;width:79.0px;height:41.0px" data-id="I6:1546;127:389" data-name="Frame 50"></div>
+<div class="t" style="left:508.8px;top:942.0px;width:88.0px;color:rgb(98 116 142);font-size:12.0px;font-weight:500;line-height:16.5px;white-space:nowrap" data-id="I6:1546;127:390">Average Power</div>
+<div class="b anchor" style="left:508.8px;top:963.0px;width:69.0px;height:20.0px" data-id="I6:1546;127:391" data-name="Frame 49"></div>
+<div class="t" style="left:508.8px;top:963.0px;width:39.0px;color:rgb(15 23 43);font-size:20.0px;font-weight:600;line-height:20.0px;letter-spacing:-0.50px;white-space:nowrap" data-id="I6:1546;127:392">6.16</div>
+<div class="t" style="left:554.8px;top:964.0px;width:24.0px;color:rgb(98 116 142);font-size:12.0px;font-weight:400;line-height:18.0px;white-space:nowrap" data-id="I6:1546;127:393">MW</div>
+<div class="b" style="left:627.8px;top:950.5px;width:1.0px;height:24.0px;background:rgba(0,0,0,0.08)" data-id="I6:1546;127:394"></div>
+<div class="b anchor" style="left:667.8px;top:941.0px;width:100.2px;height:43.0px" data-id="I6:1546;127:395" data-name="Frame 54"></div>
+<div class="t" style="left:667.8px;top:941.0px;width:108.0px;color:rgb(98 116 142);font-size:12.0px;font-weight:500;line-height:16.5px;white-space:nowrap" data-id="I6:1546;127:396">Performance Ratio</div>
+<div class="b anchor" style="left:667.8px;top:962.0px;width:100.2px;height:22.0px" data-id="I6:1546;127:397" data-name="Frame 51"></div>
+<div class="b anchor" style="left:667.8px;top:962.0px;width:56.2px;height:22.0px" data-id="I6:1546;127:398" data-name="Group 14"></div>
+<div class="t" style="left:714.0px;top:966.0px;width:11.0px;color:rgb(98 116 142);font-size:12.0px;font-weight:400;line-height:18.0px;white-space:nowrap" data-id="I6:1546;127:399">%</div>
+<div class="t" style="left:667.8px;top:962.0px;width:44.0px;color:rgb(15 23 43);font-size:20.0px;font-weight:600;line-height:20.0px;letter-spacing:-0.50px;white-space:nowrap" data-id="I6:1546;127:400">82.6</div>
+<div class="t" style="left:736.0px;top:967.0px;width:35.0px;color:rgb(0 153 102);font-size:12.0px;font-weight:500;line-height:16.5px;white-space:nowrap" data-id="I6:1546;127:401">+1.2%</div>
+<div class="b" style="left:808.0px;top:950.5px;width:1.0px;height:24.0px;background:rgba(0,0,0,0.08)" data-id="I6:1546;127:402"></div>
+<div class="b anchor" style="left:848.0px;top:941.0px;width:96.2px;height:43.0px" data-id="I6:1546;127:403" data-name="Frame 53"></div>
+<div class="t" style="left:848.0px;top:941.0px;width:93.0px;color:rgb(98 116 142);font-size:12.0px;font-weight:500;line-height:16.5px;white-space:nowrap" data-id="I6:1546;127:404">Capacity Factor</div>
+<div class="b anchor" style="left:848.0px;top:962.0px;width:96.2px;height:22.0px" data-id="I6:1546;127:405" data-name="Frame 52"></div>
+<div class="b anchor" style="left:848.0px;top:962.0px;width:51.2px;height:22.0px" data-id="I6:1546;127:406" data-name="Group 15"></div>
+<div class="t" style="left:848.0px;top:962.0px;width:39.0px;color:rgb(15 23 43);font-size:20.0px;font-weight:600;line-height:20.0px;letter-spacing:-0.50px;white-space:nowrap" data-id="I6:1546;127:407">18.7</div>
+<div class="t" style="left:889.2px;top:966.0px;width:11.0px;color:rgb(98 116 142);font-size:12.0px;font-weight:400;line-height:18.0px;white-space:nowrap" data-id="I6:1546;127:408">%</div>
+<div class="t" style="left:910.2px;top:967.0px;width:38.0px;color:rgb(0 153 102);font-size:12.0px;font-weight:500;line-height:16.5px;white-space:nowrap" data-id="I6:1546;127:409">+0.3%</div>
+<div class="b anchor" style="left:1025.0px;top:370.0px;width:385.0px;height:658.0px" data-id="6:1547" data-name="System Alerts Panel"></div>
+<div class="b" style="left:1025.0px;top:370.0px;width:385.0px;height:658.0px;background-color:rgb(255 255 255);border-radius:19px;border:1.00px solid rgba(0,0,0,0.08);box-sizing:border-box" data-id="I6:1547;127:412" data-name="Rectangle 13"></div>
+<div class="b anchor" style="left:1049.0px;top:394.0px;width:132.0px;height:49.0px" data-id="I6:1547;127:413" data-name="Frame 56"></div>
+<div class="t" style="left:1049.0px;top:394.0px;width:133.0px;color:rgb(15 23 43);font-size:20.0px;font-weight:600;line-height:22.5px;letter-spacing:-0.38px;white-space:nowrap" data-id="I6:1547;127:414">System Alerts</div>
+<div class="t" style="left:1049.0px;top:425.0px;width:92.0px;color:rgb(98 116 142);font-size:14.0px;font-weight:400;line-height:18.0px;white-space:nowrap" data-id="I6:1547;127:415">Last 24 hours</div>
+<div class="b" style="left:1049.0px;top:467.0px;width:101.7px;height:85.0px;border-radius:12px;border:1.00px solid rgba(0,0,0,0.08);box-sizing:border-box" data-id="I6:1547;127:416" data-name="Frame 63"></div>
+<div class="b anchor" style="left:1069.0px;top:483.0px;width:61.7px;height:30.0px" data-id="I6:1547;127:417" data-name="Frame 60"></div>
+<img class="v" src="assets/frame-57__I6_1547_127_418.svg" style="left:1069.0px;top:483.0px;width:30.0px;height:30.0px" alt="" data-id="I6:1547;127:418">
+<div class="t" style="left:1107.0px;top:488.0px;width:14.0px;color:rgb(15 23 43);font-size:20.0px;font-weight:600;line-height:20.0px;white-space:nowrap" data-id="I6:1547;127:423">2</div>
+<div class="t" style="left:1069.0px;top:519.0px;width:48.0px;color:rgb(98 116 142);font-size:14.0px;font-weight:400;line-height:16.5px;white-space:nowrap" data-id="I6:1547;127:424">Critical</div>
+<div class="b" style="left:1167.0px;top:467.0px;width:101.7px;height:85.0px;border-radius:12px;border:1.00px solid rgba(0,0,0,0.08);box-sizing:border-box" data-id="I6:1547;127:425" data-name="Frame 64"></div>
+<div class="b anchor" style="left:1187.0px;top:483.0px;width:61.7px;height:30.0px" data-id="I6:1547;127:426" data-name="Frame 61"></div>
+<img class="v" src="assets/frame-58__I6_1547_127_427.svg" style="left:1187.0px;top:483.0px;width:30.0px;height:30.0px" alt="" data-id="I6:1547;127:427">
+<div class="t" style="left:1225.0px;top:488.0px;width:15.0px;color:rgb(15 23 43);font-size:20.0px;font-weight:600;line-height:20.0px;white-space:nowrap" data-id="I6:1547;127:432">3</div>
+<div class="t" style="left:1187.0px;top:519.0px;width:63.0px;color:rgb(98 116 142);font-size:14.0px;font-weight:400;line-height:16.5px;white-space:nowrap" data-id="I6:1547;127:433">Warnings</div>
+<div class="b" style="left:1285.0px;top:467.0px;width:101.7px;height:85.0px;border-radius:12px;border:1.00px solid rgba(0,0,0,0.08);box-sizing:border-box" data-id="I6:1547;127:434" data-name="Frame 65"></div>
+<div class="b anchor" style="left:1305.0px;top:483.0px;width:61.7px;height:30.0px" data-id="I6:1547;127:435" data-name="Frame 62"></div>
+<img class="v" src="assets/frame-59__I6_1547_127_436.svg" style="left:1305.0px;top:483.0px;width:30.0px;height:30.0px" alt="" data-id="I6:1547;127:436">
+<div class="t" style="left:1343.0px;top:488.0px;width:24.0px;color:rgb(15 23 43);font-size:20.0px;font-weight:600;line-height:20.0px;white-space:nowrap" data-id="I6:1547;127:440">12</div>
+<div class="t" style="left:1305.0px;top:519.0px;width:49.0px;color:rgb(98 116 142);font-size:14.0px;font-weight:400;line-height:16.5px;white-space:nowrap" data-id="I6:1547;127:441">Normal</div>
+<div class="b anchor" style="left:1026.0px;top:576.0px;width:383.0px;height:325.0px" data-id="I6:1547;127:442" data-name="Frame 88"></div>
+<div class="b anchor" style="left:1026.0px;top:576.0px;width:383.0px;height:79.0px" data-id="I6:1547;127:443" data-name="Frame 84"></div>
+<div class="b" style="left:1026.0px;top:576.0px;width:383.0px;height:1.0px;background:rgba(0,0,0,0.08)" data-id="I6:1547;127:444"></div>
+<div class="b anchor" style="left:1049.0px;top:600.0px;width:337.0px;height:55.0px" data-id="I6:1547;127:445" data-name="Frame 80"></div>
+<div class="b anchor" style="left:1049.0px;top:600.0px;width:243.0px;height:55.0px" data-id="I6:1547;127:446" data-name="Frame 79"></div>
+<img class="v" src="assets/frame-72__I6_1547_127_447.svg" style="left:1049.0px;top:604.5px;width:32.0px;height:32.0px" alt="" data-id="I6:1547;127:447">
+<div class="b anchor" style="left:1095.0px;top:600.0px;width:197.0px;height:55.0px" data-id="I6:1547;127:452" data-name="Frame 67"></div>
+<div class="t" style="left:1095.0px;top:600.0px;width:198.0px;color:rgb(15 23 43);font-size:14.0px;font-weight:500;line-height:17.9px" data-id="I6:1547;127:453">Inverter 4 efficiency dropped below threshold</div>
+<div class="t" style="left:1095.0px;top:638.0px;width:198.0px;color:rgb(98 116 142);font-size:12.0px;font-weight:400;line-height:16.5px;white-space:nowrap" data-id="I6:1547;127:454">String 4-2 · 3 minutes ago</div>
+<img class="v" src="assets/icon__I6_1547_127_455.svg" style="left:1362.0px;top:615.5px;width:24.0px;height:24.0px" alt="" data-id="I6:1547;127:455">
+<div class="b anchor" style="left:1026.0px;top:676.0px;width:383.0px;height:61.0px" data-id="I6:1547;127:458" data-name="Frame 85"></div>
+<div class="b" style="left:1026.0px;top:676.0px;width:383.0px;height:1.0px;background:rgba(0,0,0,0.08)" data-id="I6:1547;127:459"></div>
+<div class="b anchor" style="left:1049.0px;top:700.0px;width:337.0px;height:37.0px" data-id="I6:1547;127:460" data-name="Frame 81"></div>
+<div class="b anchor" style="left:1049.0px;top:700.0px;width:236.0px;height:37.0px" data-id="I6:1547;127:461" data-name="Frame 78"></div>
+<img class="v" src="assets/frame-71__I6_1547_127_462.svg" style="left:1049.0px;top:702.5px;width:32.0px;height:32.0px" alt="" data-id="I6:1547;127:462">
+<div class="b anchor" style="left:1095.0px;top:700.0px;width:190.0px;height:37.0px" data-id="I6:1547;127:467" data-name="Frame 68"></div>
+<div class="t" style="left:1095.0px;top:700.0px;width:191.0px;color:rgb(15 23 43);font-size:14.0px;font-weight:500;line-height:17.9px;white-space:nowrap" data-id="I6:1547;127:468">Section B2 underperforming</div>
+<div class="t" style="left:1095.0px;top:720.0px;width:191.0px;color:rgb(98 116 142);font-size:12.0px;font-weight:400;line-height:16.5px;white-space:nowrap" data-id="I6:1547;127:469">Zone B2 · 12 minutes ago</div>
+<img class="v" src="assets/icon__I6_1547_127_470.svg" style="left:1362.0px;top:706.5px;width:24.0px;height:24.0px" alt="" data-id="I6:1547;127:470">
+<div class="b anchor" style="left:1026.0px;top:758.0px;width:383.0px;height:61.0px" data-id="I6:1547;127:473" data-name="Frame 86"></div>
+<div class="b" style="left:1026.0px;top:758.0px;width:383.0px;height:1.0px;background:rgba(0,0,0,0.08)" data-id="I6:1547;127:474"></div>
+<div class="b anchor" style="left:1050.0px;top:782.0px;width:335.0px;height:37.0px" data-id="I6:1547;127:475" data-name="Frame 82"></div>
+<div class="b anchor" style="left:1050.0px;top:782.0px;width:228.0px;height:37.0px" data-id="I6:1547;127:476" data-name="Frame 77"></div>
+<img class="v" src="assets/frame-74__I6_1547_127_477.svg" style="left:1050.0px;top:784.5px;width:32.0px;height:32.0px" alt="" data-id="I6:1547;127:477">
+<div class="b anchor" style="left:1094.0px;top:782.0px;width:184.0px;height:37.0px" data-id="I6:1547;127:481" data-name="Frame 69"></div>
+<div class="t" style="left:1094.0px;top:782.0px;width:185.0px;color:rgb(15 23 43);font-size:14.0px;font-weight:500;line-height:17.9px;white-space:nowrap" data-id="I6:1547;127:482">Weather conditions optimal</div>
+<div class="t" style="left:1094.0px;top:802.0px;width:185.0px;color:rgb(98 116 142);font-size:12.0px;font-weight:400;line-height:16.5px;white-space:nowrap" data-id="I6:1547;127:483">All zones · 28 minutes ago</div>
+<img class="v" src="assets/icon__I6_1547_127_484.svg" style="left:1361.0px;top:788.5px;width:24.0px;height:24.0px" alt="" data-id="I6:1547;127:484">
+<div class="b anchor" style="left:1026.0px;top:840.0px;width:383.0px;height:61.0px" data-id="I6:1547;127:487" data-name="Frame 87"></div>
+<div class="b" style="left:1026.0px;top:840.0px;width:383.0px;height:1.0px;background:rgba(0,0,0,0.08)" data-id="I6:1547;127:488"></div>
+<div class="b anchor" style="left:1050.0px;top:864.0px;width:335.0px;height:37.0px" data-id="I6:1547;127:489" data-name="Frame 83"></div>
+<div class="b anchor" style="left:1050.0px;top:864.0px;width:226.0px;height:37.0px" data-id="I6:1547;127:490" data-name="Frame 76"></div>
+<img class="v" src="assets/frame-75__I6_1547_127_491.svg" style="left:1050.0px;top:866.5px;width:32.0px;height:32.0px" alt="" data-id="I6:1547;127:491">
+<div class="b anchor" style="left:1094.0px;top:864.0px;width:182.0px;height:37.0px" data-id="I6:1547;127:495" data-name="Frame 70"></div>
+<div class="t" style="left:1094.0px;top:864.0px;width:183.0px;color:rgb(15 23 43);font-size:14.0px;font-weight:500;line-height:17.9px;white-space:nowrap" data-id="I6:1547;127:496">Daily inspection completed</div>
+<div class="t" style="left:1094.0px;top:884.0px;width:183.0px;color:rgb(98 116 142);font-size:12.0px;font-weight:400;line-height:16.5px;white-space:nowrap" data-id="I6:1547;127:497">Operator EK · 1 hour ago</div>
+<img class="v" src="assets/icon__I6_1547_127_498.svg" style="left:1361.0px;top:870.5px;width:24.0px;height:24.0px" alt="" data-id="I6:1547;127:498">
+<div class="b" style="left:1049.0px;top:962.0px;width:337.0px;height:42.0px;background-color:rgb(98 116 142);border-radius:10px;border:1.00px solid rgba(0,0,0,0.08);box-sizing:border-box" data-id="I6:1547;137:4571" data-name="View All Button"></div>
+<div class="t" style="left:1181.5px;top:974.0px;width:53.0px;color:rgb(255 255 255);font-size:14.0px;font-weight:500;line-height:18.0px;text-align:center;white-space:nowrap" data-id="I6:1547;137:4571;137:4550">View all </div>
+<img class="v" src="assets/icon__I6_1547_137_4571_137_4551.svg" style="left:1237.5px;top:975.0px;width:16.0px;height:16.0px" alt="" data-id="I6:1547;137:4571;137:4551">
+<div class="b anchor" style="left:295.0px;top:1048.0px;width:1115.0px;height:658.0px" data-id="6:1548" data-name="Frame 109"></div>
+<div class="b" style="left:295.0px;top:1048.0px;width:1115.0px;height:658.0px;background-color:rgb(255 255 255);border-radius:19px;border:1.00px solid rgba(0,0,0,0.08);box-sizing:border-box" data-id="6:1549" data-name="Rectangle 14"></div>
+<div class="b anchor" style="left:319.0px;top:1072.0px;width:221.0px;height:49.0px" data-id="6:1550" data-name="Frame 90"></div>
+<div class="t" style="left:319.0px;top:1072.0px;width:208.0px;color:rgb(15 23 43);font-size:20.0px;font-weight:600;line-height:22.5px;letter-spacing:-0.38px;white-space:nowrap" data-id="6:1551">Solar Plant Monitoring</div>
+<div class="t" style="left:319.0px;top:1103.0px;width:222.0px;color:rgb(98 116 142);font-size:14.0px;font-weight:400;line-height:18.0px;white-space:nowrap" data-id="6:1552">Real-time zone health and output</div>
+<div class="b" style="left:319.0px;top:1143.0px;width:1067.0px;height:539.0px;background-image:url('assets/aerial.png');background-size:cover;background-position:center;border-radius:10px" data-id="6:1553" data-name="Rectangle 15"></div>
+<div class="b anchor" style="left:366.0px;top:1187.0px;width:212.0px;height:155.0px" data-id="6:1554" data-name="Inverter Grid/Section A"></div>
+<div class="b" style="left:366.0px;top:1187.0px;width:212.0px;height:155.0px;background-color:rgb(255 255 255);border-radius:8px" data-id="I6:1554;127:508" data-name="Rectangle 16"></div>
+<div class="b anchor" style="left:384.0px;top:1207.0px;width:175.0px;height:17.0px" data-id="I6:1554;127:509" data-name="Frame 93"></div>
+<div class="b anchor" style="left:384.0px;top:1207.0px;width:93.0px;height:17.0px" data-id="I6:1554;127:510" data-name="Frame 91"></div>
+<div class="t" style="left:384.0px;top:1207.0px;width:20.0px;color:rgb(34 34 34);font-size:16.0px;font-weight:500;line-height:16.5px;white-space:nowrap" data-id="I6:1554;127:511">A1</div>
+<div class="t" style="left:415.0px;top:1207.0px;width:63.0px;color:rgb(34 34 34);font-size:16.0px;font-weight:500;line-height:16.5px;white-space:nowrap" data-id="I6:1554;127:512">1.02MW</div>
+<div class="b anchor" style="left:502.0px;top:1207.0px;width:57.0px;height:17.0px" data-id="I6:1554;127:513" data-name="Frame 92"></div>
+<div class="t" style="left:502.0px;top:1207.0px;width:35.0px;color:rgb(0 153 102);font-size:16.0px;font-weight:500;line-height:16.5px;white-space:nowrap" data-id="I6:1554;127:514">99%</div>
+<div class="b" style="left:542.0px;top:1207.0px;width:17.0px;height:17.0px;background-color:rgb(0 153 102);border-radius:50%" data-id="I6:1554;127:515" data-name="Ellipse 5"></div>
+<div class="b anchor" style="left:384.0px;top:1305.0px;width:173.0px;height:17.0px" data-id="I6:1554;127:516" data-name="Frame 95"></div>
+<div class="b anchor" style="left:384.0px;top:1305.0px;width:99.0px;height:17.0px" data-id="I6:1554;127:517" data-name="Frame 91"></div>
+<div class="t" style="left:384.0px;top:1305.0px;width:23.0px;color:rgb(34 34 34);font-size:16.0px;font-weight:500;line-height:16.5px;white-space:nowrap" data-id="I6:1554;127:518">A3</div>
+<div class="t" style="left:418.0px;top:1305.0px;width:66.0px;color:rgb(34 34 34);font-size:16.0px;font-weight:500;line-height:16.5px;white-space:nowrap" data-id="I6:1554;127:519">0.96MW</div>
+<div class="b anchor" style="left:503.0px;top:1305.0px;width:54.0px;height:17.0px" data-id="I6:1554;127:520" data-name="Frame 92"></div>
+<div class="t" style="left:503.0px;top:1305.0px;width:32.0px;color:rgb(0 153 102);font-size:16.0px;font-weight:500;line-height:16.5px;white-space:nowrap" data-id="I6:1554;127:521">91%</div>
+<div class="b" style="left:540.0px;top:1305.0px;width:17.0px;height:17.0px;background-color:rgb(0 153 102);border-radius:50%" data-id="I6:1554;127:522" data-name="Ellipse 5"></div>
+<div class="b" style="left:366.0px;top:1240.0px;width:212.0px;height:1.0px;background:rgba(0,0,0,0.08)" data-id="I6:1554;127:523"></div>
+<div class="b" style="left:366.0px;top:1289.0px;width:212.0px;height:1.0px;background:rgba(0,0,0,0.08)" data-id="I6:1554;127:524"></div>
+<div class="b" style="left:572.0px;top:1206.0px;width:6.0px;height:22.0px;background-color:rgb(215 215 215);border-radius:9px" data-id="I6:1554;127:525" data-name="Rectangle 17"></div>
+<div class="b anchor" style="left:366.0px;top:1240.0px;width:212.0px;height:48.0px" data-id="I6:1554;127:526" data-name="Rectangle 18"></div>
+<div class="b anchor" style="left:384.0px;top:1256.0px;width:175.0px;height:17.0px" data-id="I6:1554;127:527" data-name="Frame 94"></div>
+<div class="b anchor" style="left:384.0px;top:1256.0px;width:99.0px;height:17.0px" data-id="I6:1554;127:528" data-name="Frame 91"></div>
+<div class="t" style="left:384.0px;top:1256.0px;width:23.0px;color:rgb(34 34 34);font-size:16.0px;font-weight:500;line-height:16.5px;white-space:nowrap" data-id="I6:1554;127:529">A2</div>
+<div class="t" style="left:418.0px;top:1256.0px;width:66.0px;color:rgb(34 34 34);font-size:16.0px;font-weight:500;line-height:16.5px;white-space:nowrap" data-id="I6:1554;127:530">0.98MW</div>
+<div class="b anchor" style="left:502.0px;top:1256.0px;width:57.0px;height:17.0px" data-id="I6:1554;127:531" data-name="Frame 92"></div>
+<div class="t" style="left:502.0px;top:1256.0px;width:35.0px;color:rgb(0 153 102);font-size:16.0px;font-weight:500;line-height:16.5px;white-space:nowrap" data-id="I6:1554;127:532">95%</div>
+<div class="b" style="left:542.0px;top:1256.0px;width:17.0px;height:17.0px;background-color:rgb(0 153 102);border-radius:50%" data-id="I6:1554;127:533" data-name="Ellipse 5"></div>
+<div class="b anchor" style="left:1127.0px;top:1187.0px;width:212.0px;height:155.0px" data-id="6:1555" data-name="Inverter Grid/Section B"></div>
+<div class="b" style="left:1127.0px;top:1187.0px;width:212.0px;height:155.0px;background-color:rgb(255 255 255);border-radius:8px" data-id="I6:1555;127:535" data-name="Rectangle 16"></div>
+<div class="b anchor" style="left:1145.0px;top:1207.0px;width:176.0px;height:17.0px" data-id="I6:1555;127:536" data-name="Frame 93"></div>
+<div class="b anchor" style="left:1145.0px;top:1207.0px;width:93.0px;height:17.0px" data-id="I6:1555;127:537" data-name="Frame 91"></div>
+<div class="t" style="left:1145.0px;top:1207.0px;width:20.0px;color:rgb(34 34 34);font-size:16.0px;font-weight:500;line-height:16.5px;white-space:nowrap" data-id="I6:1555;127:538">B1</div>
+<div class="t" style="left:1176.0px;top:1207.0px;width:63.0px;color:rgb(34 34 34);font-size:16.0px;font-weight:500;line-height:16.5px;white-space:nowrap" data-id="I6:1555;127:539">1.03MW</div>
+<div class="b anchor" style="left:1265.0px;top:1207.0px;width:56.0px;height:17.0px" data-id="I6:1555;127:540" data-name="Frame 92"></div>
+<div class="t" style="left:1265.0px;top:1207.0px;width:34.0px;color:rgb(0 153 102);font-size:16.0px;font-weight:500;line-height:16.5px;white-space:nowrap" data-id="I6:1555;127:541">97%</div>
+<div class="b" style="left:1304.0px;top:1207.0px;width:17.0px;height:17.0px;background-color:rgb(0 153 102);border-radius:50%" data-id="I6:1555;127:542" data-name="Ellipse 5"></div>
+<div class="b anchor" style="left:1145.0px;top:1305.0px;width:176.0px;height:17.0px" data-id="I6:1555;127:543" data-name="Frame 95"></div>
+<div class="b anchor" style="left:1145.0px;top:1305.0px;width:95.0px;height:17.0px" data-id="I6:1555;127:544" data-name="Frame 91"></div>
+<div class="t" style="left:1145.0px;top:1305.0px;width:22.0px;color:rgb(34 34 34);font-size:16.0px;font-weight:500;line-height:16.5px;white-space:nowrap" data-id="I6:1555;127:545">B3</div>
+<div class="t" style="left:1178.0px;top:1305.0px;width:63.0px;color:rgb(34 34 34);font-size:16.0px;font-weight:500;line-height:16.5px;white-space:nowrap" data-id="I6:1555;127:546">1.00MW</div>
+<div class="b anchor" style="left:1264.0px;top:1305.0px;width:57.0px;height:17.0px" data-id="I6:1555;127:547" data-name="Frame 92"></div>
+<div class="t" style="left:1264.0px;top:1305.0px;width:35.0px;color:rgb(0 153 102);font-size:16.0px;font-weight:500;line-height:16.5px;white-space:nowrap" data-id="I6:1555;127:548">96%</div>
+<div class="b" style="left:1304.0px;top:1305.0px;width:17.0px;height:17.0px;background-color:rgb(0 153 102);border-radius:50%" data-id="I6:1555;127:549" data-name="Ellipse 5"></div>
+<div class="b" style="left:1127.0px;top:1240.0px;width:212.0px;height:1.0px;background:rgba(251,150,0,0.4)" data-id="I6:1555;127:550"></div>
+<div class="b" style="left:1127.0px;top:1289.0px;width:212.0px;height:1.0px;background:rgba(251,150,0,0.4)" data-id="I6:1555;127:551"></div>
+<div class="b" style="left:1333.0px;top:1206.0px;width:6.0px;height:22.0px;background-color:rgb(215 215 215);border-radius:9px" data-id="I6:1555;127:552" data-name="Rectangle 17"></div>
+<div class="b" style="left:1127.0px;top:1240.0px;width:212.0px;height:48.0px;background-color:rgba(251,150,0,0.2)" data-id="I6:1555;127:553" data-name="Rectangle 18"></div>
+<div class="b anchor" style="left:1145.0px;top:1256.0px;width:176.0px;height:17.0px" data-id="I6:1555;127:554" data-name="Frame 94"></div>
+<div class="b anchor" style="left:1145.0px;top:1256.0px;width:95.0px;height:17.0px" data-id="I6:1555;127:555" data-name="Frame 91"></div>
+<div class="t" style="left:1145.0px;top:1256.0px;width:22.0px;color:rgb(34 34 34);font-size:16.0px;font-weight:500;line-height:16.5px;white-space:nowrap" data-id="I6:1555;127:556">B2</div>
+<div class="t" style="left:1178.0px;top:1256.0px;width:63.0px;color:rgb(34 34 34);font-size:16.0px;font-weight:500;line-height:16.5px;white-space:nowrap" data-id="I6:1555;127:557">0.81MW</div>
+<div class="b anchor" style="left:1265.0px;top:1256.0px;width:56.0px;height:17.0px" data-id="I6:1555;127:558" data-name="Frame 92"></div>
+<div class="t" style="left:1265.0px;top:1256.0px;width:34.0px;color:rgb(251 150 0);font-size:16.0px;font-weight:500;line-height:16.5px;white-space:nowrap" data-id="I6:1555;127:559">74%</div>
+<div class="b" style="left:1304.0px;top:1256.0px;width:17.0px;height:17.0px;background-color:rgb(251 150 0);border-radius:50%" data-id="I6:1555;127:560" data-name="Ellipse 5"></div>
+<div class="b anchor" style="left:366.0px;top:1482.0px;width:212.0px;height:155.0px" data-id="6:1556" data-name="Inverter Grid/Section C"></div>
+<div class="b" style="left:366.0px;top:1482.0px;width:212.0px;height:155.0px;background-color:rgb(255 255 255);border-radius:8px" data-id="I6:1556;127:562" data-name="Rectangle 16"></div>
+<div class="b anchor" style="left:384.0px;top:1502.0px;width:175.0px;height:17.0px" data-id="I6:1556;127:563" data-name="Frame 93"></div>
+<div class="b anchor" style="left:384.0px;top:1502.0px;width:91.0px;height:17.0px" data-id="I6:1556;127:564" data-name="Frame 91"></div>
+<div class="t" style="left:384.0px;top:1502.0px;width:21.0px;color:rgb(34 34 34);font-size:16.0px;font-weight:500;line-height:16.5px;white-space:nowrap" data-id="I6:1556;127:565">C1</div>
+<div class="t" style="left:416.0px;top:1502.0px;width:60.0px;color:rgb(34 34 34);font-size:16.0px;font-weight:500;line-height:16.5px;white-space:nowrap" data-id="I6:1556;127:566">1.01MW</div>
+<div class="b anchor" style="left:503.0px;top:1502.0px;width:56.0px;height:17.0px" data-id="I6:1556;127:567" data-name="Frame 92"></div>
+<div class="t" style="left:503.0px;top:1502.0px;width:34.0px;color:rgb(0 153 102);font-size:16.0px;font-weight:500;line-height:16.5px;white-space:nowrap" data-id="I6:1556;127:568">97%</div>
+<div class="b" style="left:542.0px;top:1502.0px;width:17.0px;height:17.0px;background-color:rgb(0 153 102);border-radius:50%" data-id="I6:1556;127:569" data-name="Ellipse 5"></div>
+<div class="b anchor" style="left:384.0px;top:1600.0px;width:179.0px;height:17.0px" data-id="I6:1556;127:570" data-name="Frame 95"></div>
+<div class="b anchor" style="left:384.0px;top:1600.0px;width:97.0px;height:17.0px" data-id="I6:1556;127:571" data-name="Frame 91"></div>
+<div class="t" style="left:384.0px;top:1600.0px;width:24.0px;color:rgb(34 34 34);font-size:16.0px;font-weight:500;line-height:16.5px;white-space:nowrap" data-id="I6:1556;127:572">C3</div>
+<div class="t" style="left:419.0px;top:1600.0px;width:63.0px;color:rgb(34 34 34);font-size:16.0px;font-weight:500;line-height:16.5px;white-space:nowrap" data-id="I6:1556;127:573">1.00MW</div>
+<div class="b anchor" style="left:506.0px;top:1600.0px;width:57.0px;height:17.0px" data-id="I6:1556;127:574" data-name="Frame 92"></div>
+<div class="t" style="left:506.0px;top:1600.0px;width:35.0px;color:rgb(0 153 102);font-size:16.0px;font-weight:500;line-height:16.5px;white-space:nowrap" data-id="I6:1556;127:575">94%</div>
+<div class="b" style="left:546.0px;top:1600.0px;width:17.0px;height:17.0px;background-color:rgb(0 153 102);border-radius:50%" data-id="I6:1556;127:576" data-name="Ellipse 5"></div>
+<div class="b" style="left:366.0px;top:1535.0px;width:212.0px;height:1.0px;background:rgba(0,0,0,0.08)" data-id="I6:1556;127:577"></div>
+<div class="b" style="left:366.0px;top:1584.0px;width:212.0px;height:1.0px;background:rgba(0,0,0,0.08)" data-id="I6:1556;127:578"></div>
+<div class="b" style="left:572.0px;top:1501.0px;width:6.0px;height:22.0px;background-color:rgb(215 215 215);border-radius:9px" data-id="I6:1556;127:579" data-name="Rectangle 17"></div>
+<div class="b anchor" style="left:366.0px;top:1535.0px;width:212.0px;height:48.0px" data-id="I6:1556;127:580" data-name="Rectangle 18"></div>
+<div class="b anchor" style="left:384.0px;top:1551.0px;width:176.0px;height:17.0px" data-id="I6:1556;127:581" data-name="Frame 94"></div>
+<div class="b anchor" style="left:384.0px;top:1551.0px;width:99.0px;height:17.0px" data-id="I6:1556;127:582" data-name="Frame 91"></div>
+<div class="t" style="left:384.0px;top:1551.0px;width:23.0px;color:rgb(34 34 34);font-size:16.0px;font-weight:500;line-height:16.5px;white-space:nowrap" data-id="I6:1556;127:583">C2</div>
+<div class="t" style="left:418.0px;top:1551.0px;width:66.0px;color:rgb(34 34 34);font-size:16.0px;font-weight:500;line-height:16.5px;white-space:nowrap" data-id="I6:1556;127:584">0.99MW</div>
+<div class="b anchor" style="left:503.0px;top:1551.0px;width:57.0px;height:17.0px" data-id="I6:1556;127:585" data-name="Frame 92"></div>
+<div class="t" style="left:503.0px;top:1551.0px;width:35.0px;color:rgb(0 153 102);font-size:16.0px;font-weight:500;line-height:16.5px;white-space:nowrap" data-id="I6:1556;127:586">93%</div>
+<div class="b" style="left:543.0px;top:1551.0px;width:17.0px;height:17.0px;background-color:rgb(0 153 102);border-radius:50%" data-id="I6:1556;127:587" data-name="Ellipse 5"></div>
+<div class="b anchor" style="left:1127.0px;top:1482.0px;width:212.0px;height:155.0px" data-id="6:1557" data-name="Inverter Grid/Section D"></div>
+<div class="b" style="left:1127.0px;top:1482.0px;width:212.0px;height:155.0px;background-color:rgb(255 255 255);border-radius:8px" data-id="I6:1557;127:589" data-name="Rectangle 16"></div>
+<div class="b anchor" style="left:1145.0px;top:1502.0px;width:176.0px;height:17.0px" data-id="I6:1557;127:590" data-name="Frame 93"></div>
+<div class="b anchor" style="left:1145.0px;top:1502.0px;width:94.0px;height:17.0px" data-id="I6:1557;127:591" data-name="Frame 91"></div>
+<div class="t" style="left:1145.0px;top:1502.0px;width:21.0px;color:rgb(34 34 34);font-size:16.0px;font-weight:500;line-height:16.5px;white-space:nowrap" data-id="I6:1557;127:592">D1</div>
+<div class="t" style="left:1177.0px;top:1502.0px;width:63.0px;color:rgb(34 34 34);font-size:16.0px;font-weight:500;line-height:16.5px;white-space:nowrap" data-id="I6:1557;127:593">1.02MW</div>
+<div class="b anchor" style="left:1264.0px;top:1502.0px;width:57.0px;height:17.0px" data-id="I6:1557;127:594" data-name="Frame 92"></div>
+<div class="t" style="left:1264.0px;top:1502.0px;width:35.0px;color:rgb(0 153 102);font-size:16.0px;font-weight:500;line-height:16.5px;white-space:nowrap" data-id="I6:1557;127:595">99%</div>
+<div class="b" style="left:1304.0px;top:1502.0px;width:17.0px;height:17.0px;background-color:rgb(0 153 102);border-radius:50%" data-id="I6:1557;127:596" data-name="Ellipse 5"></div>
+<div class="b anchor" style="left:1145.0px;top:1600.0px;width:173.0px;height:17.0px" data-id="I6:1557;127:597" data-name="Frame 95"></div>
+<div class="b anchor" style="left:1145.0px;top:1600.0px;width:99.0px;height:17.0px" data-id="I6:1557;127:598" data-name="Frame 91"></div>
+<div class="t" style="left:1145.0px;top:1600.0px;width:23.0px;color:rgb(34 34 34);font-size:16.0px;font-weight:500;line-height:16.5px;white-space:nowrap" data-id="I6:1557;127:599">D3</div>
+<div class="t" style="left:1179.0px;top:1600.0px;width:66.0px;color:rgb(34 34 34);font-size:16.0px;font-weight:500;line-height:16.5px;white-space:nowrap" data-id="I6:1557;127:600">0.96MW</div>
+<div class="b anchor" style="left:1264.0px;top:1600.0px;width:54.0px;height:17.0px" data-id="I6:1557;127:601" data-name="Frame 92"></div>
+<div class="t" style="left:1264.0px;top:1600.0px;width:32.0px;color:rgb(0 153 102);font-size:16.0px;font-weight:500;line-height:16.5px;white-space:nowrap" data-id="I6:1557;127:602">91%</div>
+<div class="b" style="left:1301.0px;top:1600.0px;width:17.0px;height:17.0px;background-color:rgb(0 153 102);border-radius:50%" data-id="I6:1557;127:603" data-name="Ellipse 5"></div>
+<div class="b" style="left:1127.0px;top:1535.0px;width:212.0px;height:1.0px;background:rgba(0,0,0,0.08)" data-id="I6:1557;127:604"></div>
+<div class="b" style="left:1127.0px;top:1584.0px;width:212.0px;height:1.0px;background:rgba(0,0,0,0.08)" data-id="I6:1557;127:605"></div>
+<div class="b" style="left:1333.0px;top:1501.0px;width:6.0px;height:22.0px;background-color:rgb(215 215 215);border-radius:9px" data-id="I6:1557;127:606" data-name="Rectangle 17"></div>
+<div class="b anchor" style="left:1127.0px;top:1535.0px;width:212.0px;height:48.0px" data-id="I6:1557;127:607" data-name="Rectangle 18"></div>
+<div class="b anchor" style="left:1145.0px;top:1551.0px;width:175.0px;height:17.0px" data-id="I6:1557;127:608" data-name="Frame 94"></div>
+<div class="b anchor" style="left:1145.0px;top:1551.0px;width:99.0px;height:17.0px" data-id="I6:1557;127:609" data-name="Frame 91"></div>
+<div class="t" style="left:1145.0px;top:1551.0px;width:23.0px;color:rgb(34 34 34);font-size:16.0px;font-weight:500;line-height:16.5px;white-space:nowrap" data-id="I6:1557;127:610">D2</div>
+<div class="t" style="left:1179.0px;top:1551.0px;width:66.0px;color:rgb(34 34 34);font-size:16.0px;font-weight:500;line-height:16.5px;white-space:nowrap" data-id="I6:1557;127:611">0.98MW</div>
+<div class="b anchor" style="left:1263.0px;top:1551.0px;width:57.0px;height:17.0px" data-id="I6:1557;127:612" data-name="Frame 92"></div>
+<div class="t" style="left:1263.0px;top:1551.0px;width:35.0px;color:rgb(0 153 102);font-size:16.0px;font-weight:500;line-height:16.5px;white-space:nowrap" data-id="I6:1557;127:613">95%</div>
+<div class="b" style="left:1303.0px;top:1551.0px;width:17.0px;height:17.0px;background-color:rgb(0 153 102);border-radius:50%" data-id="I6:1557;127:614" data-name="Ellipse 5"></div>
+<div class="b anchor" style="left:723.0px;top:1270.0px;width:260.0px;height:286.0px" data-id="6:1558" data-name="Section Performance Detail"></div>
+<div class="b" style="left:723.0px;top:1270.0px;width:260.0px;height:286.0px;background-color:rgba(255,255,255,0.1);border-radius:16px;backdrop-filter:blur(16px) saturate(1.35);-webkit-backdrop-filter:blur(16px) saturate(1.35)" data-id="I6:1558;127:621" data-name="Rectangle 19"></div>
+<div class="t" style="left:741.0px;top:1288.0px;width:85.0px;color:rgb(255 255 255);font-size:16.0px;font-weight:600;line-height:19.5px;white-space:nowrap" data-id="I6:1558;127:622">Section B2</div>
+<img class="v" src="assets/icon__I6_1558_127_623.svg" style="left:947.0px;top:1289.0px;width:18.0px;height:18.0px" alt="" data-id="I6:1558;127:623">
+<div class="b" style="left:723.0px;top:1320.0px;width:260.0px;height:1.0px;background:rgb(255 255 255)" data-id="I6:1558;127:626"></div>
+<div class="b anchor" style="left:741.0px;top:1336.0px;width:224.0px;height:18.0px" data-id="I6:1558;127:627" data-name="Frame 100"></div>
+<div class="t" style="left:741.0px;top:1336.0px;width:47.0px;color:rgb(255 255 255);font-size:14.0px;font-weight:400;line-height:18.0px;white-space:nowrap" data-id="I6:1558;127:628">Output</div>
+<div class="t" style="left:906.0px;top:1336.0px;width:60.0px;color:rgb(255 255 255);font-size:14.0px;font-weight:600;line-height:18.0px;white-space:nowrap" data-id="I6:1558;127:629">0.81 MW</div>
+<div class="b anchor" style="left:741.0px;top:1364.0px;width:224.0px;height:18.0px" data-id="I6:1558;127:630" data-name="Frame 101"></div>
+<div class="t" style="left:741.0px;top:1364.0px;width:64.0px;color:rgb(255 255 255);font-size:14.0px;font-weight:400;line-height:18.0px;white-space:nowrap" data-id="I6:1558;127:631">Expected</div>
+<div class="t" style="left:906.0px;top:1364.0px;width:60.0px;color:rgb(255 255 255);font-size:14.0px;font-weight:600;line-height:18.0px;white-space:nowrap" data-id="I6:1558;127:632">1.03 MW</div>
+<div class="b anchor" style="left:741.0px;top:1392.0px;width:224.0px;height:18.0px" data-id="I6:1558;127:633" data-name="Frame 102"></div>
+<div class="t" style="left:741.0px;top:1392.0px;width:87.0px;color:rgb(255 255 255);font-size:14.0px;font-weight:400;line-height:18.0px;white-space:nowrap" data-id="I6:1558;127:634">Performance</div>
+<div class="t" style="left:936.0px;top:1392.0px;width:30.0px;color:rgb(251 150 0);font-size:14.0px;font-weight:600;line-height:18.0px;white-space:nowrap" data-id="I6:1558;127:635">74%</div>
+<div class="b anchor" style="left:741.0px;top:1447.0px;width:224.0px;height:29.0px" data-id="I6:1558;127:636" data-name="Frame 104"></div>
+<div class="t" style="left:741.0px;top:1452.5px;width:44.0px;color:rgb(255 255 255);font-size:14.0px;font-weight:400;line-height:18.0px;white-space:nowrap" data-id="I6:1558;127:637">Status</div>
+<div class="b" style="left:849.0px;top:1447.0px;width:116.0px;height:29.0px;background-color:rgb(255 255 255);border-radius:8px;border:1.00px solid rgb(251 150 0);box-sizing:border-box" data-id="I6:1558;127:638" data-name="Frame 103"></div>
+<div class="t" style="left:861.0px;top:1453.0px;width:93.0px;color:rgb(251 150 0);font-size:11.0px;font-weight:600;line-height:16.5px;white-space:nowrap" data-id="I6:1558;127:639">Underperforming</div>
+<div class="b" style="left:741.0px;top:1428.0px;width:224.0px;height:1.0px;background:rgb(255 255 255)" data-id="I6:1558;127:640"></div>
+<div class="b" style="left:741.0px;top:1500.0px;width:224.0px;height:38.0px;background-color:rgb(255 255 255);border-radius:12px" data-id="I6:1558;137:4693" data-name="Investigation Section Button"></div>
+<img class="v" src="assets/icon__I6_1558_137_4693_137_4684.svg" style="left:778.5px;top:1512.0px;width:14.0px;height:14.0px" alt="" data-id="I6:1558;137:4693;137:4684">
+<div class="t" style="left:798.5px;top:1510.0px;width:130.0px;color:rgb(69 85 108);font-size:14.0px;font-weight:500;line-height:18.0px;text-align:center;white-space:nowrap" data-id="I6:1558;137:4693;137:4686">Investigate Section</div>
+<div class="b anchor" style="left:1182.0px;top:1072.0px;width:204.0px;height:49.0px" data-id="6:1559" data-name="Frame 108"></div>
+<div class="b anchor" style="left:1182.0px;top:1072.0px;width:141.0px;height:49.0px" data-id="6:1560" data-name="Group 16"></div>
+<div class="b" style="left:1182.0px;top:1072.0px;width:141.0px;height:49.0px;background-color:rgb(255 255 255);border-radius:12px;border:1.00px solid rgba(0,0,0,0.08);box-sizing:border-box" data-id="6:1561" data-name="Rectangle 20"></div>
+<div class="b anchor" style="left:1202.0px;top:1088.0px;width:99.0px;height:17.0px" data-id="6:1562" data-name="Frame 107"></div>
+<div class="t" style="left:1202.0px;top:1088.0px;width:80.0px;color:rgb(34 34 34);font-size:14.0px;font-weight:500;line-height:16.5px;white-space:nowrap" data-id="6:1563">All Sections</div>
+<img class="v" src="assets/vector-24__6_1564.svg" style="left:1289.0px;top:1093.3px;width:12.0px;height:6.4px" alt="" data-id="6:1564">
+<img class="v" src="assets/group-17__6_1565.svg" style="left:1337.0px;top:1072.0px;width:49.0px;height:49.0px" alt="" data-id="6:1565">
+<div class="b anchor" style="left:295.0px;top:1726.0px;width:1115.0px;height:237.0px" data-id="6:1569" data-name="Frame 115"></div>
+<div class="b" style="left:295.0px;top:1726.0px;width:1115.0px;height:237.0px;background-color:rgb(255 255 255);border-radius:19px;border:1.00px solid rgba(0,0,0,0.08);box-sizing:border-box" data-id="6:1570" data-name="Rectangle 14"></div>
+<div class="b anchor" style="left:319.0px;top:1750.0px;width:241.0px;height:49.0px" data-id="6:1571" data-name="Frame 90"></div>
+<div class="t" style="left:319.0px;top:1750.0px;width:242.0px;color:rgb(15 23 43);font-size:20.0px;font-weight:600;line-height:22.5px;letter-spacing:-0.38px;white-space:nowrap" data-id="6:1572">Environmental Conditions</div>
+<div class="t" style="left:319.0px;top:1781.0px;width:232.0px;color:rgb(98 116 142);font-size:14.0px;font-weight:400;line-height:18.0px;white-space:nowrap" data-id="6:1573">Konya, Turkey · Updated 2 min ago</div>
+<div class="b anchor" style="left:319.0px;top:1813.0px;width:200.6px;height:126.0px" data-id="6:1574" data-name="Frame 114"></div>
+<div class="b" style="left:319.0px;top:1813.0px;width:200.6px;height:126.0px;background-image:linear-gradient(135deg,rgb(255 214 157) 0%, rgb(255 251 235) 100%);border-radius:12px;border:1.00px solid rgba(0,0,0,0.08);box-sizing:border-box;opacity:0.6000000238418579" data-id="6:1575" data-name="Rectangle 21"></div>
+<div class="t" style="left:337.0px;top:1831.0px;width:52.0px;color:rgb(50 50 50);font-size:14.0px;font-weight:500;line-height:16.5px;white-space:nowrap" data-id="6:1576">Sunrise</div>
+<div class="t" style="left:337.0px;top:1860.0px;width:75.0px;color:rgb(50 50 50);font-size:26.0px;font-weight:600;line-height:20.0px;letter-spacing:-0.50px;white-space:nowrap" data-id="6:1577">04:55</div>
+<div class="t" style="left:337.0px;top:1906.0px;width:60.0px;color:rgb(50 50 50);font-size:12.0px;font-weight:400;line-height:15.0px;white-space:nowrap" data-id="6:1578">Local time</div>
+<img class="v" src="assets/group-20__6_1579.svg" style="left:451.0px;top:1828.0px;width:48.0px;height:48.0px" alt="" data-id="6:1579">
+<div class="b anchor" style="left:535.6px;top:1813.0px;width:200.6px;height:126.0px" data-id="6:1613" data-name="Frame 113"></div>
+<div class="b" style="left:535.6px;top:1813.0px;width:200.6px;height:126.0px;background-image:linear-gradient(135deg,rgb(255 131 140) 0%, rgb(255 247 237) 100%);border-radius:12px;border:1.00px solid rgba(0,0,0,0.08);box-sizing:border-box;opacity:0.6000000238418579" data-id="6:1614" data-name="Rectangle 21"></div>
+<div class="t" style="left:554.0px;top:1831.0px;width:48.0px;color:rgb(50 50 50);font-size:14.0px;font-weight:500;line-height:16.5px;white-space:nowrap" data-id="6:1615">Sunset</div>
+<div class="t" style="left:554.0px;top:1860.0px;width:65.0px;color:rgb(50 50 50);font-size:24.0px;font-weight:600;line-height:20.0px;letter-spacing:-0.50px;white-space:nowrap" data-id="6:1616">19:38</div>
+<div class="t" style="left:554.0px;top:1906.0px;width:100.0px;color:rgb(50 50 50);font-size:12.0px;font-weight:400;line-height:15.0px;white-space:nowrap" data-id="6:1617">14h 43m daylight</div>
+<img class="v" src="assets/group-21__6_1618.svg" style="left:668.0px;top:1828.0px;width:48.0px;height:48.0px" alt="" data-id="6:1618">
+<div class="b anchor" style="left:752.2px;top:1813.0px;width:200.6px;height:126.0px" data-id="6:1646" data-name="Frame 112"></div>
+<div class="b" style="left:752.2px;top:1813.0px;width:200.6px;height:126.0px;background-image:linear-gradient(135deg,rgba(0,212,146,0.8) 0%, rgb(255 247 237) 100%);border-radius:12px;border:1.00px solid rgba(0,0,0,0.08);box-sizing:border-box;opacity:0.6000000238418579" data-id="6:1647" data-name="Rectangle 21"></div>
+<div class="t" style="left:771.0px;top:1831.0px;width:87.0px;color:rgb(69 85 108);font-size:14.0px;font-weight:500;line-height:16.5px;white-space:nowrap" data-id="6:1648">Temperature</div>
+<div class="t" style="left:771.0px;top:1860.0px;width:79.0px;color:rgb(15 23 43);font-size:24.0px;font-weight:600;line-height:20.0px;letter-spacing:-0.50px;white-space:nowrap" data-id="6:1649">26.6°C</div>
+<div class="t" style="left:771.0px;top:1906.0px;width:77.0px;color:rgb(98 116 142);font-size:12.0px;font-weight:400;line-height:15.0px;white-space:nowrap" data-id="6:1650">Feels like 28°</div>
+<img class="v" src="assets/group-22__6_1651.svg" style="left:884.0px;top:1828.0px;width:48.0px;height:48.0px" alt="" data-id="6:1651">
+<div class="b anchor" style="left:968.8px;top:1813.0px;width:200.6px;height:126.0px" data-id="6:1655" data-name="Frame 111"></div>
+<div class="b" style="left:968.8px;top:1813.0px;width:200.6px;height:126.0px;background-image:linear-gradient(135deg,rgb(255 105 0) 0%, rgb(255 247 237) 100%);border-radius:12px;border:1.00px solid rgba(0,0,0,0.08);box-sizing:border-box;opacity:0.6000000238418579" data-id="6:1656" data-name="Rectangle 21"></div>
+<div class="t" style="left:987.0px;top:1831.0px;width:70.0px;color:rgb(69 85 108);font-size:14.0px;font-weight:500;line-height:16.5px;white-space:nowrap" data-id="6:1657">Irradiation</div>
+<div class="t" style="left:987.0px;top:1860.0px;width:40.0px;color:rgb(15 23 43);font-size:24.0px;font-weight:600;line-height:20.0px;letter-spacing:-0.50px;white-space:nowrap" data-id="6:1658">741</div>
+<div class="t" style="left:987.0px;top:1906.0px;width:64.0px;color:rgb(98 116 142);font-size:12.0px;font-weight:400;line-height:15.0px;white-space:nowrap" data-id="6:1659">W/m² · GHI</div>
+<img class="v" src="assets/group-23__6_1660.svg" style="left:1107.0px;top:1828.0px;width:48.0px;height:48.0px" alt="" data-id="6:1660">
+<div class="b anchor" style="left:1185.4px;top:1813.0px;width:200.6px;height:126.0px" data-id="6:1664" data-name="Frame 110"></div>
+<div class="b" style="left:1185.4px;top:1813.0px;width:200.6px;height:126.0px;background-image:linear-gradient(135deg,rgb(81 162 255) 0%, rgb(255 247 237) 100%);border-radius:12px;border:1.00px solid rgba(0,0,0,0.08);box-sizing:border-box;opacity:0.6000000238418579" data-id="6:1665" data-name="Rectangle 21"></div>
+<div class="t" style="left:1204.0px;top:1831.0px;width:50.0px;color:rgb(69 85 108);font-size:14.0px;font-weight:500;line-height:16.5px;white-space:nowrap" data-id="6:1666">Rainfall</div>
+<div class="t" style="left:1204.0px;top:1860.0px;width:37.0px;color:rgb(15 23 43);font-size:24.0px;font-weight:600;line-height:20.0px;letter-spacing:-0.50px;white-space:nowrap" data-id="6:1667">0%</div>
+<div class="t" style="left:1204.0px;top:1906.0px;width:64.0px;color:rgb(98 116 142);font-size:12.0px;font-weight:400;line-height:15.0px;white-space:nowrap" data-id="6:1668">Clear skies</div>
+<img class="v" src="assets/group-24__6_1669.svg" style="left:1310.0px;top:1828.0px;width:48.0px;height:48.0px" alt="" data-id="6:1669">
+<div class="b" style="left:29.0px;top:33.0px;width:246.0px;height:964.0px;box-shadow:0px 4px 8px rgba(0,0,0,0.08)" data-id="6:1673" data-name="Frame 124"></div>
+<div class="b" style="left:29.0px;top:33.0px;width:245.0px;height:964.0px;background-color:rgb(255 255 255);border-radius:20px;border:1.00px solid rgba(0,0,0,0.08);box-sizing:border-box" data-id="6:1674" data-name="Rectangle 1"></div>
+<img class="v" src="assets/group__6_1675.svg" style="left:59.0px;top:63.0px;width:100.0px;height:29.2px" alt="" data-id="6:1675">
+<div class="b anchor" style="left:49.0px;top:151.0px;width:207.0px;height:268.0px" data-id="6:1692" data-name="Sidebar Navigation"></div>
+<div class="b" style="left:49.0px;top:151.0px;width:207.0px;height:38.0px;background-color:rgba(80,108,131,0.2);border-radius:10px" data-id="I6:1692;125:14911" data-name="Frame 8"></div>
+<img class="v" src="assets/icon__I6_1692_125_14912.svg" style="left:61.0px;top:161.0px;width:18.0px;height:18.0px" alt="" data-id="I6:1692;125:14912">
+<div class="t" style="left:91.0px;top:160.0px;width:85.0px;color:rgb(80 108 131);font-size:16.0px;font-weight:500;line-height:19.5px;white-space:nowrap" data-id="I6:1692;125:14917">Dashboard</div>
+<div class="b anchor" style="left:49.0px;top:197.0px;width:207.0px;height:38.0px" data-id="I6:1692;125:14918" data-name="Frame 1"></div>
+<img class="v" src="assets/icon__I6_1692_125_14919.svg" style="left:61.0px;top:207.0px;width:18.0px;height:18.0px" alt="" data-id="I6:1692;125:14919">
+<div class="t" style="left:91.0px;top:206.0px;width:91.0px;color:rgb(69 85 108);font-size:16.0px;font-weight:500;line-height:19.5px;white-space:nowrap" data-id="I6:1692;125:14922">Forecasting</div>
+<div class="b anchor" style="left:49.0px;top:243.0px;width:207.0px;height:38.0px" data-id="I6:1692;125:14923" data-name="Frame 2"></div>
+<img class="v" src="assets/icon__I6_1692_125_14924.svg" style="left:61.0px;top:253.0px;width:18.0px;height:18.0px" alt="" data-id="I6:1692;125:14924">
+<div class="t" style="left:91.0px;top:252.0px;width:49.0px;color:rgb(69 85 108);font-size:16.0px;font-weight:500;line-height:19.5px;white-space:nowrap" data-id="I6:1692;125:14934">Plants</div>
+<div class="b anchor" style="left:49.0px;top:289.0px;width:207.0px;height:38.0px" data-id="I6:1692;125:14935" data-name="Frame 3"></div>
+<img class="v" src="assets/icon__I6_1692_125_14936.svg" style="left:61.0px;top:299.0px;width:18.0px;height:18.0px" alt="" data-id="I6:1692;125:14936">
+<div class="t" style="left:91.0px;top:298.0px;width:62.0px;color:rgb(69 85 108);font-size:16.0px;font-weight:500;line-height:19.5px;white-space:nowrap" data-id="I6:1692;125:14942">Reports</div>
+<div class="b anchor" style="left:49.0px;top:335.0px;width:207.0px;height:38.0px" data-id="I6:1692;125:14943" data-name="Frame 7"></div>
+<div class="b anchor" style="left:61.0px;top:344.0px;width:76.0px;height:20.0px" data-id="I6:1692;125:14944" data-name="Frame 4"></div>
+<img class="v" src="assets/icon__I6_1692_125_14945.svg" style="left:61.0px;top:345.0px;width:18.0px;height:18.0px" alt="" data-id="I6:1692;125:14945">
+<div class="t" style="left:91.0px;top:344.0px;width:47.0px;color:rgb(69 85 108);font-size:16.0px;font-weight:500;line-height:19.5px;white-space:nowrap" data-id="I6:1692;125:14948">Alerts</div>
+<div class="b" style="left:225.0px;top:344.0px;width:19.0px;height:20.0px;background-color:rgb(255 69 69);border-radius:17px" data-id="I6:1692;125:14949" data-name="Frame 6"></div>
+<div class="t" style="left:231.0px;top:348.0px;width:8.0px;color:rgb(255 255 255);font-size:10.0px;font-weight:500;line-height:12.1px;text-align:center;white-space:nowrap" data-id="I6:1692;125:14950">5</div>
+<div class="b anchor" style="left:49.0px;top:381.0px;width:207.0px;height:38.0px" data-id="I6:1692;125:14951" data-name="Frame 5"></div>
+<img class="v" src="assets/icon__I6_1692_125_14952.svg" style="left:61.0px;top:391.0px;width:18.0px;height:18.0px" alt="" data-id="I6:1692;125:14952">
+<div class="t" style="left:91.0px;top:390.0px;width:65.0px;color:rgb(69 85 108);font-size:16.0px;font-weight:500;line-height:19.5px;white-space:nowrap" data-id="I6:1692;125:14955">Settings</div>
+<div class="b anchor" style="left:42.0px;top:921.0px;width:221.0px;height:61.0px" data-id="6:1693" data-name="User Profile"></div>
+<div class="b" style="left:42.0px;top:921.0px;width:221.0px;height:61.0px;background-color:rgb(248 248 250);border-radius:8px;border:1.00px solid rgba(0,0,0,0.08);box-sizing:border-box" data-id="I6:1693;127:48" data-name="Rectangle 5"></div>
+<div class="b anchor" style="left:54.0px;top:933.0px;width:199.0px;height:37.0px" data-id="I6:1693;127:49" data-name="Frame 12"></div>
+<div class="b anchor" style="left:54.0px;top:933.0px;width:124.0px;height:37.0px" data-id="I6:1693;127:50" data-name="Frame 11"></div>
+<div class="b" style="left:54.0px;top:934.0px;width:36.0px;height:36.0px;background-color:rgb(217 217 217);background-image:url('assets/avatar.png');background-size:cover;background-position:center;border-radius:50%" data-id="I6:1693;127:51" data-name="Ellipse 1"></div>
+<div class="b anchor" style="left:101.0px;top:933.0px;width:77.0px;height:37.0px" data-id="I6:1693;127:52" data-name="Frame 10"></div>
+<div class="t" style="left:101.0px;top:933.0px;width:78.0px;color:rgb(15 23 43);font-size:13.0px;font-weight:500;line-height:19.5px;white-space:nowrap" data-id="I6:1693;127:53">Emre Kaya</div>
+<div class="t" style="left:101.0px;top:953.0px;width:78.0px;color:rgb(98 116 142);font-size:11.0px;font-weight:500;line-height:16.5px;white-space:nowrap" data-id="I6:1693;127:54">Plant Operator</div>
+<img class="v" src="assets/icon__I6_1693_127_55.svg" style="left:235.0px;top:942.5px;width:18.0px;height:18.0px" alt="" data-id="I6:1693;127:55">
+<div class="b" style="left:31.0px;top:121.0px;width:244.0px;height:1.0px;background:rgba(0,0,0,0.08)" data-id="6:1694"></div>
+<img class="v" src="assets/frame-119__6_1695.svg" style="left:213.0px;top:61.0px;width:32.0px;height:32.0px" alt="" data-id="6:1695">
+<div class="b" style="left:294.0px;top:32.0px;width:1116.0px;height:68.0px;box-shadow:0px 4px 20px rgba(0,0,0,0.04)" data-id="6:1700" data-name="Frame 118"></div>
+<div class="b" style="left:294.0px;top:32.0px;width:1116.0px;height:68.0px;background-color:rgb(255 255 255);border-radius:20px;border:1.00px solid rgba(0,0,0,0.08);box-sizing:border-box" data-id="6:1701" data-name="Rectangle 10"></div>
+<div class="b anchor" style="left:858.0px;top:42.0px;width:542.0px;height:48.0px" data-id="6:1702" data-name="Frame 38"></div>
+<div class="b anchor" style="left:858.0px;top:42.0px;width:450.0px;height:48.0px" data-id="6:1703" data-name="Frame 34"></div>
+<div class="b" style="left:858.0px;top:42.0px;width:208.0px;height:48.0px;background-color:rgb(255 255 255);border-radius:10px;border:1.00px solid rgba(0,0,0,0.08);box-sizing:border-box" data-id="6:1704" data-name="Date Picker"></div>
+<div class="b anchor" style="left:874.0px;top:56.0px;width:117.0px;height:20.0px" data-id="I6:1704;127:670" data-name="Frame 28"></div>
+<img class="v" src="assets/icon__I6_1704_127_671.svg" style="left:874.0px;top:57.0px;width:18.0px;height:18.0px" alt="" data-id="I6:1704;127:671">
+<div class="t" style="left:900.0px;top:56.0px;width:92.0px;color:rgb(49 65 88);font-size:14.0px;font-weight:500;line-height:19.5px;white-space:nowrap" data-id="I6:1704;127:676">14 June 2026</div>
+<img class="v" src="assets/frame-27__I6_1704_127_677.svg" style="left:1004.0px;top:57.0px;width:46.0px;height:18.0px" alt="" data-id="I6:1704;127:677">
+<div class="b" style="left:1086.0px;top:42.0px;width:222.0px;height:48.0px;background-color:rgb(255 255 255);border-radius:14px;border:1.00px solid rgba(0,0,0,0.08);box-sizing:border-box" data-id="6:1705" data-name="Time Range Selector"></div>
+<div class="b" style="left:1091.0px;top:47.0px;width:72.0px;height:38.0px;background-color:rgb(245 247 250);border-radius:9px" data-id="I6:1705;127:647" data-name="Frame 30"></div>
+<div class="t" style="left:1105.0px;top:57.0px;width:45.0px;color:rgb(69 85 108);font-size:14.0px;font-weight:500;line-height:18.0px;text-align:center;white-space:nowrap" data-id="I6:1705;127:648">Hourly</div>
+<div class="b anchor" style="left:1163.0px;top:47.0px;width:57.0px;height:38.0px" data-id="I6:1705;127:649" data-name="Frame 31"></div>
+<div class="t" style="left:1175.0px;top:57.0px;width:34.0px;color:rgb(98 116 142);font-size:14.0px;font-weight:500;line-height:18.0px;text-align:center;white-space:nowrap" data-id="I6:1705;127:650">Daily</div>
+<div class="b anchor" style="left:1220.0px;top:47.0px;width:83.0px;height:38.0px" data-id="I6:1705;127:651" data-name="Frame 32"></div>
+<div class="t" style="left:1234.0px;top:57.0px;width:56.0px;color:rgb(98 116 142);font-size:14.0px;font-weight:500;line-height:18.0px;text-align:center;white-space:nowrap" data-id="I6:1705;127:652">Monthly</div>
+<div class="b" style="left:1330.0px;top:42.0px;width:1.0px;height:48.0px;background:rgba(0,0,0,0.1)" data-id="6:1706"></div>
+<img class="v" src="assets/frame-37__6_1707.svg" style="left:1352.0px;top:42.0px;width:48.0px;height:48.0px" alt="" data-id="6:1707">
+</div>
+<div class="screen" id="s-forecasting" style="width:1440px;height:1206px;background:rgb(249 251 252)">
+<div class="b anchor" style="left:295.0px;top:120.0px;width:1115.0px;height:1054.0px" data-id="6:1715" data-name="Frame 189"></div>
+<div class="b anchor" style="left:295.0px;top:120.0px;width:1115.0px;height:173.0px" data-id="6:1716" data-name="Frame 188"></div>
+<div class="b anchor" style="left:295.0px;top:120.0px;width:266.0px;height:173.0px" data-id="6:1717" data-name="Stat Card - Daily Production"></div>
+<div class="b" style="left:295.0px;top:120.0px;width:266.0px;height:173.0px;background-color:rgb(255 255 255);border-radius:19px;border:1.00px solid rgba(0,0,0,0.08);box-sizing:border-box" data-id="I6:1717;127:1214" data-name="Rectangle 6"></div>
+<div class="b anchor" style="left:315.0px;top:140.0px;width:108.0px;height:92.0px" data-id="I6:1717;127:1215" data-name="Frame 23"></div>
+<div class="b anchor" style="left:315.0px;top:140.0px;width:108.0px;height:58.0px" data-id="I6:1717;127:1216" data-name="Frame 14"></div>
+<div class="t" style="left:315.0px;top:140.0px;width:179.0px;color:rgb(67 67 67);font-size:14.0px;font-weight:500;line-height:18.0px;white-space:nowrap" data-id="I6:1717;127:1217">Predicted Daily Production</div>
+<div class="b anchor" style="left:315.0px;top:172.0px;width:108.0px;height:26.0px" data-id="I6:1717;127:1218" data-name="Frame 13"></div>
+<div class="t" style="left:315.0px;top:172.0px;width:73.0px;color:rgb(15 23 43);font-size:30.0px;font-weight:600;line-height:26.0px;letter-spacing:-0.65px;white-space:nowrap" data-id="I6:1717;127:1219">47.14</div>
+<div class="t" style="left:396.0px;top:180.0px;width:31.0px;color:rgb(98 116 142);font-size:12.0px;font-weight:500;line-height:18.0px;white-space:nowrap" data-id="I6:1717;127:1220">MWh</div>
+<div class="t" style="left:315.0px;top:215.0px;width:160.0px;color:rgb(144 161 185);font-size:14.0px;font-weight:400;line-height:16.5px;white-space:nowrap" data-id="I6:1717;127:1221">393-day model average</div>
+<img class="v" src="assets/group-30__I6_1717_127_1222.svg" style="left:352.0px;top:239.0px;width:208.4px;height:53.0px" alt="" data-id="I6:1717;127:1222">
+<div class="b anchor" style="left:577.0px;top:120.0px;width:266.0px;height:173.0px" data-id="6:1718" data-name="Stat Card - Max Irradiation"></div>
+<div class="b" style="left:577.0px;top:120.0px;width:266.0px;height:173.0px;background-color:rgb(255 255 255);border-radius:19px;border:1.00px solid rgba(0,0,0,0.08);box-sizing:border-box" data-id="I6:1718;127:1226" data-name="Rectangle 7"></div>
+<div class="b anchor" style="left:597.0px;top:140.0px;width:108.0px;height:92.0px" data-id="I6:1718;127:1227" data-name="Frame 24"></div>
+<div class="b anchor" style="left:597.0px;top:140.0px;width:108.0px;height:58.0px" data-id="I6:1718;127:1228" data-name="Frame 17"></div>
+<div class="t" style="left:597.0px;top:140.0px;width:138.0px;color:rgb(67 67 67);font-size:14.0px;font-weight:500;line-height:18.0px;white-space:nowrap" data-id="I6:1718;127:1229">Maximum Irradiation</div>
+<div class="b anchor" style="left:597.0px;top:172.0px;width:108.0px;height:26.0px" data-id="I6:1718;127:1230" data-name="Frame 13"></div>
+<div class="t" style="left:597.0px;top:172.0px;width:55.0px;color:rgb(15 23 43);font-size:30.0px;font-weight:600;line-height:26.0px;letter-spacing:-0.65px;white-space:nowrap" data-id="I6:1718;127:1231">775</div>
+<div class="t" style="left:660.0px;top:180.0px;width:33.0px;color:rgb(98 116 142);font-size:12.0px;font-weight:500;line-height:18.0px;white-space:nowrap" data-id="I6:1718;127:1232">W/m²</div>
+<div class="t" style="left:597.0px;top:215.0px;width:135.0px;color:rgb(144 161 185);font-size:14.0px;font-weight:400;line-height:16.5px;white-space:nowrap" data-id="I6:1718;127:1233">Clear sky conditions</div>
+<img class="v" src="assets/frame-133__I6_1718_127_1234.svg" style="left:608.0px;top:238.0px;width:234.0px;height:54.0px" alt="" data-id="I6:1718;127:1234">
+<div class="b anchor" style="left:859.0px;top:120.0px;width:266.0px;height:173.0px" data-id="6:1719" data-name="Stat Card - Avg Temperature"></div>
+<div class="b" style="left:859.0px;top:120.0px;width:266.0px;height:173.0px;background-color:rgb(255 255 255);border-radius:19px;border:1.00px solid rgba(0,0,0,0.08);box-sizing:border-box" data-id="I6:1719;127:1239" data-name="Rectangle 8"></div>
+<div class="b anchor" style="left:879.0px;top:140.0px;width:108.0px;height:92.0px" data-id="I6:1719;127:1240" data-name="Frame 25"></div>
+<div class="b anchor" style="left:879.0px;top:140.0px;width:108.0px;height:58.0px" data-id="I6:1719;127:1241" data-name="Frame 19"></div>
+<div class="t" style="left:879.0px;top:140.0px;width:146.0px;color:rgb(67 67 67);font-size:14.0px;font-weight:500;line-height:18.0px;white-space:nowrap" data-id="I6:1719;127:1242">Average Temperature</div>
+<div class="b anchor" style="left:879.0px;top:172.0px;width:108.0px;height:26.0px" data-id="I6:1719;127:1243" data-name="Frame 13"></div>
+<div class="t" style="left:879.0px;top:172.0px;width:64.0px;color:rgb(15 23 43);font-size:30.0px;font-weight:600;line-height:26.0px;letter-spacing:-0.65px;white-space:nowrap" data-id="I6:1719;127:1244">24.8</div>
+<div class="t" style="left:951.0px;top:180.0px;width:16.0px;color:rgb(98 116 142);font-size:12.0px;font-weight:500;line-height:18.0px;white-space:nowrap" data-id="I6:1719;127:1245">°C</div>
+<div class="t" style="left:879.0px;top:215.0px;width:130.0px;color:rgb(144 161 185);font-size:14.0px;font-weight:400;line-height:16.5px;white-space:nowrap" data-id="I6:1719;127:1246">Seasonal avg: 27°C</div>
+<img class="v" src="assets/frame-134__I6_1719_127_1247.svg" style="left:887.0px;top:238.0px;width:238.0px;height:54.0px" alt="" data-id="I6:1719;127:1247">
+<div class="b anchor" style="left:1141.0px;top:120.0px;width:266.0px;height:173.0px" data-id="6:1720" data-name="Stat Card - Forecast Reliability"></div>
+<div class="b" style="left:1141.0px;top:120.0px;width:266.0px;height:173.0px;background-color:rgb(255 255 255);border-radius:19px;border:1.00px solid rgba(0,0,0,0.08);box-sizing:border-box" data-id="I6:1720;127:1252" data-name="Rectangle 9"></div>
+<div class="b anchor" style="left:1161.0px;top:140.0px;width:108.0px;height:92.0px" data-id="I6:1720;127:1253" data-name="Frame 26"></div>
+<div class="b anchor" style="left:1161.0px;top:140.0px;width:108.0px;height:58.0px" data-id="I6:1720;127:1254" data-name="Frame 21"></div>
+<div class="t" style="left:1161.0px;top:140.0px;width:128.0px;color:rgb(67 67 67);font-size:14.0px;font-weight:500;line-height:18.0px;white-space:nowrap" data-id="I6:1720;127:1255">Forecast Reliability</div>
+<div class="b anchor" style="left:1161.0px;top:172.0px;width:108.0px;height:26.0px" data-id="I6:1720;127:1256" data-name="Frame 13"></div>
+<div class="t" style="left:1161.0px;top:172.0px;width:64.0px;color:rgb(15 23 43);font-size:30.0px;font-weight:600;line-height:26.0px;letter-spacing:-0.65px;white-space:nowrap" data-id="I6:1720;127:1257">88%</div>
+<div class="t" style="left:1161.0px;top:215.0px;width:110.0px;color:rgb(1 124 47);font-size:16.0px;font-weight:500;line-height:16.5px;white-space:nowrap" data-id="I6:1720;127:1258">High reliability</div>
+<div class="b anchor" style="left:1301.0px;top:189.0px;width:86.0px;height:86.0px" data-id="I6:1720;127:1259" data-name="Group 34"></div>
+<img class="v" src="assets/group-33__I6_1720_127_1260.svg" style="left:1301.0px;top:189.0px;width:86.0px;height:86.0px" alt="" data-id="I6:1720;127:1260">
+<div class="t" style="left:1326.0px;top:223.0px;width:36.0px;color:rgb(1 124 47);font-size:16.0px;font-weight:600;line-height:18.0px;white-space:nowrap" data-id="I6:1720;127:1263">88%</div>
+<div class="b anchor" style="left:295.0px;top:313.0px;width:1115.0px;height:861.0px" data-id="6:1721" data-name="Frame 187"></div>
+<div class="b anchor" style="left:295.0px;top:313.0px;width:795.0px;height:861.0px" data-id="6:1722" data-name="Frame 186"></div>
+<div class="b anchor" style="left:295.0px;top:313.0px;width:795.0px;height:627.0px" data-id="6:1723" data-name="Chart - Production &amp; Irradiation"></div>
+<div class="b" style="left:295.0px;top:313.0px;width:795.0px;height:627.0px;background-color:rgb(255 255 255);border-radius:19px;border:1.00px solid rgba(0,0,0,0.08);box-sizing:border-box" data-id="I6:1723;127:1412" data-name="Rectangle 10"></div>
+<div class="b anchor" style="left:319.0px;top:337.0px;width:495.0px;height:49.0px" data-id="I6:1723;127:1413" data-name="Frame 39"></div>
+<div class="t" style="left:319.0px;top:337.0px;width:307.0px;color:rgb(15 23 43);font-size:20.0px;font-weight:600;line-height:22.5px;letter-spacing:-0.38px;white-space:nowrap" data-id="I6:1723;127:1414">Production &amp; Irradiation Forecast</div>
+<div class="b anchor" style="left:319.0px;top:368.0px;width:495.0px;height:18.0px" data-id="I6:1723;127:1415" data-name="Frame 43"></div>
+<div class="b anchor" style="left:319.0px;top:368.0px;width:148.0px;height:18.0px" data-id="I6:1723;127:1416" data-name="Frame 42"></div>
+<div class="b" style="left:319.0px;top:373.0px;width:8.0px;height:8.0px;background-color:rgb(37 99 235);border-radius:50%" data-id="I6:1723;127:1417" data-name="Ellipse 3"></div>
+<div class="t" style="left:333.0px;top:368.0px;width:135.0px;color:rgb(98 116 142);font-size:12.0px;font-weight:500;line-height:18.0px;white-space:nowrap" data-id="I6:1723;127:1418">Actual Production(MW)</div>
+<div class="t" style="left:483.0px;top:368.0px;width:167.0px;color:rgb(98 116 142);font-size:12.0px;font-weight:500;line-height:18.0px;white-space:nowrap" data-id="I6:1723;127:1419">-- Expected Production(MW)</div>
+<div class="b anchor" style="left:665.0px;top:368.0px;width:149.0px;height:18.0px" data-id="I6:1723;127:1420" data-name="Frame 43"></div>
+<div class="b" style="left:665.0px;top:373.0px;width:8.0px;height:8.0px;background-color:rgb(245 179 11);border-radius:50%" data-id="I6:1723;127:1421" data-name="Ellipse 3"></div>
+<div class="t" style="left:679.0px;top:368.0px;width:136.0px;color:rgb(98 116 142);font-size:12.0px;font-weight:500;line-height:18.0px;white-space:nowrap" data-id="I6:1723;127:1422">Solar Irradiation (W/m²)</div>
+<div class="b anchor" style="left:355.0px;top:758.1px;width:677.1px;height:17.0px" data-id="I6:1723;127:1423" data-name="Group"></div>
+<div class="t" style="left:355.0px;top:758.1px;width:45.1px;color:rgb(119 119 119);font-size:14.0px;font-weight:400;line-height:16.9px;text-align:center;white-space:nowrap" data-id="I6:1723;127:1424">05:00</div>
+<div class="t" style="left:462.0px;top:758.1px;width:45.1px;color:rgb(119 119 119);font-size:14.0px;font-weight:400;line-height:16.9px;text-align:center;white-space:nowrap" data-id="I6:1723;127:1425">08:00</div>
+<div class="t" style="left:569.0px;top:758.1px;width:40.6px;color:rgb(119 119 119);font-size:14.0px;font-weight:400;line-height:16.9px;text-align:center;white-space:nowrap" data-id="I6:1723;127:1426">11:00</div>
+<div class="t" style="left:672.0px;top:758.1px;width:42.8px;color:rgb(119 119 119);font-size:14.0px;font-weight:400;line-height:16.9px;text-align:center;white-space:nowrap" data-id="I6:1723;127:1427">14:00</div>
+<div class="t" style="left:777.0px;top:758.1px;width:41.7px;color:rgb(119 119 119);font-size:14.0px;font-weight:400;line-height:16.9px;text-align:center;white-space:nowrap" data-id="I6:1723;127:1428">17:00</div>
+<div class="t" style="left:881.0px;top:758.1px;width:45.1px;color:rgb(119 119 119);font-size:14.0px;font-weight:400;line-height:16.9px;text-align:center;white-space:nowrap" data-id="I6:1723;127:1429">20:00</div>
+<div class="t" style="left:988.0px;top:758.1px;width:45.1px;color:rgb(119 119 119);font-size:14.0px;font-weight:400;line-height:16.9px;text-align:center;white-space:nowrap" data-id="I6:1723;127:1430">22:00</div>
+<div class="b anchor" style="left:329.0px;top:455.0px;width:737.0px;height:293.1px" data-id="I6:1723;127:1431" data-name="Group 53"></div>
+<img class="v" src="assets/group-8__I6_1723_127_1432.svg" style="left:355.0px;top:462.1px;width:674.0px;height:276.1px" alt="" data-id="I6:1723;127:1432">
+<div class="b anchor" style="left:329.0px;top:455.0px;width:16.0px;height:293.1px" data-id="I6:1723;127:1439" data-name="Group 9"></div>
+<div class="t" style="left:336.0px;top:676.0px;width:10.0px;color:rgb(119 119 119);font-size:14.0px;font-weight:400;line-height:16.9px;text-align:right;white-space:nowrap" data-id="I6:1723;127:1440">2</div>
+<div class="t" style="left:336.0px;top:731.1px;width:10.0px;color:rgb(119 119 119);font-size:14.0px;font-weight:400;line-height:16.9px;text-align:right;white-space:nowrap" data-id="I6:1723;127:1441">0</div>
+<div class="t" style="left:336.0px;top:621.0px;width:10.0px;color:rgb(119 119 119);font-size:14.0px;font-weight:400;line-height:16.9px;text-align:right;white-space:nowrap" data-id="I6:1723;127:1442">4</div>
+<div class="t" style="left:336.0px;top:566.0px;width:10.0px;color:rgb(119 119 119);font-size:14.0px;font-weight:400;line-height:16.9px;text-align:right;white-space:nowrap" data-id="I6:1723;127:1443">6</div>
+<div class="t" style="left:329.0px;top:455.0px;width:17.0px;color:rgb(119 119 119);font-size:14.0px;font-weight:400;line-height:16.9px;text-align:right;white-space:nowrap" data-id="I6:1723;127:1444">10</div>
+<div class="t" style="left:336.0px;top:510.1px;width:10.0px;color:rgb(119 119 119);font-size:14.0px;font-weight:400;line-height:16.9px;text-align:right;white-space:nowrap" data-id="I6:1723;127:1445">8</div>
+<div class="b anchor" style="left:1033.0px;top:455.0px;width:33.0px;height:293.1px" data-id="I6:1723;127:1446" data-name="Group 43"></div>
+<div class="t" style="left:1040.0px;top:676.0px;width:27.0px;color:rgb(119 119 119);font-size:14.0px;font-weight:400;line-height:16.9px;text-align:right;white-space:nowrap" data-id="I6:1723;127:1447">200</div>
+<div class="t" style="left:1057.0px;top:731.1px;width:10.0px;color:rgb(119 119 119);font-size:14.0px;font-weight:400;line-height:16.9px;text-align:right;white-space:nowrap" data-id="I6:1723;127:1448">0</div>
+<div class="t" style="left:1039.0px;top:621.0px;width:28.0px;color:rgb(119 119 119);font-size:14.0px;font-weight:400;line-height:16.9px;text-align:right;white-space:nowrap" data-id="I6:1723;127:1449">400</div>
+<div class="t" style="left:1039.0px;top:566.0px;width:28.0px;color:rgb(119 119 119);font-size:14.0px;font-weight:400;line-height:16.9px;text-align:right;white-space:nowrap" data-id="I6:1723;127:1450">600</div>
+<div class="t" style="left:1033.0px;top:455.0px;width:34.0px;color:rgb(119 119 119);font-size:14.0px;font-weight:400;line-height:16.9px;text-align:right;white-space:nowrap" data-id="I6:1723;127:1451">1000</div>
+<div class="t" style="left:1039.0px;top:510.1px;width:28.0px;color:rgb(119 119 119);font-size:14.0px;font-weight:400;line-height:16.9px;text-align:right;white-space:nowrap" data-id="I6:1723;127:1452">800</div>
+<img class="v" src="assets/group-42__I6_1723_127_1453.svg" style="left:360.0px;top:484.0px;width:666.9px;height:254.8px" alt="" data-id="I6:1723;127:1453">
+<img class="v" src="assets/group-54__I6_1723_127_1487.svg" style="left:319.0px;top:802.0px;width:747.0px;height:32.2px" alt="" data-id="I6:1723;127:1487">
+<div class="t" style="left:319.0px;top:428.0px;width:27.0px;color:rgb(0 0 0);font-size:14.0px;font-weight:400;line-height:16.9px;text-align:right;white-space:nowrap" data-id="I6:1723;127:1506">MW</div>
+<div class="b" style="left:930.0px;top:345.0px;width:136.0px;height:41.0px;border-radius:8px;border:1.00px solid rgba(0,0,0,0.08);box-sizing:border-box" data-id="I6:1723;127:1507" data-name="Frame 150"></div>
+<div class="b" style="left:934.0px;top:349.0px;width:59.0px;height:33.0px;background-color:rgba(81,162,255,0.2);border-radius:4px;border:1.00px solid rgb(37 99 235);box-sizing:border-box" data-id="I6:1723;127:1508" data-name="Frame 148"></div>
+<div class="b" style="left:944.0px;top:361.5px;width:8.0px;height:8.0px;background-color:rgb(37 99 235);border-radius:50%" data-id="I6:1723;127:1509" data-name="Ellipse 3"></div>
+<div class="t" style="left:956.0px;top:357.0px;width:28.0px;color:rgb(0 0 0);font-size:14.0px;font-weight:500;line-height:16.9px;text-align:right;white-space:nowrap" data-id="I6:1723;127:1510">MW</div>
+<div class="b" style="left:993.0px;top:349.0px;width:69.0px;height:33.0px;background-color:rgb(255 255 255);border-radius:4px" data-id="I6:1723;127:1511" data-name="Frame 149"></div>
+<div class="b" style="left:1003.0px;top:361.5px;width:8.0px;height:8.0px;background-color:rgb(245 179 11);border-radius:50%" data-id="I6:1723;127:1512" data-name="Ellipse 3"></div>
+<div class="t" style="left:1015.0px;top:357.0px;width:38.0px;color:rgb(0 0 0);font-size:14.0px;font-weight:500;line-height:16.9px;text-align:right;white-space:nowrap" data-id="I6:1723;127:1513">W/m²</div>
+<div class="t" style="left:1029.0px;top:428.0px;width:38.0px;color:rgb(0 0 0);font-size:14.0px;font-weight:400;line-height:16.9px;text-align:right;white-space:nowrap" data-id="I6:1723;127:1514">W/m²</div>
+<div class="b" style="left:642.0px;top:462.1px;width:1.0px;height:276.0px;background:rgb(201 201 201)" data-id="I6:1723;127:1515"></div>
+<img class="v" src="assets/group__I6_1723_127_1516.svg" style="left:635.0px;top:535.0px;width:16.0px;height:16.0px" alt="" data-id="I6:1723;127:1516">
+<img class="v" src="assets/group__I6_1723_127_1518.svg" style="left:635.0px;top:509.0px;width:16.0px;height:16.0px" alt="" data-id="I6:1723;127:1518">
+<div class="b anchor" style="left:319.0px;top:860.0px;width:747.0px;height:60.0px" data-id="I6:1723;127:1520" data-name="Group 45"></div>
+<div class="b" style="left:319.0px;top:860.0px;width:747.0px;height:60.0px;background-color:rgb(240 244 254);border-radius:4px;border:1.00px solid rgba(0,0,0,0.08);box-sizing:border-box" data-id="I6:1723;127:1521" data-name="Rectangle 34"></div>
+<div class="b anchor" style="left:341.0px;top:878.0px;width:594.0px;height:24.0px" data-id="I6:1723;127:1522" data-name="Frame 147"></div>
+<img class="v" src="assets/group-44__I6_1723_127_1523.svg" style="left:341.0px;top:878.0px;width:24.0px;height:24.0px" alt="" data-id="I6:1723;127:1523">
+<div class="t" style="left:377.0px;top:881.0px;width:559.0px;color:rgb(74 74 74);font-size:14.0px;font-weight:500;line-height:18.0px;white-space:nowrap" data-id="I6:1723;127:1531">Peak production is expected around 12:15 - 12:45. Irradiation will exceed 720 W/m².</div>
+<div class="b" style="left:622.0px;top:567.0px;width:251.0px;height:149.0px;background-color:rgb(255 255 255);border-radius:14px;border:1.00px solid rgba(0,0,0,0.1);box-sizing:border-box;box-shadow:0px 4px 14px rgba(0,0,0,0.06)" data-id="I6:1723;127:1605" data-name="Tooltip - Production Forecast"></div>
+<div class="b anchor" style="left:634.0px;top:579.0px;width:227.0px;height:125.0px" data-id="I6:1723;127:1605;127:1574" data-name="Frame 178"></div>
+<div class="t" style="left:634.0px;top:579.0px;width:228.0px;color:rgb(59 59 59);font-size:12.0px;font-weight:600;line-height:18.0px;white-space:nowrap" data-id="I6:1723;127:1605;127:1575">12:00</div>
+<div class="b anchor" style="left:634.0px;top:602.0px;width:227.0px;height:102.0px" data-id="I6:1723;127:1605;127:1576" data-name="Frame 177"></div>
+<div class="b anchor" style="left:634.0px;top:602.0px;width:227.0px;height:18.0px" data-id="I6:1723;127:1605;127:1577" data-name="Frame 172"></div>
+<div class="b anchor" style="left:634.0px;top:602.0px;width:136.0px;height:18.0px" data-id="I6:1723;127:1605;127:1578" data-name="Frame 171"></div>
+<div class="b" style="left:634.0px;top:607.0px;width:8.0px;height:8.0px;background-color:rgb(37 99 235);border-radius:50%" data-id="I6:1723;127:1605;127:1579" data-name="Ellipse 3"></div>
+<div class="t" style="left:648.0px;top:602.0px;width:123.0px;color:rgb(98 116 142);font-size:12.0px;font-weight:500;line-height:18.0px;white-space:nowrap" data-id="I6:1723;127:1605;127:1580">Predicted Production</div>
+<div class="t" style="left:811.0px;top:602.0px;width:51.0px;color:rgb(98 116 142);font-size:12.0px;font-weight:600;line-height:18.0px;white-space:nowrap" data-id="I6:1723;127:1605;127:1581">7.82 MW</div>
+<div class="b anchor" style="left:634.0px;top:630.0px;width:227.0px;height:18.0px" data-id="I6:1723;127:1605;127:1582" data-name="Frame 174"></div>
+<div class="b anchor" style="left:634.0px;top:630.0px;width:108.0px;height:18.0px" data-id="I6:1723;127:1605;127:1583" data-name="Frame 173"></div>
+<div class="t" style="left:634.0px;top:630.0px;width:109.0px;color:rgb(98 116 142);font-size:12.0px;font-weight:500;line-height:18.0px;white-space:nowrap" data-id="I6:1723;127:1605;127:1584">-- Expected Range</div>
+<div class="t" style="left:777.0px;top:630.0px;width:85.0px;color:rgb(98 116 142);font-size:12.0px;font-weight:600;line-height:18.0px;white-space:nowrap" data-id="I6:1723;127:1605;127:1585">6.95-8.68 MW</div>
+<div class="b anchor" style="left:634.0px;top:658.0px;width:227.0px;height:18.0px" data-id="I6:1723;127:1605;127:1586" data-name="Frame 175"></div>
+<div class="b anchor" style="left:634.0px;top:658.0px;width:73.0px;height:18.0px" data-id="I6:1723;127:1605;127:1587" data-name="Frame 171"></div>
+<div class="b" style="left:634.0px;top:663.0px;width:8.0px;height:8.0px;background-color:rgb(253 176 12);border-radius:50%" data-id="I6:1723;127:1605;127:1588" data-name="Ellipse 3"></div>
+<div class="t" style="left:648.0px;top:658.0px;width:60.0px;color:rgb(98 116 142);font-size:12.0px;font-weight:500;line-height:18.0px;white-space:nowrap" data-id="I6:1723;127:1605;127:1589">Irradiation</div>
+<div class="t" style="left:803.0px;top:658.0px;width:59.0px;color:rgb(98 116 142);font-size:12.0px;font-weight:600;line-height:18.0px;white-space:nowrap" data-id="I6:1723;127:1605;127:1590">720 W/m²</div>
+<div class="b anchor" style="left:634.0px;top:686.0px;width:227.0px;height:18.0px" data-id="I6:1723;127:1605;127:1591" data-name="Frame 176"></div>
+<div class="b anchor" style="left:634.0px;top:686.0px;width:70.0px;height:18.0px" data-id="I6:1723;127:1605;127:1592" data-name="Frame 173"></div>
+<div class="t" style="left:634.0px;top:686.0px;width:71.0px;color:rgb(98 116 142);font-size:12.0px;font-weight:500;line-height:18.0px;white-space:nowrap" data-id="I6:1723;127:1605;127:1593">-- Reliability</div>
+<div class="t" style="left:835.0px;top:686.0px;width:27.0px;color:rgb(5 150 105);font-size:12.0px;font-weight:600;line-height:18.0px;white-space:nowrap" data-id="I6:1723;127:1605;127:1594">89%</div>
+<div class="b anchor" style="left:295.0px;top:960.0px;width:795.0px;height:214.0px" data-id="6:1724" data-name="Frame 169"></div>
+<div class="b" style="left:295.0px;top:960.0px;width:795.0px;height:214.0px;background-color:rgb(255 255 255);border-radius:19px;border:1.00px solid rgba(0,0,0,0.08);box-sizing:border-box" data-id="6:1725" data-name="Rectangle 32"></div>
+<div class="b anchor" style="left:319.0px;top:984.0px;width:747.0px;height:164.0px" data-id="6:1726" data-name="Frame 168"></div>
+<div class="b anchor" style="left:319.0px;top:984.0px;width:203.0px;height:49.0px" data-id="6:1727" data-name="Frame 152"></div>
+<div class="t" style="left:319.0px;top:984.0px;width:172.0px;color:rgb(15 23 43);font-size:20.0px;font-weight:600;line-height:22.5px;letter-spacing:-0.38px;white-space:nowrap" data-id="6:1728">Model Information</div>
+<div class="b anchor" style="left:319.0px;top:1015.0px;width:203.0px;height:18.0px" data-id="6:1729" data-name="Frame 43"></div>
+<div class="b anchor" style="left:319.0px;top:1015.0px;width:203.0px;height:18.0px" data-id="6:1730" data-name="Frame 42"></div>
+<div class="t" style="left:319.0px;top:1015.0px;width:204.0px;color:rgb(98 116 142);font-size:12.0px;font-weight:500;line-height:18.0px;white-space:nowrap" data-id="6:1731">PIEX Forecast v3.2 · Gradient Boost</div>
+<div class="b anchor" style="left:319.0px;top:1053.0px;width:747.0px;height:95.0px" data-id="6:1732" data-name="Frame 159"></div>
+<div class="b anchor" style="left:319.0px;top:1053.0px;width:60.0px;height:95.0px" data-id="6:1733" data-name="Frame 154"></div>
+<img class="v" src="assets/group-2__6_1734.svg" style="left:319.0px;top:1053.0px;width:38.0px;height:38.0px" alt="" data-id="6:1734">
+<div class="b anchor" style="left:319.0px;top:1100.0px;width:60.0px;height:48.0px" data-id="6:1740" data-name="Frame 153"></div>
+<div class="t" style="left:319.0px;top:1100.0px;width:60.0px;color:rgb(74 74 74);font-size:13.0px;font-weight:500;line-height:18.0px;white-space:nowrap" data-id="6:1741">Accuracy</div>
+<div class="t" style="left:319.0px;top:1130.0px;width:61.0px;color:rgb(74 74 74);font-size:22.0px;font-weight:600;line-height:18.0px;white-space:nowrap" data-id="6:1742">85%</div>
+<div class="b" style="left:419.0px;top:1057.0px;width:1.0px;height:87.0px;background:rgba(0,0,0,0.08)" data-id="6:1743"></div>
+<div class="b anchor" style="left:459.0px;top:1053.0px;width:86.0px;height:95.0px" data-id="6:1744" data-name="Frame 155"></div>
+<img class="v" src="assets/group-48__6_1745.svg" style="left:459.0px;top:1053.0px;width:38.0px;height:38.0px" alt="" data-id="6:1745">
+<div class="b anchor" style="left:459.0px;top:1100.0px;width:86.0px;height:48.0px" data-id="6:1750" data-name="Frame 153"></div>
+<div class="t" style="left:459.0px;top:1100.0px;width:87.0px;color:rgb(74 74 74);font-size:13.0px;font-weight:500;line-height:18.0px;white-space:nowrap" data-id="6:1751">Avg Deviation</div>
+<div class="t" style="left:459.0px;top:1130.0px;width:69.0px;color:rgb(74 74 74);font-size:28.0px;font-weight:600;line-height:18.0px;white-space:nowrap" data-id="6:1752">0.8 MW</div>
+<div class="b" style="left:585.0px;top:1057.0px;width:1.0px;height:87.0px;background:rgba(0,0,0,0.08)" data-id="6:1753"></div>
+<div class="b anchor" style="left:625.0px;top:1053.0px;width:83.0px;height:95.0px" data-id="6:1754" data-name="Frame 156"></div>
+<img class="v" src="assets/group-49__6_1755.svg" style="left:625.0px;top:1053.0px;width:38.0px;height:38.0px" alt="" data-id="6:1755">
+<div class="b anchor" style="left:625.0px;top:1100.0px;width:83.0px;height:48.0px" data-id="6:1763" data-name="Frame 153"></div>
+<div class="t" style="left:625.0px;top:1100.0px;width:84.0px;color:rgb(74 74 74);font-size:13.0px;font-weight:500;line-height:18.0px;white-space:nowrap" data-id="6:1764">Training Data</div>
+<div class="t" style="left:625.0px;top:1130.0px;width:83.0px;color:rgb(74 74 74);font-size:28.0px;font-weight:600;line-height:18.0px;white-space:nowrap" data-id="6:1765">393 days</div>
+<div class="b" style="left:748.0px;top:1057.0px;width:1.0px;height:87.0px;background:rgba(0,0,0,0.08)" data-id="6:1766"></div>
+<div class="b anchor" style="left:788.0px;top:1053.0px;width:138.0px;height:95.0px" data-id="6:1767" data-name="Frame 157"></div>
+<img class="v" src="assets/group-50__6_1768.svg" style="left:788.0px;top:1053.0px;width:38.0px;height:38.0px" alt="" data-id="6:1768">
+<div class="b anchor" style="left:788.0px;top:1100.0px;width:138.0px;height:48.0px" data-id="6:1773" data-name="Frame 153"></div>
+<div class="t" style="left:788.0px;top:1100.0px;width:99.0px;color:rgb(74 74 74);font-size:13.0px;font-weight:500;line-height:18.0px;white-space:nowrap" data-id="6:1774">Last Calibration</div>
+<div class="t" style="left:788.0px;top:1130.0px;width:139.0px;color:rgb(74 74 74);font-size:22.0px;font-weight:600;line-height:18.0px;white-space:nowrap" data-id="6:1775">09 Mar 2026</div>
+<div class="b" style="left:966.0px;top:1057.0px;width:1.0px;height:87.0px;background:rgba(0,0,0,0.08)" data-id="6:1776"></div>
+<div class="b anchor" style="left:1006.0px;top:1053.0px;width:60.0px;height:95.0px" data-id="6:1777" data-name="Frame 158"></div>
+<img class="v" src="assets/group-51__6_1778.svg" style="left:1006.0px;top:1053.0px;width:38.0px;height:38.0px" alt="" data-id="6:1778">
+<div class="b anchor" style="left:1006.0px;top:1100.0px;width:60.0px;height:48.0px" data-id="6:1783" data-name="Frame 153"></div>
+<div class="t" style="left:1006.0px;top:1100.0px;width:38.0px;color:rgb(74 74 74);font-size:13.0px;font-weight:500;line-height:18.0px;white-space:nowrap" data-id="6:1784">MAPE</div>
+<div class="t" style="left:1006.0px;top:1130.0px;width:65.0px;color:rgb(74 74 74);font-size:22.0px;font-weight:600;line-height:18.0px;white-space:nowrap" data-id="6:1785">14.3%</div>
+<div class="b anchor" style="left:1110.0px;top:313.0px;width:300.0px;height:861.0px" data-id="6:1786" data-name="Frame 185"></div>
+<div class="b anchor" style="left:1110.0px;top:313.0px;width:300.0px;height:434.0px" data-id="6:1787" data-name="Card - Weather Forecast"></div>
+<div class="b" style="left:1110.0px;top:313.0px;width:300.0px;height:434.0px;background-color:rgb(255 255 255);border-radius:19px;border:1.00px solid rgba(0,0,0,0.08);box-sizing:border-box" data-id="I6:1787;127:1272" data-name="Rectangle 11"></div>
+<div class="b anchor" style="left:1134.0px;top:515.0px;width:252.0px;height:208.0px" data-id="I6:1787;127:1273" data-name="Frame 146"></div>
+<div class="b anchor" style="left:1134.0px;top:515.0px;width:252.0px;height:22.0px" data-id="I6:1787;127:1274" data-name="Frame 145"></div>
+<div class="b anchor" style="left:1134.0px;top:515.0px;width:98.0px;height:22.0px" data-id="I6:1787;127:1275" data-name="Frame 138"></div>
+<img class="v" src="assets/icon__I6_1787_127_1276.svg" style="left:1134.0px;top:515.0px;width:22.0px;height:22.0px" alt="" data-id="I6:1787;127:1276">
+<div class="t" style="left:1164.0px;top:517.5px;width:69.0px;color:rgb(86 86 86);font-size:16.0px;font-weight:400;line-height:16.5px;white-space:nowrap" data-id="I6:1787;127:1279">Humidity</div>
+<div class="t" style="left:1362.0px;top:517.0px;width:25.0px;color:rgb(86 86 86);font-size:16.0px;font-weight:600;line-height:18.0px;letter-spacing:-0.45px;white-space:nowrap" data-id="I6:1787;127:1280">0%</div>
+<div class="b" style="left:1134.0px;top:557.0px;width:252.0px;height:1.0px;background:rgba(0,0,0,0.08)" data-id="I6:1787;127:1281"></div>
+<div class="b anchor" style="left:1134.0px;top:577.0px;width:252.0px;height:22.0px" data-id="I6:1787;127:1282" data-name="Frame 144"></div>
+<div class="b anchor" style="left:1134.0px;top:577.0px;width:152.0px;height:22.0px" data-id="I6:1787;127:1283" data-name="Frame 139"></div>
+<img class="v" src="assets/icon__I6_1787_127_1284.svg" style="left:1134.0px;top:577.0px;width:22.0px;height:22.0px" alt="" data-id="I6:1787;127:1284">
+<div class="t" style="left:1164.0px;top:579.5px;width:123.0px;color:rgb(86 86 86);font-size:16.0px;font-weight:400;line-height:16.5px;white-space:nowrap" data-id="I6:1787;127:1286">Cloud Coverage</div>
+<div class="t" style="left:1353.0px;top:579.0px;width:34.0px;color:rgb(86 86 86);font-size:16.0px;font-weight:600;line-height:18.0px;letter-spacing:-0.45px;white-space:nowrap" data-id="I6:1787;127:1287">26%</div>
+<div class="b" style="left:1134.0px;top:619.0px;width:252.0px;height:1.0px;background:rgba(0,0,0,0.08)" data-id="I6:1787;127:1288"></div>
+<div class="b anchor" style="left:1134.0px;top:639.0px;width:252.0px;height:22.0px" data-id="I6:1787;127:1289" data-name="Frame 143"></div>
+<div class="b anchor" style="left:1134.0px;top:639.0px;width:148.0px;height:22.0px" data-id="I6:1787;127:1290" data-name="Frame 140"></div>
+<img class="v" src="assets/icon__I6_1787_127_1291.svg" style="left:1134.0px;top:639.0px;width:22.0px;height:22.0px" alt="" data-id="I6:1787;127:1291">
+<div class="t" style="left:1164.0px;top:641.5px;width:119.0px;color:rgb(86 86 86);font-size:16.0px;font-weight:400;line-height:16.5px;white-space:nowrap" data-id="I6:1787;127:1296">Rain Probability</div>
+<div class="t" style="left:1362.0px;top:641.0px;width:25.0px;color:rgb(86 86 86);font-size:16.0px;font-weight:600;line-height:18.0px;letter-spacing:-0.45px;white-space:nowrap" data-id="I6:1787;127:1297">0%</div>
+<div class="b" style="left:1134.0px;top:681.0px;width:252.0px;height:1.0px;background:rgba(0,0,0,0.08)" data-id="I6:1787;127:1298"></div>
+<div class="b anchor" style="left:1134.0px;top:701.0px;width:252.0px;height:22.0px" data-id="I6:1787;127:1299" data-name="Frame 142"></div>
+<div class="b anchor" style="left:1134.0px;top:701.0px;width:69.0px;height:22.0px" data-id="I6:1787;127:1300" data-name="Frame 141"></div>
+<img class="v" src="assets/icon__I6_1787_127_1301.svg" style="left:1134.0px;top:701.0px;width:22.0px;height:22.0px" alt="" data-id="I6:1787;127:1301">
+<div class="t" style="left:1164.0px;top:703.5px;width:40.0px;color:rgb(86 86 86);font-size:16.0px;font-weight:400;line-height:16.5px;white-space:nowrap" data-id="I6:1787;127:1305">Wind</div>
+<div class="t" style="left:1357.0px;top:703.0px;width:30.0px;color:rgb(86 86 86);font-size:16.0px;font-weight:600;line-height:18.0px;letter-spacing:-0.45px;white-space:nowrap" data-id="I6:1787;127:1306">N/A</div>
+<div class="b anchor" style="left:1134.0px;top:412.0px;width:186.9px;height:75.0px" data-id="I6:1787;127:1307" data-name="Frame 164"></div>
+<img class="v" src="assets/group-46__I6_1787_127_1308.svg" style="left:1134.0px;top:413.5px;width:75.9px;height:72.0px" alt="" data-id="I6:1787;127:1308">
+<div class="b anchor" style="left:1226.9px;top:412.0px;width:94.0px;height:75.0px" data-id="I6:1787;127:1311" data-name="Group 47"></div>
+<div class="t" style="left:1231.9px;top:412.0px;width:50.0px;color:rgb(0 0 0);font-size:16.0px;font-weight:600;line-height:19.4px;white-space:nowrap" data-id="I6:1787;127:1312">Sunny</div>
+<div class="t" style="left:1226.9px;top:441.0px;width:95.0px;color:rgb(0 0 0);font-size:38.0px;font-weight:600;line-height:46.0px;white-space:nowrap" data-id="I6:1787;127:1313">35°C</div>
+<div class="b anchor" style="left:1134.0px;top:337.0px;width:166.0px;height:49.0px" data-id="I6:1787;127:1314" data-name="Frame 151"></div>
+<div class="t" style="left:1134.0px;top:337.0px;width:167.0px;color:rgb(15 23 43);font-size:20.0px;font-weight:600;line-height:22.5px;letter-spacing:-0.38px;white-space:nowrap" data-id="I6:1787;127:1315">Weather Forecast</div>
+<div class="t" style="left:1134.0px;top:368.0px;width:167.0px;color:rgb(72 72 72);font-size:12.0px;font-weight:400;line-height:18.0px;white-space:nowrap" data-id="I6:1787;127:1316">Konya · Today</div>
+<div class="b anchor" style="left:1110.0px;top:767.0px;width:300.0px;height:407.0px" data-id="6:1788" data-name="Card - Important Notes"></div>
+<div class="b" style="left:1110.0px;top:767.0px;width:300.0px;height:407.0px;background-color:rgb(255 255 255);border-radius:19px;border:1.00px solid rgba(0,0,0,0.08);box-sizing:border-box" data-id="I6:1788;127:1318" data-name="Rectangle 33"></div>
+<div class="t" style="left:1134.0px;top:791.0px;width:154.0px;color:rgb(15 23 43);font-size:20.0px;font-weight:600;line-height:22.5px;letter-spacing:-0.38px;white-space:nowrap" data-id="I6:1788;127:1319">Important Notes</div>
+<div class="b anchor" style="left:1134.0px;top:1030.0px;width:243.0px;height:36.0px" data-id="I6:1788;127:1320" data-name="Frame 161"></div>
+<img class="v" src="assets/frame-72__I6_1788_127_1321.svg" style="left:1134.0px;top:1032.0px;width:32.0px;height:32.0px" alt="" data-id="I6:1788;127:1321">
+<div class="b anchor" style="left:1180.0px;top:1030.0px;width:197.0px;height:36.0px" data-id="I6:1788;127:1326" data-name="Frame 67"></div>
+<div class="t" style="left:1180.0px;top:1030.0px;width:198.0px;color:rgb(64 64 64);font-size:14.0px;font-weight:500;line-height:17.9px" data-id="I6:1788;127:1327">Recommend recalibration if deviation &gt; 1 MW</div>
+<div class="b anchor" style="left:1134.0px;top:858.0px;width:239.0px;height:42.0px" data-id="I6:1788;127:1328" data-name="Frame 162"></div>
+<img class="v" src="assets/frame-74__I6_1788_127_1329.svg" style="left:1134.0px;top:863.0px;width:32.0px;height:32.0px" alt="" data-id="I6:1788;127:1329">
+<div class="b anchor" style="left:1178.0px;top:858.0px;width:195.0px;height:42.0px" data-id="I6:1788;127:1333" data-name="Frame 69"></div>
+<div class="t" style="left:1178.0px;top:858.0px;width:196.0px;color:rgb(64 64 64);font-size:14.0px;font-weight:500;line-height:21.0px" data-id="I6:1788;127:1334">Model conditions are optimal for high solar production</div>
+<div class="b anchor" style="left:1134.0px;top:944.0px;width:239.0px;height:42.0px" data-id="I6:1788;127:1335" data-name="Frame 160"></div>
+<img class="v" src="assets/frame-74__I6_1788_127_1336.svg" style="left:1134.0px;top:949.0px;width:32.0px;height:32.0px" alt="" data-id="I6:1788;127:1336">
+<div class="b anchor" style="left:1178.0px;top:944.0px;width:195.0px;height:42.0px" data-id="I6:1788;127:1339" data-name="Frame 69"></div>
+<div class="t" style="left:1178.0px;top:944.0px;width:196.0px;color:rgb(64 64 64);font-size:14.0px;font-weight:500;line-height:21.0px" data-id="I6:1788;127:1340">Low cloud coverage expected throughout the day</div>
+<div class="b" style="left:1111.0px;top:836.0px;width:298.0px;height:1.0px;background:rgba(0,0,0,0.08)" data-id="I6:1788;127:1341"></div>
+<div class="b" style="left:1111.0px;top:922.0px;width:298.0px;height:1.0px;background:rgba(0,0,0,0.08)" data-id="I6:1788;127:1342"></div>
+<div class="b" style="left:1111.0px;top:1008.0px;width:298.0px;height:1.0px;background:rgba(0,0,0,0.08)" data-id="I6:1788;127:1343"></div>
+<div class="b" style="left:1134.0px;top:1107.0px;width:252.0px;height:42.0px;background-color:rgb(98 116 142);border-radius:10px;border:1.00px solid rgba(0,0,0,0.08);box-sizing:border-box" data-id="I6:1788;137:4750" data-name="View Buttons"></div>
+<div class="t" style="left:1224.0px;top:1119.0px;width:53.0px;color:rgb(255 255 255);font-size:14.0px;font-weight:500;line-height:18.0px;text-align:center;white-space:nowrap" data-id="I6:1788;137:4750;137:4727">View all </div>
+<img class="v" src="assets/icon__I6_1788_137_4750_137_4728.svg" style="left:1280.0px;top:1120.0px;width:16.0px;height:16.0px" alt="" data-id="I6:1788;137:4750;137:4728">
+<div class="b" style="left:29.0px;top:33.0px;width:246.0px;height:964.0px;box-shadow:0px 4px 8px rgba(0,0,0,0.08)" data-id="6:1789" data-name="Frame 124"></div>
+<div class="b" style="left:29.0px;top:33.0px;width:245.0px;height:964.0px;background-color:rgb(255 255 255);border-radius:20px;border:1.00px solid rgba(0,0,0,0.08);box-sizing:border-box" data-id="6:1790" data-name="Rectangle 1"></div>
+<img class="v" src="assets/group__6_1791.svg" style="left:59.0px;top:63.0px;width:100.0px;height:29.2px" alt="" data-id="6:1791">
+<div class="b anchor" style="left:49.0px;top:151.0px;width:207.0px;height:268.0px" data-id="6:1808" data-name="Sidebar Navigation"></div>
+<div class="b anchor" style="left:49.0px;top:151.0px;width:207.0px;height:38.0px" data-id="I6:1808;136:2255" data-name="Frame 8"></div>
+<img class="v" src="assets/icon__I6_1808_136_2256.svg" style="left:61.0px;top:161.0px;width:18.0px;height:18.0px" alt="" data-id="I6:1808;136:2256">
+<div class="t" style="left:91.0px;top:160.0px;width:85.0px;color:rgb(80 108 131);font-size:16.0px;font-weight:500;line-height:19.5px;white-space:nowrap" data-id="I6:1808;136:2261">Dashboard</div>
+<div class="b" style="left:49.0px;top:197.0px;width:207.0px;height:38.0px;background-color:rgb(212 218 222);border-radius:10px" data-id="I6:1808;136:2262" data-name="Frame 1"></div>
+<img class="v" src="assets/icon__I6_1808_136_2263.svg" style="left:61.0px;top:207.0px;width:18.0px;height:18.0px" alt="" data-id="I6:1808;136:2263">
+<div class="t" style="left:91.0px;top:206.0px;width:91.0px;color:rgb(69 85 108);font-size:16.0px;font-weight:500;line-height:19.5px;white-space:nowrap" data-id="I6:1808;136:2266">Forecasting</div>
+<div class="b anchor" style="left:49.0px;top:243.0px;width:207.0px;height:38.0px" data-id="I6:1808;136:2267" data-name="Frame 2"></div>
+<img class="v" src="assets/icon__I6_1808_136_2268.svg" style="left:61.0px;top:253.0px;width:18.0px;height:18.0px" alt="" data-id="I6:1808;136:2268">
+<div class="t" style="left:91.0px;top:252.0px;width:49.0px;color:rgb(69 85 108);font-size:16.0px;font-weight:500;line-height:19.5px;white-space:nowrap" data-id="I6:1808;136:2278">Plants</div>
+<div class="b anchor" style="left:49.0px;top:289.0px;width:207.0px;height:38.0px" data-id="I6:1808;136:2279" data-name="Frame 3"></div>
+<img class="v" src="assets/icon__I6_1808_136_2280.svg" style="left:61.0px;top:299.0px;width:18.0px;height:18.0px" alt="" data-id="I6:1808;136:2280">
+<div class="t" style="left:91.0px;top:298.0px;width:62.0px;color:rgb(69 85 108);font-size:16.0px;font-weight:500;line-height:19.5px;white-space:nowrap" data-id="I6:1808;136:2286">Reports</div>
+<div class="b anchor" style="left:49.0px;top:335.0px;width:207.0px;height:38.0px" data-id="I6:1808;136:2287" data-name="Frame 7"></div>
+<div class="b anchor" style="left:61.0px;top:344.0px;width:76.0px;height:20.0px" data-id="I6:1808;136:2288" data-name="Frame 4"></div>
+<img class="v" src="assets/icon__I6_1808_136_2289.svg" style="left:61.0px;top:345.0px;width:18.0px;height:18.0px" alt="" data-id="I6:1808;136:2289">
+<div class="t" style="left:91.0px;top:344.0px;width:47.0px;color:rgb(69 85 108);font-size:16.0px;font-weight:500;line-height:19.5px;white-space:nowrap" data-id="I6:1808;136:2292">Alerts</div>
+<div class="b" style="left:225.0px;top:344.0px;width:19.0px;height:20.0px;background-color:rgb(255 69 69);border-radius:17px" data-id="I6:1808;136:2293" data-name="Frame 6"></div>
+<div class="t" style="left:231.0px;top:348.0px;width:8.0px;color:rgb(255 255 255);font-size:10.0px;font-weight:500;line-height:12.1px;text-align:center;white-space:nowrap" data-id="I6:1808;136:2294">5</div>
+<div class="b anchor" style="left:49.0px;top:381.0px;width:207.0px;height:38.0px" data-id="I6:1808;136:2295" data-name="Frame 5"></div>
+<img class="v" src="assets/icon__I6_1808_136_2296.svg" style="left:61.0px;top:391.0px;width:18.0px;height:18.0px" alt="" data-id="I6:1808;136:2296">
+<div class="t" style="left:91.0px;top:390.0px;width:65.0px;color:rgb(69 85 108);font-size:16.0px;font-weight:500;line-height:19.5px;white-space:nowrap" data-id="I6:1808;136:2299">Settings</div>
+<div class="b anchor" style="left:42.0px;top:921.0px;width:221.0px;height:61.0px" data-id="6:1809" data-name="User Profile"></div>
+<div class="b" style="left:42.0px;top:921.0px;width:221.0px;height:61.0px;background-color:rgb(248 248 250);border-radius:8px;border:1.00px solid rgba(0,0,0,0.08);box-sizing:border-box" data-id="I6:1809;127:48" data-name="Rectangle 5"></div>
+<div class="b anchor" style="left:54.0px;top:933.0px;width:199.0px;height:37.0px" data-id="I6:1809;127:49" data-name="Frame 12"></div>
+<div class="b anchor" style="left:54.0px;top:933.0px;width:124.0px;height:37.0px" data-id="I6:1809;127:50" data-name="Frame 11"></div>
+<div class="b" style="left:54.0px;top:934.0px;width:36.0px;height:36.0px;background-color:rgb(217 217 217);background-image:url('assets/avatar.png');background-size:cover;background-position:center;border-radius:50%" data-id="I6:1809;127:51" data-name="Ellipse 1"></div>
+<div class="b anchor" style="left:101.0px;top:933.0px;width:77.0px;height:37.0px" data-id="I6:1809;127:52" data-name="Frame 10"></div>
+<div class="t" style="left:101.0px;top:933.0px;width:78.0px;color:rgb(15 23 43);font-size:13.0px;font-weight:500;line-height:19.5px;white-space:nowrap" data-id="I6:1809;127:53">Emre Kaya</div>
+<div class="t" style="left:101.0px;top:953.0px;width:78.0px;color:rgb(98 116 142);font-size:11.0px;font-weight:500;line-height:16.5px;white-space:nowrap" data-id="I6:1809;127:54">Plant Operator</div>
+<img class="v" src="assets/icon__I6_1809_127_55.svg" style="left:235.0px;top:942.5px;width:18.0px;height:18.0px" alt="" data-id="I6:1809;127:55">
+<div class="b" style="left:31.0px;top:121.0px;width:244.0px;height:1.0px;background:rgba(0,0,0,0.08)" data-id="6:1810"></div>
+<img class="v" src="assets/frame-119__6_1811.svg" style="left:213.0px;top:61.0px;width:32.0px;height:32.0px" alt="" data-id="6:1811">
+<div class="b" style="left:294.0px;top:32.0px;width:1116.0px;height:68.0px;box-shadow:0px 4px 20px rgba(0,0,0,0.04)" data-id="6:1816" data-name="Frame 178"></div>
+<div class="b" style="left:294.0px;top:32.0px;width:1116.0px;height:68.0px;background-color:rgb(255 255 255);border-radius:20px;border:1.00px solid rgba(0,0,0,0.08);box-sizing:border-box" data-id="6:1817" data-name="Rectangle 10"></div>
+<div class="b anchor" style="left:849.0px;top:42.0px;width:551.0px;height:48.0px" data-id="6:1818" data-name="Frame 38"></div>
+<div class="b anchor" style="left:849.0px;top:42.0px;width:367.0px;height:48.0px" data-id="6:1819" data-name="Frame 34"></div>
+<div class="b" style="left:849.0px;top:42.0px;width:208.0px;height:48.0px;background-color:rgb(255 255 255);border-radius:10px;border:1.00px solid rgba(0,0,0,0.08);box-sizing:border-box" data-id="6:1820" data-name="Date Picker"></div>
+<div class="b anchor" style="left:865.0px;top:56.0px;width:117.0px;height:20.0px" data-id="I6:1820;127:670" data-name="Frame 28"></div>
+<img class="v" src="assets/icon__I6_1820_127_671.svg" style="left:865.0px;top:57.0px;width:18.0px;height:18.0px" alt="" data-id="I6:1820;127:671">
+<div class="t" style="left:891.0px;top:56.0px;width:92.0px;color:rgb(49 65 88);font-size:14.0px;font-weight:500;line-height:19.5px;white-space:nowrap" data-id="I6:1820;127:676">14 June 2026</div>
+<img class="v" src="assets/frame-27__I6_1820_127_677.svg" style="left:995.0px;top:57.0px;width:46.0px;height:18.0px" alt="" data-id="I6:1820;127:677">
+<div class="b" style="left:1077.0px;top:42.0px;width:139.0px;height:48.0px;background-color:rgb(255 255 255);border-radius:14px;border:1.00px solid rgba(0,0,0,0.08);box-sizing:border-box" data-id="6:1821" data-name="Toggle - Time Range"></div>
+<div class="b" style="left:1082.0px;top:47.0px;width:72.0px;height:38.0px;background-color:rgb(245 247 250);border-radius:9px" data-id="I6:1821;127:1267" data-name="Frame 30"></div>
+<div class="t" style="left:1096.0px;top:57.0px;width:45.0px;color:rgb(69 85 108);font-size:14.0px;font-weight:500;line-height:18.0px;text-align:center;white-space:nowrap" data-id="I6:1821;127:1268">Hourly</div>
+<div class="b anchor" style="left:1154.0px;top:47.0px;width:57.0px;height:38.0px" data-id="I6:1821;127:1269" data-name="Frame 31"></div>
+<div class="t" style="left:1166.0px;top:57.0px;width:34.0px;color:rgb(98 116 142);font-size:14.0px;font-weight:500;line-height:18.0px;text-align:center;white-space:nowrap" data-id="I6:1821;127:1270">Daily</div>
+<div class="b" style="left:1238.0px;top:42.0px;width:162.0px;height:48.0px;background-color:rgb(98 116 142);border-radius:10px;border:1.00px solid rgba(0,0,0,0.08);box-sizing:border-box" data-id="6:1822" data-name="Button - Calibrate Model"></div>
+<div class="t" style="left:1266.0px;top:57.0px;width:107.0px;color:rgb(255 255 255);font-size:14.0px;font-weight:500;line-height:18.0px;text-align:center;white-space:nowrap" data-id="I6:1822;127:1265">Calibrate Model</div>
+</div>
+</div><!-- /#fit -->
+
+<script>
+const CHARTDATA = {"dash":{"x":389,"y":518,"w":584,"h":245,"series":{"actual":[243.06,242.94,242.61,242.0,241.5,241.0,240.39,239.94,239.33,238.78,238.0,237.28,236.5,235.67,234.83,233.83,232.72,231.28,229.56,228.06,226.72,225.61,224.44,223.11,221.5,219.89,218.11,216.33,214.61,212.94,211.44,210.28,209.39,208.83,208.28,207.61,206.5,205.39,204.22,202.39,199.78,196.39,193.11,190.39,188.33,186.78,185.39,184.33,183.39,182.39,181.39,179.83,177.83,175.56,173.5,171.28,168.72,165.83,163.06,160.44,157.78,154.94,152.22,150.0,148.06,146.44,145.44,144.72,144.39,144.22,144.06,143.78,143.44,143.11,142.67,142.22,141.61,141.0,140.44,139.67,138.72,137.22,134.83,131.61,128.33,125.22,122.56,120.0,117.56,115.17,113.11,111.39,109.89,108.61,107.5,106.44,105.67,104.89,104.39,104.0,103.72,103.67,103.67,103.67,103.78,104.06,104.17,104.33,104.11,103.72,103.33,103.0,102.61,102.11,101.22,100.06,98.28,96.06,94.39,92.5,89.67,86.56,83.56,81.39,79.94,78.83,78.06,77.33,76.89,76.44,76.11,76.0,76.28,77.06,78.28,79.72,81.33,82.94,84.72,86.39,87.83,89.17,90.44,91.61,92.28,92.83,92.78,92.61,92.33,91.56,89.94,88.0,86.11,84.78,83.83,82.67,80.72,78.11,74.56,71.06,67.44,64.56,62.11,60.33,59.06,58.44,58.22,58.06,58.0,58.0,58.0,58.0,57.83,57.72,57.56,56.94,56.11,54.83,53.28,51.56,49.72,47.89,46.06,44.44,43.06,41.83,40.89,40.28,39.89,39.56,39.33,39.33,39.44,39.78,40.28,40.72,41.11,41.39,41.56,41.78,42.06,42.22,42.33,42.33,42.06,41.89,41.44,41.06,40.44,39.83,38.5,37.11,35.39,33.83,32.22,30.61,29.11,27.67,26.22,24.89,23.61,22.5,21.5,20.78,20.33,20.11,20.0,20.56,21.61,22.94,24.28,25.67,27.28,29.0,30.94,32.78,34.33,35.5,36.39,36.94,37.17,37.0,36.83,36.56,36.0,35.39,35.11,34.83,35.11,35.72,36.39,37.22,38.39,39.61,40.78,41.94,43.17,44.39,45.72,47.06,48.11,48.94,49.56,50.0,50.11,49.78,49.39,49.06,48.61,48.11,47.28,46.11,44.61,42.83,41.06,39.33,37.83,36.89,36.61,36.44,36.33,36.33,36.17,36.11,36.0,36.0,36.0,36.0,36.0,35.83,35.78,35.61,35.33,35.06,34.78,34.33,33.94,33.39,32.78,32.28,31.61,31.0,30.39,29.78,29.0,28.22,27.39,26.61,25.89,25.11,24.17,23.22,22.39,21.67,20.94,20.56,20.28,20.22,20.5,21.11,22.22,23.67,25.22,26.61,27.94,29.39,30.83,32.28,33.61,35.0,36.28,37.28,37.94,38.56,39.06,39.33,39.5,39.56,39.67,39.67,39.67,39.67,39.67,39.78,39.89,40.06,40.17,40.28,40.33,40.33,40.44,40.67,40.89,41.11,41.67,42.22,42.94,43.61,44.33,45.22,46.17,47.17,48.39,49.61,50.72,51.94,53.17,54.17,55.06,55.83,56.5,57.17,57.72,58.28,58.61,58.89,59.17,59.33,59.56,59.67,59.67,59.72,59.94,60.0,60.06,60.22,60.5,61.0,61.67,62.83,64.11,65.78,68.11,70.17,71.56,72.72,74.0,75.17,76.17,77.33,78.56,79.78,81.06,82.33,83.78,85.28,87.0,88.39,89.22,89.61,89.78,89.83,89.83,89.83,89.83,89.67,89.72,90.11,90.94,92.22,93.67,95.17,96.61,98.28,99.72,101.22,102.44,103.22,103.83,104.39,104.89,105.22,105.39,105.5,105.61,105.67,105.61,105.33,105.33,105.11,105.0,104.78,104.67,104.56,104.5,104.56,105.11,106.39,108.44,111.0,113.56,116.0,118.0,119.94,121.78,123.56,125.5,127.56,130.0,132.67,135.06,136.83,138.0,138.67,139.33,139.94,140.39,140.78,141.11,141.44,141.72,142.17,142.78,143.56,144.56,146.0,147.67,149.39,151.0,152.11,153.0,153.72,154.39,154.83,155.17,155.39,155.56,155.67,155.67,155.67,155.67,155.72,155.94,157.0,158.61,160.72,163.28,165.72,168.22,170.61,172.89,175.17,176.22,178.22,180.72,182.89,184.89,186.56,187.83,188.83,189.44,190.06,190.67,191.33,192.17,193.17,194.44,195.89,197.61,199.72,202.28,204.78,206.78,208.17,208.94,209.39,209.94,210.39,210.72,211.17,211.61,211.94,212.44,213.06,213.94,214.83,216.06,217.44,219.0,220.78,222.72,224.78,226.72,228.11,229.11,230.0,230.78,231.39,232.06,232.61,233.06,233.39,233.72,233.94,234.22,234.61,235.06,235.39,235.89,236.28,236.61,236.94,237.28,237.67,237.89,238.22,238.61,239.0,239.67,240.17,240.56,240.83,241.22,241.56,241.89,242.22,242.56,242.83,243.0,243.06,243.22,243.33,243.33,243.33],"expected":[242.0,241.67,241.33,241.0,241.22,241.44,241.67,238.67,238.33,240.0,239.33,235.67,235.67,235.67,234.83,232.67,234.17,231.08,228.0,230.0,227.78,225.56,223.33,221.42,219.5,217.75,216.0,218.0,212.5,211.0,211.67,209.0,209.0,209.0,209.0,209.0,205.0,203.33,202.39,201.44,195.17,191.33,196.89,190.67,189.22,188.67,186.87,185.07,183.27,181.47,179.67,178.33,181.0,173.0,173.17,173.33,171.22,169.11,163.5,158.33,157.83,155.0,150.0,149.83,146.0,144.67,144.89,142.56,142.28,141.61,136.89,136.11,135.0,134.17,133.33,132.61,132.33,140.0,140.5,141.0,138.14,135.28,126.72,126.06,124.22,124.22,123.56,121.22,122.0,116.56,115.17,115.33,113.17,109.78,109.78,105.94,103.61,102.61,102.17,99.89,98.0,96.67,92.44,89.39,87.72,85.39,84.33,83.75,83.17,83.11,82.89,82.72,82.61,82.44,81.89,79.33,77.56,76.33,75.28,70.94,69.94,68.56,65.33,63.44,62.22,61.39,58.67,58.0,57.17,56.61,56.22,56.17,56.17,56.33,63.89,58.0,58.83,59.72,60.0,84.33,61.22,61.39,61.61,61.83,61.94,61.94,77.31,92.67,61.5,61.39,60.67,59.61,57.78,54.78,53.33,46.17,39.17,38.06,33.44,32.72,31.83,31.22,31.17,31.28,31.39,32.67,32.94,33.44,34.11,34.5,46.83,59.0,35.78,35.83,35.83,35.78,35.44,35.17,46.17,30.94,29.78,28.44,25.0,24.17,22.94,22.06,18.0,17.39,16.22,15.33,15.17,27.08,13.83,13.83,13.83,14.06,14.28,16.5,16.61,17.17,17.89,18.61,19.06,19.33,19.33,19.33,18.0,17.89,17.56,17.06,16.33,16.06,28.06,12.61,11.78,10.67,10.0,9.75,26.33,17.33,7.89,7.83,7.61,7.56,7.78,7.83,10.33,10.44,11.17,12.11,12.67,12.83,27.33,20.42,13.5,13.5,13.5,13.5,13.44,13.33,13.33,11.5,11.17,10.39,9.5,5.78,5.06,3.94,2.22,1.56,0.94,0.92,0.89,1.17,2.06,2.61,6.94,10.28,16.5,17.5,21.94,23.0,24.22,24.83,25.06,24.67,24.17,23.83,21.08,20.83,20.0,18.94,16.28,14.56,13.67,12.61,11.83,11.44,24.42,9.5,9.22,8.78,8.33,8.11,26.06,35.0,7.58,7.67,7.67,7.72,7.94,8.28,8.33,34.0,11.44,11.94,12.56,13.0,13.17,13.22,13.26,13.3,13.33,13.39,13.22,13.11,12.78,12.44,11.17,9.83,9.17,8.39,7.33,6.22,5.61,5.22,5.17,21.33,19.33,4.83,4.83,4.89,5.06,5.39,5.67,8.67,9.11,10.0,11.22,12.61,14.83,15.72,16.78,24.72,18.5,18.44,18.61,18.89,19.11,19.17,19.17,18.76,18.35,17.94,17.72,17.06,16.44,15.56,14.83,14.22,14.33,14.17,14.17,14.39,14.83,15.0,18.11,18.89,20.06,20.89,23.58,23.94,24.78,25.5,26.33,26.5,54.5,30.17,30.5,31.33,32.17,32.72,32.83,32.83,57.33,57.67,32.61,32.56,32.44,32.22,32.0,31.83,31.75,61.0,59.0,31.17,31.06,31.0,31.22,31.94,32.39,39.11,40.5,41.83,47.17,48.17,49.67,50.78,62.92,53.89,54.44,55.28,56.0,64.5,58.56,59.06,60.0,60.56,63.11,63.72,64.11,64.28,64.17,64.11,63.89,63.44,62.5,61.94,61.83,62.22,62.78,65.67,67.83,69.78,72.28,73.28,74.56,75.39,77.19,79.0,79.11,79.61,80.33,81.06,81.72,81.94,93.14,104.33,95.0,83.83,83.89,84.06,84.22,84.56,84.83,89.33,90.44,93.72,95.67,96.94,97.61,100.39,101.06,102.17,102.89,107.67,108.94,111.11,114.33,115.44,118.39,118.89,119.78,120.33,120.5,141.0,121.67,121.78,122.0,122.28,122.61,123.11,123.78,124.33,127.78,130.11,136.78,139.06,139.67,142.83,143.33,144.39,145.11,149.42,146.33,146.39,146.78,147.28,148.0,150.33,153.89,152.94,153.39,154.56,156.06,162.11,163.17,166.5,169.67,173.33,172.0,175.5,178.67,175.0,176.0,176.78,177.5,180.17,182.06,183.33,184.33,187.83,189.06,190.89,190.83,191.83,192.83,193.72,194.94,196.33,198.61,201.06,203.33,205.83,206.78,207.61,208.42,209.33,209.67,210.0,210.33,210.67,213.67,212.0,215.5,213.5,214.0,216.0,217.0,218.67,225.33,224.5,223.67,226.0,228.83,231.67,232.17,232.67,233.17,233.67,234.17,234.67,234.11,233.56,233.0,233.33,234.0,235.5,237.0,236.17,235.33,235.67,236.0,238.67,236.67,239.33,238.58,237.83,239.67,239.5,239.33,239.67,240.0,240.33,241.25,242.17,243.67,244.0,243.0,242.0,243.17,244.33,243.75,243.17]},"range":[0,583]},"fore":{"x":360,"y":484,"w":667,"h":255,"series":{"pred":[252.17,251.61,250.5,249.11,247.0,245.78,244.56,243.17,242.0,241.11,240.33,239.56,238.61,237.5,236.39,235.0,233.39,231.61,230.22,229.06,228.28,227.67,226.89,225.61,224.17,223.0,221.78,220.44,218.72,216.89,215.06,213.33,211.56,210.0,208.56,207.11,205.61,204.22,202.94,201.83,200.78,199.61,198.5,197.17,195.89,194.78,193.67,192.61,191.5,190.67,189.67,188.67,187.67,186.78,185.89,184.72,183.33,181.72,179.94,178.0,176.17,174.39,172.61,170.83,169.11,167.5,166.11,164.56,163.0,161.5,160.06,158.61,157.44,156.17,155.17,153.83,152.72,151.5,150.39,149.33,148.5,147.67,146.5,145.22,143.78,142.11,140.67,139.39,138.56,137.67,136.72,135.61,134.28,132.44,130.83,129.56,128.61,127.72,127.0,126.22,125.33,124.17,122.94,121.83,121.0,119.58,118.17,117.0,115.83,114.61,113.11,111.39,109.5,107.44,105.67,104.28,103.0,101.72,100.22,98.67,97.22,96.0,95.06,94.28,93.33,92.33,91.5,90.78,90.28,89.56,88.72,88.0,87.11,86.39,85.61,84.67,83.67,82.67,81.83,81.11,80.33,79.56,78.5,77.44,76.17,75.0,74.06,73.33,72.72,72.11,71.56,70.89,70.22,69.56,68.78,68.11,67.39,66.67,65.67,64.67,64.06,63.28,62.83,62.33,61.78,61.17,60.61,60.06,59.39,58.83,58.17,57.61,57.0,56.5,56.0,55.5,54.89,54.0,53.22,52.44,51.67,51.06,50.39,49.83,49.5,49.17,48.72,48.06,47.28,46.39,45.56,44.72,44.0,43.06,42.39,41.56,40.89,40.06,39.39,38.83,38.39,37.83,37.17,36.33,35.61,34.89,34.39,33.94,33.17,32.28,31.56,31.22,30.83,30.5,30.33,30.28,30.06,30.0,30.0,30.0,29.94,29.83,29.83,29.83,29.83,29.83,29.83,29.83,29.94,30.0,29.89,29.78,29.67,29.67,29.67,29.67,29.61,29.44,29.33,29.33,29.33,29.33,29.33,29.33,29.33,29.33,29.33,29.33,29.33,29.33,29.33,29.28,29.11,29.0,29.0,29.0,29.0,29.0,29.0,29.0,29.0,29.0,29.0,29.0,29.0,29.0,29.0,29.0,29.0,29.06,29.28,29.44,29.83,30.28,30.67,31.06,31.39,31.67,32.17,32.78,33.22,33.61,34.0,34.44,34.83,35.17,35.5,35.72,36.0,36.28,36.39,36.67,36.94,37.06,37.28,37.33,37.33,37.33,37.33,37.33,37.33,37.5,37.67,37.67,37.67,37.67,37.61,37.44,37.33,37.33,37.06,36.67,36.17,35.89,35.61,35.33,35.22,35.06,35.0,35.0,35.33,35.44,35.67,36.0,36.33,36.56,36.83,37.17,37.56,37.83,38.44,39.22,40.06,40.61,41.44,42.28,43.06,43.67,44.17,44.67,45.28,46.0,46.78,47.33,47.94,48.39,49.06,49.56,49.83,50.0,50.0,50.17,50.33,50.33,50.5,50.67,50.94,51.06,51.33,51.44,51.67,51.72,52.0,52.06,52.33,52.61,52.94,53.33,53.89,54.44,55.11,55.72,56.11,56.33,56.39,56.56,56.67,56.67,56.67,56.67,56.67,56.67,56.67,56.67,56.67,56.67,56.67,56.67,56.67,56.67,56.72,57.11,57.44,57.72,58.06,58.61,59.33,60.33,61.06,62.0,63.0,63.89,64.83,65.83,66.89,67.78,68.44,69.11,69.94,70.78,71.67,72.67,73.67,74.39,74.94,75.5,76.06,76.61,77.0,77.5,77.89,78.33,78.94,79.56,80.11,80.89,81.56,82.22,82.78,83.33,83.78,84.28,84.94,85.61,86.28,86.94,87.5,88.06,88.61,89.06,89.61,90.06,90.56,91.0,91.44,91.94,92.33,92.83,93.17,93.5,93.89,94.33,94.78,95.17,95.56,96.06,96.72,97.61,98.39,99.28,100.0,100.78,101.44,102.33,103.83,105.0,106.17,107.44,108.94,110.83,112.78,114.39,115.67,116.44,117.28,118.06,118.78,119.67,120.67,121.67,122.67,123.67,124.33,125.22,125.94,126.61,127.22,127.89,128.5,129.06,129.67,130.33,131.11,131.89,132.67,133.67,134.67,135.61,136.28,137.11,137.78,138.5,139.28,140.0,140.56,140.94,141.33,141.5,142.06,142.89,144.06,145.22,146.33,147.33,148.0,149.0,150.0,151.0,152.11,153.17,154.44,155.39,156.28,156.94,157.44,158.11,158.72,159.17,159.61,160.0,160.44,161.17,162.0,163.0,164.0,164.89,165.39,165.94,166.72,167.67,168.67,169.67,170.56,171.11,171.72,172.28,172.83,173.39,173.89,174.33,174.72,175.06,175.39,175.72,176.11,176.56,177.0,177.61,178.33,179.22,181.0,183.44,186.22,188.06,189.5,190.83,192.5,194.5,196.61,197.89,198.67,199.39,200.28,201.06,201.94,202.72,203.5,204.33,205.11,206.0,206.72,207.67,208.44,209.17,209.61,209.83,210.06,210.61,211.33,212.33,213.22,213.89,214.56,215.39,216.33,217.33,218.33,219.11,219.94,220.67,221.44,222.11,222.89,223.67,224.61,225.5,226.56,227.94,229.11,230.33,231.22,231.89,232.67,233.44,234.33,235.17,236.06,236.94,237.78,238.44,239.28,240.0,241.0,241.78,242.61,243.44,243.94,244.5,244.94,245.39,245.83,245.78,245.94,245.89,246.33,246.5,246.61,246.78,247.06,247.28,247.5,247.78,247.94,248.17,248.33,248.5,248.56,248.67,248.94,249.0,249.0,249.0,249.0,249.0,249.0,249.0,249.0,249.0,249.0,249.0,249.0,249.0,249.0,249.0,249.0,249.0,249.0],"irr":[248.78,248.78,248.78,248.78,248.78,248.33,247.61,246.67,245.67,244.83,244.0,243.0,242.0,241.22,240.39,239.61,238.83,238.0,237.22,236.33,235.39,234.67,233.67,233.0,232.0,231.0,230.0,229.11,228.33,227.61,226.94,226.22,225.5,224.67,223.67,222.56,221.5,220.33,219.17,218.17,217.0,215.89,214.78,213.39,211.67,209.78,208.11,206.56,205.22,204.11,202.89,201.94,201.0,200.11,199.39,198.56,197.72,197.0,196.33,195.83,195.39,194.89,193.67,191.94,190.33,189.33,188.56,186.78,184.11,181.33,178.83,177.0,175.39,173.89,172.67,171.44,170.22,169.0,168.22,167.56,166.94,166.28,165.61,164.89,164.0,163.33,162.39,161.67,160.94,160.22,159.33,158.39,157.06,155.72,154.22,152.89,151.72,150.67,150.0,149.28,148.56,147.67,146.94,145.83,144.83,143.72,142.94,142.17,141.28,140.39,139.67,139.06,138.67,138.33,138.06,137.61,137.0,136.39,135.61,134.94,134.22,133.5,132.67,131.72,130.39,128.61,126.78,124.94,123.22,121.44,119.78,118.22,116.67,115.28,114.11,113.0,112.22,111.17,109.94,108.78,107.83,107.06,106.39,105.78,105.67,105.67,105.67,105.67,105.67,105.67,105.67,105.67,105.67,105.5,105.33,105.33,105.06,104.67,103.89,102.78,101.61,100.39,99.33,98.17,97.0,95.78,94.44,93.17,91.83,90.28,88.39,86.78,85.83,85.39,85.17,84.94,84.61,84.33,84.0,83.67,83.28,82.72,82.22,81.72,81.28,80.61,79.94,78.89,77.83,76.83,75.83,74.61,73.5,72.5,71.5,70.44,69.72,69.06,68.44,67.83,67.39,66.94,66.44,66.06,65.72,65.39,64.94,64.39,64.0,63.61,63.39,63.11,63.0,62.94,62.67,62.56,62.33,62.22,62.0,62.0,62.0,62.0,62.0,62.0,62.0,62.0,62.0,62.06,62.28,62.44,62.94,63.56,63.94,64.11,64.33,64.33,64.33,64.33,64.33,64.33,64.33,64.22,64.06,63.83,63.44,62.94,62.22,61.61,60.61,59.5,58.5,57.72,57.06,56.39,56.0,55.56,55.33,55.06,54.83,54.56,54.11,53.78,53.44,53.28,53.06,52.94,52.83,53.0,53.06,53.44,53.89,54.33,54.67,55.11,55.61,56.06,56.5,57.06,57.5,57.94,58.39,58.83,59.11,59.44,59.67,59.94,60.06,60.33,60.33,60.67,60.83,61.17,61.44,61.72,62.0,62.0,62.11,62.33,62.33,62.33,62.33,62.33,62.33,62.33,62.17,62.06,62.0,62.0,61.72,61.33,60.83,60.5,60.28,60.0,59.67,59.33,59.06,58.72,58.33,57.89,57.5,57.33,57.0,57.0,57.0,56.78,56.67,56.67,56.67,56.67,56.78,56.89,57.0,57.06,57.33,57.5,57.89,58.39,59.28,60.0,60.83,61.39,61.94,62.39,62.83,63.22,63.67,64.0,64.28,64.61,64.83,65.0,65.39,65.72,66.17,66.72,67.39,67.94,68.33,68.67,69.0,69.39,69.72,70.11,70.44,70.72,71.06,71.33,71.61,71.94,72.11,72.33,72.33,72.33,72.28,71.94,71.56,71.22,70.94,70.72,70.72,70.72,70.83,70.83,70.67,70.67,70.67,70.67,70.67,70.67,70.67,70.67,71.06,71.72,72.67,73.39,74.06,74.78,75.5,76.17,76.72,77.33,78.0,78.67,79.39,80.11,80.94,81.78,82.61,83.33,84.06,84.83,85.61,86.22,86.89,87.33,87.72,88.28,89.22,90.28,91.5,92.5,93.72,95.06,96.22,97.33,98.33,99.28,99.89,100.17,100.33,100.33,100.56,100.67,100.67,100.67,100.67,100.67,100.67,100.67,100.78,101.0,101.33,101.89,102.61,103.5,104.5,105.5,106.5,107.67,109.17,110.78,112.44,113.94,115.39,116.72,118.33,119.94,121.5,123.17,124.39,125.61,127.06,128.5,129.89,131.17,132.33,133.22,133.89,134.17,134.33,134.33,134.44,134.61,134.67,134.94,135.17,135.44,135.72,136.06,136.39,136.83,137.33,137.78,138.39,139.17,140.17,141.0,142.17,143.17,144.28,145.67,147.17,148.67,150.28,151.72,152.83,153.67,154.56,155.28,155.94,156.56,157.06,157.5,157.67,157.67,157.67,157.67,157.67,158.0,158.0,158.0,158.0,158.06,158.33,158.67,159.06,159.72,160.89,162.56,164.67,166.44,168.06,169.39,170.72,171.89,173.0,173.78,174.56,175.06,175.56,175.78,176.0,176.17,176.56,177.0,177.61,178.22,178.72,179.39,179.94,180.61,181.28,181.89,182.39,182.83,183.22,183.56,184.0,184.72,185.39,186.33,187.33,188.33,189.06,190.0,190.83,191.39,192.44,193.56,194.89,196.11,197.44,198.78,200.0,201.17,202.56,203.83,205.33,206.94,208.33,209.72,210.89,212.0,212.72,213.44,214.06,214.56,215.0,215.28,215.67,215.94,216.11,216.72,217.5,218.28,219.06,219.83,220.67,221.44,222.11,222.78,223.56,224.28,225.06,225.83,226.61,227.39,228.17,228.89,229.56,230.06,230.67,231.28,231.94,232.56,233.33,234.11,235.17,236.17,237.0,237.78,238.39,238.94,239.5,240.11,240.78,241.39,241.94,242.39,242.83,243.28,243.72,244.22,244.72,245.17,245.61,246.0,246.5,246.83,247.17,247.39,247.67,247.89,248.0,248.06,248.28,248.5,248.72,249.0,249.28,249.44,249.67,249.67,249.89,250.0,250.0,250.0,250.0,250.0,250.22,250.33,250.39,250.67,250.83,251.0,251.06,251.17,251.22,251.33,251.33,251.33,251.33,251.61,251.78,252.0,252.0],"bandHi":[251.5,250.33,249.17,247.5,245.67,244.0,243.33,241.67,241.0,239.67,239.33,238.17,237.67,236.5,235.33,233.5,231.67,230.33,228.94,227.56,226.17,225.56,224.44,223.56,222.67,220.56,218.5,216.17,214.11,213.69,212.75,211.0,206.89,206.2,204.8,202.83,202.17,199.77,196.78,196.83,196.05,193.88,193.67,191.28,190.23,186.56,185.22,182.94,182.0,181.17,179.42,178.5,181.0,178.54,178.37,176.93,175.38,173.22,170.53,167.46,165.6,164.27,160.94,159.77,159.83,155.08,152.04,153.13,155.13,155.5,146.33,149.25,140.56,145.83,143.83,142.5,139.17,139.64,139.44,136.3,127.56,146.5,130.28,132.89,129.27,125.21,128.67,122.54,126.81,124.03,122.2,123.5,120.2,119.27,115.94,116.67,112.67,111.88,116.33,113.92,111.13,112.06,105.5,107.93,105.0,100.38,105.0,90.5,98.83,93.08,98.19,95.67,90.57,82.4,86.0,84.8,77.47,82.33,81.13,76.21,81.64,80.97,73.38,79.61,81.37,75.17,74.43,69.83,69.42,88.33,60.5,70.63,65.96,58.46,70.72,69.86,69.06,68.54,60.38,59.62,58.83,51.5,63.08,59.87,59.03,60.67,46.56,55.77,50.96,50.25,52.11,48.54,52.37,51.73,46.83,46.42,66.0,51.75,51.22,50.47,43.25,46.6,36.08,47.92,40.92,40.29,39.71,45.83,40.39,37.79,41.2,40.67,38.61,46.61,35.17,34.79,38.03,27.22,51.67,32.0,35.4,31.04,30.54,40.61,31.28,28.92,28.33,21.5,36.1,19.11,31.47,17.67,29.97,22.04,21.54,24.57,20.0,24.75,17.25,20.67,15.62,22.42,17.9,5.44,12.08,11.54,2.75,10.17,9.67,9.04,8.83,20.72,29.67,15.5,12.53,1.17,8.12,15.08,15.08,15.08,1.17,1.17,1.11,1.17,1.17,1.17,1.17,1.17,1.17,1.17,1.17,1.17,1.17,1.11,8.04,14.92,1.17,1.17,12.03,14.67,14.67,7.88,6.14,4.41,2.68,0.94,0.83,0.83,0.83,0.83,0.83,0.83,0.75,14.38,28.0,28.0,28.0,28.0,14.39,14.42,14.42,14.42,14.42,14.42,14.42,14.44,21.21,28.0,28.0,21.4,14.79,1.11,8.04,12.37,8.29,8.54,13.1,16.21,31.0,31.67,18.42,11.96,12.5,13.0,13.29,13.38,20.42,14.17,18.57,14.88,15.25,22.08,23.0,16.54,10.28,23.5,23.64,30.0,26.5,24.06,11.83,12.0,21.93,36.67,30.71,18.96,13.28,13.67,13.89,23.0,19.62,14.17,35.33,35.0,34.67,34.33,18.83,13.56,13.44,13.28,18.46,18.38,21.57,20.33,35.33,35.67,36.0,18.71,18.75,22.53,13.0,23.03,19.71,13.5,16.39,26.77,24.12,25.04,30.0,27.79,29.0,34.58,45.33,34.23,34.6,32.04,32.42,27.67,38.25,49.0,29.39,29.61,34.83,38.0,30.83,43.39,37.89,36.42,39.43,36.88,39.7,32.83,40.07,37.42,37.67,40.57,37.92,42.83,52.67,53.33,46.89,41.57,41.7,41.83,38.46,32.67,32.67,44.17,49.92,55.67,55.67,55.67,32.75,32.83,32.83,38.58,44.33,44.39,44.42,46.7,51.35,56.0,56.33,45.88,40.75,41.21,45.03,47.89,42.0,49.58,44.62,39.72,46.0,40.5,40.5,41.94,52.23,49.12,56.14,44.11,70.5,71.0,53.5,53.92,58.5,48.94,55.83,66.83,76.0,60.0,61.97,52.78,63.23,60.21,62.61,79.5,80.33,63.08,63.38,57.83,64.5,68.57,72.17,66.5,66.96,67.5,67.83,71.17,73.13,70.17,74.27,76.92,77.88,72.29,72.58,76.53,73.38,79.58,92.0,77.11,78.97,76.04,76.46,80.3,82.92,95.0,81.77,72.78,73.0,79.62,80.0,87.83,82.46,89.11,90.14,91.14,94.63,99.0,90.42,95.0,99.25,100.81,99.17,94.11,103.6,101.75,104.06,107.97,110.5,111.56,107.88,103.5,106.58,109.67,112.9,113.47,110.88,116.42,112.33,112.62,116.17,113.46,115.78,117.87,115.38,121.36,122.03,111.28,117.42,135.67,136.33,137.17,138.17,122.61,124.53,121.25,125.4,122.21,126.5,117.28,121.64,126.0,132.92,127.79,128.88,135.53,148.67,138.64,139.58,138.57,136.58,141.63,135.0,143.93,141.96,143.08,144.04,147.8,146.08,146.75,143.61,148.17,151.37,151.9,146.67,155.19,151.38,154.4,153.72,159.3,158.14,158.92,157.67,155.33,170.33,171.17,157.62,158.12,161.7,159.5,161.83,161.12,161.67,162.33,163.08,166.0,164.29,166.0,170.17,163.61,164.61,172.05,175.81,177.64,176.25,179.4,180.53,180.86,185.67,185.33,188.67,186.0,193.58,190.28,196.08,196.0,196.5,198.53,198.1,200.67,198.39,202.58,201.12,208.0,208.67,203.12,204.5,204.08,204.71,207.28,205.96,207.9,207.33,206.44,211.08,211.13,212.17,210.22,214.07,211.39,214.29,214.79,216.67,216.43,217.67,216.72,220.38,222.0,224.6,226.19,227.87,228.97,229.75,230.38,231.67,232.17,232.89,234.22,234.94,235.72,236.5,237.39,238.17,239.17,239.78,241.53,241.79,242.67,244.06,244.78,245.17,245.25,245.33,245.5,245.67,245.67,246.0,246.0,246.33,246.5,246.67,247.0,247.33,247.5,247.67,248.0,248.33,248.33,248.67,248.67,248.67,248.67,248.67,248.67,248.67,248.67,248.67,248.67,248.67,248.67,248.67,248.67,248.67,248.67,248.67,248.67,248.67],"bandLo":[252.83,252.83,252.33,250.5,248.89,247.28,245.67,244.67,243.17,242.5,241.33,241.0,239.83,239.17,237.75,236.33,235.33,233.67,231.5,232.25,233.0,230.63,229.57,227.94,228.5,226.27,224.81,224.3,222.72,222.03,220.31,217.89,218.08,215.23,213.25,212.08,211.97,210.2,210.5,208.57,210.72,207.62,205.67,205.17,203.3,203.96,200.17,198.56,197.53,196.93,195.5,193.64,192.64,189.46,191.92,189.61,189.43,188.53,186.73,184.69,186.33,181.39,181.23,182.0,177.28,176.37,177.17,174.13,171.75,169.75,170.43,167.71,159.33,157.67,157.0,161.11,168.0,162.14,170.17,168.83,163.88,160.27,157.61,156.67,145.83,152.58,151.03,159.11,156.61,147.56,155.33,154.92,146.23,145.4,146.54,142.47,144.21,143.38,142.67,140.67,135.92,135.06,138.75,135.1,141.56,141.33,131.97,133.79,127.89,131.62,127.73,126.6,126.47,121.03,121.87,125.07,119.03,117.8,116.63,110.77,106.56,115.5,111.07,119.56,106.78,99.42,107.07,110.04,115.33,108.58,107.67,112.83,101.74,104.67,104.04,99.87,107.67,95.31,100.38,96.07,98.96,92.83,91.12,90.56,91.8,90.87,87.61,92.54,92.08,91.38,90.71,89.96,89.42,88.79,82.42,83.37,86.46,85.88,89.94,85.03,77.64,83.17,82.38,81.75,77.53,80.71,77.89,75.77,78.79,78.29,75.94,70.75,76.58,82.17,81.61,81.22,74.04,70.0,79.17,68.73,71.5,67.27,66.73,70.17,63.58,50.33,65.27,64.9,74.94,61.08,73.67,62.07,61.2,58.0,43.33,64.79,64.08,55.92,62.5,69.44,57.17,58.61,60.5,55.43,67.06,51.42,45.78,35.0,34.5,33.67,33.0,52.11,54.33,54.04,43.4,48.35,53.29,45.75,48.53,59.94,59.67,59.0,58.83,58.5,58.5,58.39,58.33,58.3,58.27,58.23,58.2,58.17,58.17,58.17,51.21,44.28,51.04,57.83,39.5,30.33,41.1,50.46,56.89,56.83,56.78,56.56,56.54,56.52,56.5,56.5,56.28,55.94,55.75,30.0,30.0,40.67,43.31,49.88,56.33,56.17,56.08,56.0,55.92,55.83,55.83,55.83,45.5,42.92,42.92,55.83,45.67,30.33,30.83,31.33,31.67,32.0,43.83,49.83,50.17,47.2,50.88,49.17,35.0,52.08,49.03,49.37,49.73,53.21,37.0,37.33,52.17,50.9,54.46,54.58,60.39,49.42,43.96,38.33,38.33,47.23,51.63,60.39,60.33,60.28,60.25,59.94,59.83,59.72,51.03,53.88,53.38,37.83,47.25,52.12,48.93,51.75,56.83,46.36,46.25,36.0,36.33,36.33,36.67,37.0,37.33,51.22,53.12,53.42,53.67,58.5,39.5,40.83,56.17,53.7,57.17,57.79,55.47,57.0,57.94,59.79,60.17,60.54,60.83,48.5,61.38,61.46,59.47,62.12,62.21,51.0,66.92,67.06,60.9,61.1,67.89,61.6,52.0,52.0,52.33,56.24,60.14,63.96,64.21,64.42,62.37,63.61,64.17,65.54,66.0,66.46,65.61,63.79,70.83,65.53,71.0,71.83,72.67,65.22,65.25,65.25,65.33,57.67,65.47,65.5,65.58,65.69,65.78,61.71,57.67,64.37,70.29,67.97,70.46,70.75,69.78,71.83,68.5,73.0,73.75,67.94,73.69,79.44,73.14,73.97,81.17,75.29,69.5,70.17,74.1,78.03,77.72,78.5,80.72,82.12,81.4,83.21,81.5,77.67,85.25,84.6,87.0,83.17,80.33,89.11,89.17,92.08,91.72,93.06,92.6,97.5,93.21,85.33,94.58,99.17,97.2,97.8,100.54,97.33,101.58,99.67,102.5,100.7,103.54,101.77,104.83,105.38,98.83,102.17,106.58,104.5,107.67,103.92,109.79,102.56,96.67,103.22,106.83,110.52,114.21,114.83,115.71,113.67,113.17,114.61,121.12,122.12,128.33,121.37,120.64,121.94,120.89,127.77,131.5,132.38,133.71,131.33,135.17,130.75,122.0,130.7,133.17,142.78,136.3,139.21,138.56,137.77,140.92,141.25,142.54,142.88,143.54,144.21,137.72,138.07,138.42,135.0,139.92,148.42,137.33,138.0,138.83,140.0,140.33,148.67,141.67,153.33,142.33,152.73,159.78,153.7,154.6,152.53,154.92,159.21,160.17,157.08,165.67,165.78,163.12,160.72,167.67,162.58,162.0,168.25,169.17,170.17,167.04,160.33,160.67,161.0,171.67,177.0,169.17,171.28,172.06,176.0,170.78,178.12,175.03,177.13,183.17,177.08,180.22,181.54,180.17,185.44,182.83,181.5,183.62,184.38,185.04,185.5,186.12,186.79,185.37,187.0,186.73,189.62,186.5,184.42,190.14,186.67,188.0,189.5,193.44,196.57,197.39,199.47,199.67,199.17,199.67,200.83,201.58,202.33,203.08,203.83,205.0,205.5,206.67,207.0,208.17,208.83,209.83,210.33,210.67,210.83,211.0,212.0,212.67,213.5,214.33,215.17,216.0,216.67,217.67,218.67,219.33,220.5,221.08,221.67,222.33,223.33,224.08,224.83,226.08,227.33,228.17,229.56,230.33,231.5,232.67,233.33,233.67,234.5,235.5,236.5,237.67,238.0,238.67,239.5,240.42,241.33,241.8,242.27,242.74,243.21,243.68,244.15,244.62,245.09,245.56,246.03,246.5,246.61,247.97,249.33,249.33,249.78,250.11,250.28,250.44,250.67,250.5,250.33,250.17,250.0,249.83,249.67,249.5,249.33,249.17,249.0,249.33,249.33,249.33,249.33,249.33,249.33,249.33,249.33,249.33,249.33,249.33,249.33,249.33,249.33,249.33]},"range":[0,650]}};
+
+/* ============================================================
+   PIEX prototype — interaction layer.
+   The two screens above are generated straight from the Figma
+   node tree, so every element carries its Figma id in data-id.
+   We drive behaviour by looking elements up with those ids.
+   ============================================================ */
+const $  = (id, root=document) => root.querySelector(`[data-id="${CSS.escape(id)}"]`);
+const $$ = sel => [...document.querySelectorAll(sel)];
+
+/* ---------- screen routing ---------- */
+const SCREENS = ['dashboard','forecasting'];
+let current = 'dashboard';
+function show(name){
+  if(!SCREENS.includes(name)) return;
+  current = name;
+  SCREENS.forEach(s => document.getElementById('s-'+s).classList.toggle('active', s===name));
+  window.scrollTo({top:0, behavior:'instant'});
+  fit();
+  history.replaceState(null,'','#'+name);
+}
+
+/* Sidebar rows: [figma id of the row frame, target screen]. Each screen
+   carries its own sidebar instance, hence two sets of ids. */
+const NAV = [
+  ['I6:1692;125:14911','dashboard'  ], ['I6:1692;125:14918','forecasting'],
+  ['I6:1692;125:14923',null], ['I6:1692;125:14935',null],
+  ['I6:1692;125:14943',null], ['I6:1692;125:14951',null],
+  ['I6:1808;136:2255','dashboard'  ], ['I6:1808;136:2262','forecasting'],
+  ['I6:1808;136:2267',null], ['I6:1808;136:2279',null],
+  ['I6:1808;136:2287',null], ['I6:1808;136:2295',null]
+];
+NAV.forEach(([id,target])=>{
+  const el = $(id); if(!el) return;
+  const scr = el.closest('.screen');
+  const hot = document.createElement('div');
+  hot.className = 'hot navhot';
+  hot.style.cssText = `left:${el.style.left};top:${el.style.top};width:${el.style.width};height:${el.style.height}`;
+  if(!target) hot.style.cursor = 'default';
+  hot.addEventListener('click', ()=> target && show(target));
+  scr.appendChild(hot);
+});
+
+/* ---------- generic click affordance ---------- */
+function hotspot(screenEl, x, y, w, h, fn, cursor='pointer'){
+  const el = document.createElement('div');
+  el.className = 'hot';
+  el.style.cssText = `left:${x}px;top:${y}px;width:${w}px;height:${h}px;cursor:${cursor}`;
+  el.addEventListener('click', fn);
+  screenEl.appendChild(el);
+  return el;
+}
+function boxOf(id){
+  const el = $(id); if(!el) return null;
+  return {el, x:parseFloat(el.style.left), y:parseFloat(el.style.top),
+          w:parseFloat(el.style.width), h:parseFloat(el.style.height), scr:el.closest('.screen')};
+}
+
+/* ---------- segmented controls (Hourly / Daily / Monthly) ---------- */
+function segmented(ids){
+  const boxes = ids.map(boxOf).filter(Boolean);
+  if(!boxes.length) return;
+  const paint = i => boxes.forEach((b,j)=>{
+    b.el.style.backgroundColor = i===j ? '#f5f7fa' : 'transparent';
+    const label = b.scr.querySelector(`[data-id="${CSS.escape(ids[j]+'_label')}"]`);
+  });
+  boxes.forEach((b,i)=> hotspot(b.scr, b.x, b.y, b.w, b.h, ()=>paint(i)));
+}
+segmented(['I6:1705;127:647','I6:1705;127:649','I6:1705;127:651']); // dashboard
+segmented(['I6:1821;127:1267','I6:1821;127:1269']);                 // forecasting
+
+/* ---------- date stepper ----------
+   The two chevrons export from Figma as one merged SVG, so the
+   arrow container is split into a left (prev) and right (next) half. */
+function dateStepper(labelId, arrowsId){
+  const lab = $(labelId), arrows = boxOf(arrowsId);
+  if(!lab || !arrows) return;
+  const base = new Date(2026,5,14);              // 14 June 2026
+  let offset = 0;
+  const render = ()=>{
+    const d = new Date(base); d.setDate(base.getDate()+offset);
+    lab.textContent = d.toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+  };
+  const step = n => ()=>{ offset += n; render(); };
+  hotspot(arrows.scr, arrows.x-6,             arrows.y-8, arrows.w/2+6, arrows.h+16, step(-1));
+  hotspot(arrows.scr, arrows.x+arrows.w/2,    arrows.y-8, arrows.w/2+6, arrows.h+16, step(+1));
+}
+dateStepper('I6:1704;127:676','I6:1704;127:677');   // dashboard
+dateStepper('I6:1820;127:676','I6:1820;127:677');   // forecasting
+
+/* ---------- Solar Plant Monitoring: zone rows + detail panel ---------- */
+const ZONES = {
+  A1:{mw:1.02,pct:99}, A2:{mw:0.98,pct:95}, A3:{mw:0.96,pct:91},
+  B1:{mw:1.03,pct:97}, B2:{mw:0.81,pct:74}, B3:{mw:1.00,pct:96},
+  C1:{mw:1.01,pct:97}, C2:{mw:0.99,pct:93}, C3:{mw:1.00,pct:94},
+  D1:{mw:1.02,pct:99}, D2:{mw:0.98,pct:95}, D3:{mw:0.96,pct:91}
+};
+const panel = {
+  root:   boxOf('6:1558'),
+  title:  $('I6:1558;127:622'),
+  close:  boxOf('I6:1558;127:623')
+};
+/* Text rows inside the detail panel, discovered by their content. */
+function panelFields(){
+  if(!panel.root) return null;
+  const scr = panel.root.scr;
+  const within = el => {
+    const x=parseFloat(el.style.left), y=parseFloat(el.style.top);
+    return x>=panel.root.x-2 && x<=panel.root.x+panel.root.w+2 &&
+           y>=panel.root.y-2 && y<=panel.root.y+panel.root.h+2;
+  };
+  const texts = [...scr.querySelectorAll('.t')].filter(within);
+  const byText = s => texts.find(t=>t.textContent.trim()===s);
+  const valueRightOf = lbl => {
+    if(!lbl) return null;
+    const ly = parseFloat(lbl.style.top);
+    return texts.filter(t=>t!==lbl && Math.abs(parseFloat(t.style.top)-ly)<6)
+                .sort((a,b)=>parseFloat(b.style.left)-parseFloat(a.style.left))[0] || null;
+  };
+  const stat = valueRightOf(byText('Status'));
+  /* the white pill sitting behind the status label */
+  let chip = null;
+  if(stat){
+    const sx=parseFloat(stat.style.left), sy=parseFloat(stat.style.top);
+    chip = [...scr.querySelectorAll('.b')].filter(el=>{
+      const x=parseFloat(el.style.left), y=parseFloat(el.style.top);
+      const w=parseFloat(el.style.width), h=parseFloat(el.style.height);
+      return w<160 && h<40 && x<=sx && y<=sy && x+w>=sx && y+h>=sy;
+    }).sort((a,b)=>parseFloat(a.style.width)-parseFloat(b.style.width))[0] || null;
+  }
+  return {
+    out:  valueRightOf(byText('Output')),
+    exp:  valueRightOf(byText('Expected')),
+    perf: valueRightOf(byText('Performance')),
+    stat, chip
+  };
+}
+const PF = panelFields();
+
+function openZone(code){
+  if(!panel.root) return;
+  const z = ZONES[code]; if(!z) return;
+  if(panel.title) panel.title.textContent = 'Section '+code;
+  if(PF){
+    const expected = z.mw / (z.pct/100);
+    if(PF.out)  PF.out.textContent  = z.mw.toFixed(2)+' MW';
+    if(PF.exp)  PF.exp.textContent  = expected.toFixed(2)+' MW';
+    const ok = z.pct >= 90;
+    /* the panel is glass over a dark photo, so the on-glass figure needs a
+       light tint; the status pill is white, so it keeps the saturated tone. */
+    const onGlass = ok ? '#34d399' : '#fb9600';
+    const onChip  = ok ? '#059669' : '#fb9600';
+    if(PF.perf){ PF.perf.textContent = z.pct+'%'; PF.perf.style.color = onGlass; }
+    if(PF.stat){ PF.stat.textContent = ok ? 'Optimal' : 'Underperforming';
+                 PF.stat.style.color = onChip; }
+    if(PF.chip){ PF.chip.style.borderColor = onChip; }
+  }
+  setPanel(true);
+}
+function setPanel(on){
+  if(!panel.root) return;
+  const scr = panel.root.scr;
+  const within = el => {
+    const x=parseFloat(el.style.left), y=parseFloat(el.style.top);
+    return x>=panel.root.x-2 && x<=panel.root.x+panel.root.w+2 &&
+           y>=panel.root.y-2 && y<=panel.root.y+panel.root.h+2;
+  };
+  [...scr.querySelectorAll('.b,.t,.v')].filter(within).forEach(el=>{
+    el.classList.add('fade');
+    el.classList.toggle('hidden', !on);
+  });
+}
+
+/* clickable rows: 4 zone cards x 3 rows, laid out from their Figma frames */
+[['6:1554',['A1','A2','A3']],['6:1555',['B1','B2','B3']],
+ ['6:1556',['C1','C2','C3']],['6:1557',['D1','D2','D3']]].forEach(([id,codes])=>{
+  const g = boxOf(id); if(!g) return;
+  const rowH = g.h/3;
+  codes.forEach((c,i)=> hotspot(g.scr, g.x, g.y+i*rowH, g.w, rowH, ()=>openZone(c)));
+});
+if(panel.close) hotspot(panel.close.scr, panel.close.x-6, panel.close.y-6,
+                        panel.close.w+12, panel.close.h+12, ()=>setPanel(false));
+
+/* ---------- MW / W/m² toggle on the forecast chart ---------- */
+segmented(['I6:1723;127:1509','I6:1723;127:1512']);
+
+/* ============================================================
+   Interactive charts.
+   The line geometry was pixel-sampled from the exported Figma
+   SVGs at build time (CHARTDATA: one y per screen-px column), so
+   the markers can ride the real curves. Drag a dot along its line,
+   or hover the plot for a read-out; the tooltip and hairline follow.
+   ============================================================ */
+const CHARTS = [
+  { key:'dash', screen:'s-dashboard',
+    xAxis:{px0:384.3, h0:5, px1:957.3, h1:22},          // label centres, shifted 9px so the design's hairline reads 9:30
+    yAxis:{py0:764.5, v0:0, py1:488.5, v1:10},          // '0 MW'…'10 MW' label centres
+    hair:'I6:1546;127:328',
+    tooltip:{ root:'I6:1546;127:788', gap:22,
+              f:{ time:'I6:1546;127:788;125:13774', prod:'I6:1546;127:788;125:13778',
+                  exp:'I6:1546;127:788;125:13779',  dev:'I6:1546;127:788;125:13780' } },
+    dots:[ {id:'I6:1546;127:329', on:'actual'}, {id:'I6:1546;127:331', on:'actual'}, {id:'I6:1546;127:333', on:'actual'} ],
+    linked:false,
+    readout(x, at){
+      const prod = at('actual'), exp = at('expected');
+      const dev  = exp ? (prod-exp)/exp*100 : 0;
+      return { time: fmtTime(x, this, false),
+               prod: prod.toFixed(2)+' MW', exp: exp.toFixed(2)+' MW',
+               dev: { text:(dev>=0?'+':'')+dev.toFixed(1)+'%', color: dev<0?'#eb000b':'#059669' } };
+    } },
+  { key:'fore', screen:'s-forecasting',
+    xAxis:{px0:381.3, h0:5, px1:1014.3, h1:22},         // shifted 4px so the design's hairline reads 12:00
+    yAxis:{py0:739.5, v0:0, py1:463.5, v1:10},          // left axis (MW); right axis is ×100 (W/m²)
+    hair:'I6:1723;127:1515',
+    tooltip:{ root:'I6:1723;127:1605', gap:22,
+              f:{ time:'I6:1723;127:1605;127:1575', pred:'I6:1723;127:1605;127:1581',
+                  range:'I6:1723;127:1605;127:1585', irr:'I6:1723;127:1605;127:1590',
+                  rel:'I6:1723;127:1605;127:1594' } },
+    dots:[ {id:'I6:1723;127:1518', on:'pred'}, {id:'I6:1723;127:1516', on:'irr'} ],
+    linked:true,                                        // both dots share one x
+    readout(x, at){
+      const pred = at('pred'), lo = at('bandLo'), hi = at('bandHi'), irr = at('irr')*100;
+      const rel  = Math.max(0, Math.min(100, 100 - (hi-lo)/(2*pred)*100));
+      return { time: fmtTime(x, this, true),
+               pred: pred.toFixed(2)+' MW', range: lo.toFixed(2)+'-'+hi.toFixed(2)+' MW',
+               irr: Math.round(irr)+' W/m²',
+               rel: { text: Math.round(rel)+'%', color: rel>=85?'#059669':rel>=70?'#d97706':'#eb000b' } };
+    } }
+];
+
+function fmtTime(x, ch, pad){
+  const {px0,h0,px1,h1} = ch.xAxis;
+  let h = h0 + (x-px0)/(px1-px0)*(h1-h0);
+  let mins = Math.round(h*60/15)*15;                      // snap to quarter hours
+  const H = Math.floor(mins/60), M = mins%60;
+  return (pad ? String(H).padStart(2,'0') : H) + ':' + String(M).padStart(2,'0');
+}
+
+function setupChart(ch){
+  const data = CHARTDATA[ch.key]; if(!data) return;
+  const scr  = document.getElementById(ch.screen);
+  const [xmin, xmax] = data.range.map(i => data.x + i);
+
+  /* screen-x -> value on a series, via the sampled column table */
+  const yPx = (name, x) => {
+    const col = x - data.x, i = Math.floor(col), t = col - i;
+    const a = data.series[name][Math.max(0,Math.min(data.w-1,i))];
+    const b = data.series[name][Math.max(0,Math.min(data.w-1,i+1))];
+    return data.y + (a==null||b==null ? (a??b??0) : a*(1-t)+b*t);
+  };
+  const val = (name, x) => {
+    const {py0,v0,py1,v1} = ch.yAxis;
+    return v0 + (yPx(name,x)-py0)/(py1-py0)*(v1-v0);
+  };
+
+  /* hairline + tooltip: every element inside the tooltip box moves as one */
+  const hair = $(ch.hair);
+  const tb   = boxOf(ch.tooltip.root);
+  const tipEls = [...scr.querySelectorAll('.b,.t,.v')].filter(el=>{
+    const x=parseFloat(el.style.left), y=parseFloat(el.style.top);
+    return x>=tb.x-1 && x<=tb.x+tb.w+1 && y>=tb.y-1 && y<=tb.y+tb.h+1;
+  }).map(el=>({el, ox:parseFloat(el.style.left)-tb.x, oy:parseFloat(el.style.top)-tb.y}));
+  const fields = Object.fromEntries(Object.entries(ch.tooltip.f).map(([k,id])=>[k,$(id)]));
+  const hairX0 = parseFloat(hair.style.left);
+  const tipOffset = tb.x - hairX0;                     // design: tooltip sits gap px right of hairline
+  const dotYs  = x => ch.dots.map(d => yPx(d.on, x));
+  const lowY   = x => Math.max(...dotYs(x)), highY = x => Math.min(...dotYs(x));
+  const tipDy  = tb.y - lowY(hairX0);                  // design: tooltip's offset below the lowest dot
+  const plotBottom = data.y + data.h + 12;
+
+  function place(x){
+    x = Math.max(xmin, Math.min(xmax, x));
+    hair.style.left = x + 'px';
+    /* keep the tooltip inside the plot: flip to the left near the right edge */
+    let tx = x + tipOffset;
+    if(tx + tb.w > xmax + 10) tx = x - tipOffset - tb.w + 2;
+    /* vertical: below the dots as designed → mirrored above → beside them */
+    let ty = lowY(x) + tipDy;
+    if(ty + tb.h > plotBottom){
+      ty = highY(x) - tipDy - tb.h;
+      if(ty < data.y - 8){
+        ty = (lowY(x)+highY(x))/2 - tb.h/2;                 // beside: clear of the hairline
+        tx = (x + 16 + tb.w > xmax + 10) ? x - 16 - tb.w : x + 16;
+      }
+    }
+    ty = Math.max(data.y - 8, Math.min(plotBottom - tb.h, ty));
+    tipEls.forEach(({el,ox,oy}) => { el.style.left = (tx+ox) + 'px'; el.style.top = (ty+oy) + 'px'; });
+    const r = ch.readout(x, n => val(n, x));
+    for(const [k,v] of Object.entries(r)){
+      const el = fields[k]; if(!el) continue;
+      if(typeof v === 'string') el.textContent = v;
+      else { el.textContent = v.text; el.style.color = v.color; }
+    }
+  }
+
+  /* dots ride their series; each gets a grab handle */
+  const dots = ch.dots.map(d => {
+    const img = $(d.id); const w = parseFloat(img.style.width);
+    const handle = document.createElement('div');
+    handle.className = 'dot-handle';
+    scr.appendChild(handle);
+    const o = {img, handle, on:d.on, r:w/2, x:parseFloat(img.style.left)+w/2};
+    o.moveTo = x => {
+      x = Math.max(xmin, Math.min(xmax, x));
+      o.x = x; const y = yPx(o.on, x);
+      img.style.left = (x-o.r)+'px'; img.style.top = (y-o.r)+'px';
+      handle.style.left = (x-14)+'px'; handle.style.top = (y-14)+'px';
+    };
+    o.moveTo(o.x);
+    return o;
+  });
+  let active = dots[0];
+  const moveDots = (x, from) => (ch.linked ? dots : [from]).forEach(d => d.moveTo(x));
+  /* the design's hairline is the true anchor; snap the dots that sit on it to it */
+  dots.filter(d => Math.abs(d.x - hairX0) <= 2).forEach(d => d.moveTo(hairX0));
+
+  /* pointer → design-space x, accounting for the page scale */
+  const toX = e => { const r = scr.getBoundingClientRect(); return (e.clientX - r.left) / (r.width/1440); };
+
+  dots.forEach(d => {
+    d.handle.addEventListener('pointerdown', e => {
+      e.preventDefault(); active = d; d.handle.setPointerCapture(e.pointerId);
+      d.handle.classList.add('grabbing');
+      const mv = ev => { const x = toX(ev); moveDots(x, d); place(d.x); };
+      const up = () => { d.handle.classList.remove('grabbing');
+                         d.handle.removeEventListener('pointermove', mv); d.handle.removeEventListener('pointerup', up); };
+      d.handle.addEventListener('pointermove', mv); d.handle.addEventListener('pointerup', up);
+    });
+  });
+
+  /* hover read-out over the plot; leaving snaps back to the active dot */
+  const plot = document.createElement('div');
+  plot.className = 'plot-area';
+  plot.style.cssText = `left:${xmin}px;top:${data.y}px;width:${xmax-xmin}px;height:${data.h}px`;
+  scr.insertBefore(plot, dots[0].handle);
+  plot.addEventListener('pointermove', e => place(toX(e)));
+  plot.addEventListener('pointerleave', () => place(active.x));
+  plot.addEventListener('pointerdown', e => { const x = toX(e); moveDots(x, active); place(active.x); });
+
+  place(active.x);
+}
+CHARTS.forEach(setupChart);
+
+/* ---------- hover state for the primary buttons ---------- */
+['I6:1547;137:4571','I6:1788;137:4750'].forEach(id => {        // View all (dashboard, forecasting)
+  const b = boxOf(id); if(!b) return;
+  b.el.classList.add('btn-primary');
+  const hot = hotspot(b.scr, b.x, b.y, b.w, b.h, ()=>{});
+  hot.classList.add('btn-hot');
+  hot.addEventListener('pointerenter', ()=> b.el.classList.add('is-hover'));
+  hot.addEventListener('pointerleave', ()=> b.el.classList.remove('is-hover'));
+  hot.addEventListener('pointerdown',  ()=> b.el.classList.add('is-press'));
+  hot.addEventListener('pointerup',    ()=> b.el.classList.remove('is-press'));
+});
+
+/* ---------- fit the design width to the window ---------- */
+const fitEl = document.getElementById('fit');
+function fit(){
+  const scr = document.querySelector('.screen.active');
+  if(!scr) return;
+  const s = Math.min(window.innerWidth / 1440, 1);
+  fitEl.style.transform = `scale(${s})`;
+  fitEl.style.width = '1440px';
+  document.body.style.height = (parseFloat(scr.style.height) * s) + 'px';
+}
+addEventListener('resize', fit);
+
+/* ---------- boot ---------- */
+show(location.hash.replace('#','') || 'dashboard');
+setPanel(true);
+</script>
+</body>
+</html>
