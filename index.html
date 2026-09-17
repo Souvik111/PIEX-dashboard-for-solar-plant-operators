@@ -9,10 +9,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{height:100%}
+html{height:100%}
 body{background:#e6ebef;font-family:Inter,system-ui,-apple-system,'Segoe UI',sans-serif;
-     -webkit-font-smoothing:antialiased;overflow-x:hidden}
-#fit{transform-origin:top center;margin:0 auto}
+     -webkit-font-smoothing:antialiased;overflow-x:hidden;overflow-y:auto;margin:0;padding:0}
+#fit{transform-origin:top left;position:relative}
 .screen{position:relative;display:none}
 .screen.active{display:block}
 .b,.t,.v{position:absolute;pointer-events:none}
@@ -1122,10 +1122,14 @@ const fitEl = document.getElementById('fit');
 function fit(){
   const scr = document.querySelector('.screen.active');
   if(!scr) return;
-  const s = Math.min(window.innerWidth / 1440, 1);
+  const s = window.innerWidth / 1440;  // always scale to fill width exactly
   fitEl.style.transform = `scale(${s})`;
   fitEl.style.width = '1440px';
-  document.body.style.height = (parseFloat(scr.style.height) * s) + 'px';
+  // Shrink the body container so scaled element doesn't create scroll
+  const scaledH = parseFloat(scr.style.height) * s;
+  document.body.style.width = window.innerWidth + 'px';
+  document.body.style.height = scaledH + 'px';
+  document.body.style.overflowX = 'hidden';
 }
 addEventListener('resize', fit);
 
